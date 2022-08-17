@@ -14,12 +14,13 @@ import javax.servlet.http.HttpServletResponse;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
+import beans.HelpStatus;
 import beans.Pc;
 import beans.PcJson;
 
 @WebServlet(urlPatterns = { "/v1/call/*" })
 //call-teacher/XXXの応答関数
-public class Call extends HttpServlet {
+public class CallServlet extends HttpServlet {
 
 	protected void doPost(HttpServletRequest req, HttpServletResponse resp)
 			throws ServletException, IOException {
@@ -37,17 +38,20 @@ public class Call extends HttpServlet {
 		Pc pc = getPcFromPcId("ics"+myPcId);
 		if(pc != null) {
 			//現在のヘルプ状態を取得
-			String preHelpStatus = pc.getHelpStatus();
+			HelpStatus preHelpStatus = pc.getHelpStatus();
 
 			//現在のヘルプ状態から遷移する None->Troubled, Troubled,Supporting->None
-			if(preHelpStatus.equals("None")) {
-				StartServlet.setHelpStatus("ics"+myPcId, "Troubled");
-				StartServlet.setHandTime("ics"+myPcId, false);
-			}else{
-				StartServlet.setHelpStatus("ics"+myPcId, "None");
-				StartServlet.setHandTime("ics"+myPcId, true);
+			switch (preHelpStatus){
+				case None:
+					StartServlet.setHelpStatus("ics"+myPcId, "Troubled");
+					StartServlet.setHandTime("ics"+myPcId, false);
+					break;
+				default:
+					StartServlet.setHelpStatus("ics"+myPcId, "None");
+					StartServlet.setHandTime("ics"+myPcId, true);
+					break;
 			}
-			
+
 			//最終リクエスト時間を変更
 			StartServlet.setRequestTime(pc.getPcId());
 
@@ -69,7 +73,7 @@ public class Call extends HttpServlet {
 				}
 			}
 			jsonList = getJsonList(pcJsonList);
-			
+
 			// JSON形式のメッセージリストを出力
 			PrintWriter out = resp.getWriter();
 			out.println(jsonList);

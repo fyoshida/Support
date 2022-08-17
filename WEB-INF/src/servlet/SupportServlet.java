@@ -19,7 +19,7 @@ import beans.PcJson;
 
 @WebServlet(urlPatterns = { "/v1/support/*" })
 //support/XXXの応答関数
-public class Support extends HttpServlet {
+public class SupportServlet extends HttpServlet {
 
 	protected void doPost(HttpServletRequest req, HttpServletResponse resp)
 			throws ServletException, IOException {

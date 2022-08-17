@@ -11,10 +11,10 @@ import java.util.TimerTask;
 
 import beans.Pc;
 
-class Schedule extends TimerTask {
+class ScheduleServlet extends TimerTask {
 
-    private static Schedule instance = new Schedule();
-    private Schedule() {
+    private static ScheduleServlet instance = new ScheduleServlet();
+    private ScheduleServlet() {
     }
 
     @Override
@@ -73,7 +73,7 @@ class Schedule extends TimerTask {
 		}
     }
 
-    public static Schedule getInstance() {
+    public static ScheduleServlet getInstance() {
         return instance;
     }
 }

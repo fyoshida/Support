@@ -19,7 +19,7 @@ import beans.PcJson;
 
 @WebServlet(urlPatterns = { "/v1/active-seats" })
 //active-seatsの応答関数
-public class Active extends HttpServlet {
+public class ActiveServlet extends HttpServlet {
 	
 	protected void doGet(HttpServletRequest req, HttpServletResponse resp)
 			throws ServletException, IOException {

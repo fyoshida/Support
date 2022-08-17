@@ -19,7 +19,7 @@ import beans.PcJson;
 
 @WebServlet(urlPatterns = { "/v1/whoami" })
 //whoamiの応答関数
-public class WhoamI extends HttpServlet {
+public class WhoamIServlet extends HttpServlet {
 
 	protected void doGet(HttpServletRequest req, HttpServletResponse resp)
 			throws ServletException, IOException {

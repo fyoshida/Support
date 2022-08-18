@@ -20,7 +20,7 @@ import beans.PcJson;
 @WebServlet(urlPatterns = { "/v1/active-seats" })
 //active-seatsの応答関数
 public class ActiveServlet extends HttpServlet {
-	
+
 	protected void doGet(HttpServletRequest req, HttpServletResponse resp)
 			throws ServletException, IOException {
 
@@ -31,7 +31,7 @@ public class ActiveServlet extends HttpServlet {
 		//pcJsonListをJsonに変換
 		String jsonList = "";
 		List<Pc> pcList = StartServlet.getPcList();
-		
+
 		List<PcJson> pcJsonList = new LinkedList<PcJson>();
 		for(Pc pc : pcList) {
 			if(pc.getIsLogin()) {
@@ -45,13 +45,14 @@ public class ActiveServlet extends HttpServlet {
 				pcJsonList.add(pcJson);
 			}
 		}
-		
+
 		jsonList = getJsonList(pcJsonList);
-		
+
 		// JSON形式のメッセージリストを出力
 		PrintWriter out = resp.getWriter();
 		out.println(jsonList);
 	}
+
 
 
 	//---------------補助関数-----------------------------------------------------

@@ -1,4 +1,4 @@
-package helper;
+package repository.file;
 
 import java.io.IOException;
 import java.nio.file.Files;
@@ -9,9 +9,18 @@ import java.util.List;
 
 import beans.HelpStatus;
 import beans.Pc;
+import repository.RepositoryInterface;
 
-public class PcListFileReader {
-	public List<Pc> getPcListFromFile(String fileName){
+public class FileRepository implements RepositoryInterface{
+	final private String fileName;
+	
+	public FileRepository(String fileName) {
+		this.fileName=fileName;
+		
+	}
+	
+	@Override
+	public List<Pc> getPcList() {
 		List<String> lines = getLinesFromFile(fileName);
 
 		//先頭行は列名なので除外
@@ -19,6 +28,15 @@ public class PcListFileReader {
 
 		return getPcListFromLines(lines);
 	}
+
+	@Override
+	public void updatePc(Pc pc) {
+
+		// TODO 自動生成されたメソッド・スタブ
+		
+	}
+
+	// --------------補助関数---------------
 
 	List<String> getLinesFromFile(String fileName) {
 		List<String> lines=new LinkedList<String>();
@@ -62,17 +80,4 @@ public class PcListFileReader {
 		return pcData;
 	}
 
-//	private BufferedReader FileReader(String filePath, ServletContextEvent arg0) {
-//	String realPath = arg0.getServletContext().getRealPath(filePath);
-//	FileInputStream fi = null;
-//	try {
-//		fi = new FileInputStream(realPath);
-//	} catch (FileNotFoundException e) {
-//		// TODO 自動生成された catch ブロック
-//		e.printStackTrace();
-//	}
-//	InputStreamReader is = new InputStreamReader(fi);
-//	BufferedReader br = new BufferedReader(is);
-//	return br;
-//}
 }

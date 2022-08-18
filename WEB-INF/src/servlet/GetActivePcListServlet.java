@@ -19,7 +19,7 @@ import beans.PcJson;
 
 @WebServlet(urlPatterns = { "/v1/active-seats" })
 //active-seatsの応答関数
-public class ActiveServlet extends HttpServlet {
+public class GetActivePcListServlet extends HttpServlet {
 
 	protected void doGet(HttpServletRequest req, HttpServletResponse resp)
 			throws ServletException, IOException {
@@ -46,23 +46,11 @@ public class ActiveServlet extends HttpServlet {
 			}
 		}
 
-		jsonList = getJsonList(pcJsonList);
+		jsonList = JsonHelper.getJsonList(pcJsonList);
 
 		// JSON形式のメッセージリストを出力
 		PrintWriter out = resp.getWriter();
 		out.println(jsonList);
 	}
 
-
-	//---------------補助関数-----------------------------------------------------
-	private String getJsonList(List<PcJson> pcJsonList) throws JsonProcessingException{
-		String jsonList = "";
-		ObjectMapper mapper = new ObjectMapper();
-		try {
-			jsonList = mapper.writeValueAsString(pcJsonList);
-		} catch (JsonProcessingException e) {
-			e.printStackTrace();
-		}
-		return jsonList;
-	}
 }

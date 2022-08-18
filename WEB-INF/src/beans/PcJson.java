@@ -54,4 +54,8 @@ public class PcJson{
 	public void setHandPriority(int handPriority) {
 		this.handPriority = handPriority;
 	}
+
+	public boolean isSamePcId(String pcId) {
+		return this.pcId.equals(pcId);
+	}
 }

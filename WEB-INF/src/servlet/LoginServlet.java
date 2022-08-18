@@ -37,7 +37,7 @@ public class LoginServlet extends HttpServlet {
 		//ipアドレスからpc情報を取得できたか
 		Boolean addrCollationFlag = false; //ログイン成否フラグ
 		if(pc != null) addrCollationFlag = true;
-		
+
 		if(addrCollationFlag) {
 //			// ログイン成功時の処理
 			StartServlet.setLogin(pc.getPcId(), true);
@@ -46,6 +46,4 @@ public class LoginServlet extends HttpServlet {
 
 		req.getRequestDispatcher("/index.html").forward(req,resp);
 	}
-
-//-----------------補助関数-------------------------------------------------
 }

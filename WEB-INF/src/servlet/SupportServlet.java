@@ -80,24 +80,5 @@ public class SupportServlet extends HttpServlet {
 		}
 	}
 
-	//---------------補助関数-----------------------------------------------------
-	private String getJsonList(List<PcJson> pcJsonList) throws JsonProcessingException{
-		String jsonList = "";
-		ObjectMapper mapper = new ObjectMapper();
-		try {
-			jsonList = mapper.writeValueAsString(pcJsonList);
-		} catch (JsonProcessingException e) {
-			e.printStackTrace();
-		}
-		return jsonList;
-	}
-	private Pc getPcFromPcId(String pcId) {
-		List<Pc> pcList = StartServlet.getPcList();
-		for(Pc pc : pcList) {
-			if(pcId.equals(pc.getPcId())) {
-				return pc;
-			}
-		}
-		return null;
-	}
+
 }

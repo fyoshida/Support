@@ -19,7 +19,7 @@ import beans.PcJson;
 
 @WebServlet(urlPatterns = { "/v1/whoami" })
 //whoamiの応答関数
-public class WhoamIServlet extends HttpServlet {
+public class GetPcFromIpAddressServlet extends HttpServlet {
 
 	protected void doGet(HttpServletRequest req, HttpServletResponse resp)
 			throws ServletException, IOException {
@@ -58,7 +58,7 @@ public class WhoamIServlet extends HttpServlet {
 			pcJson.setIsLogin(pc.getIsLogin());
 			pcJson.setHandPriority(pc.getHandPriority());
 			jsonList = getJsonList(pcJson);
-			
+
 			out.println(jsonList);
 		}else {
 			//実験室外のIPアドレスにはnullを返す
@@ -66,24 +66,4 @@ public class WhoamIServlet extends HttpServlet {
 		}
 	}
 
-	//---------------補助関数-----------------------------------------------------
-	private String getJsonList(PcJson pcJson) throws JsonProcessingException{
-		String jsonList = "";
-		ObjectMapper mapper = new ObjectMapper();
-		try {
-			jsonList = mapper.writeValueAsString(pcJson);
-		} catch (JsonProcessingException e) {
-			e.printStackTrace();
-		}
-		return jsonList;
-	}
-	private Pc getPcFromIpAddr(String addr) {
-		List<Pc> pcList = StartServlet.getPcList();
-		for(Pc pc : pcList) {
-			if(addr.equals(pc.getIpAdress())) return pc;
-		}
-		return null;
-	}
-
-	//---------------補助関数(ここまで)-----------------------------------------------------
 }

@@ -1,4 +1,4 @@
-package servlet;
+package helper;
 
 import java.util.Timer;
 
@@ -20,7 +20,7 @@ public class ScheduleManager extends Thread {
         // timerの開始
         System.out.println("定期実行の開始");
         timer = new Timer();
-        timer.schedule(ScheduleServlet.getInstance(), 0, 1 * 1000);
+        timer.schedule(Schedule.getInstance(), 0, 1 * 1000);
     }
 
     public static ScheduleManager getInstance() {

@@ -14,6 +14,7 @@ import javax.servlet.http.HttpServletResponse;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
+import beans.HelpStatus;
 import beans.Pc;
 import beans.PcJson;
 
@@ -37,14 +38,14 @@ public class SupportServlet extends HttpServlet {
 		Pc studentPc = getPcFromPcId("ics"+myPcId);
 		if(studentPc != null) {
 			//現在のヘルプ状態を取得
-			String preHelpStatus = studentPc.getHelpStatus();
+			HelpStatus preHelpStatus = studentPc.getHelpStatus();
 
 			//現在のヘルプ状態から状態を遷移する "None"状態は遷移なし
 			if(preHelpStatus.equals("Troubled")) {
-				StartServlet.setHelpStatus("ics"+myPcId, "Supporting");
+				StartServlet.setHelpStatus("ics"+myPcId, HelpStatus.Supporting);
 				StartServlet.setHandTime("ics"+myPcId, true);
 			}else if(preHelpStatus.equals("Supporting")) {
-				StartServlet.setHelpStatus("ics"+myPcId, "None");
+				StartServlet.setHelpStatus("ics"+myPcId, HelpStatus.None);
 				StartServlet.setHandTime("ics"+myPcId, true);
 			}else {
 				//"None"状態は遷移なし
@@ -69,7 +70,7 @@ public class SupportServlet extends HttpServlet {
 				}
 			}
 			jsonList = getJsonList(pcJsonList);
-			
+
 			// JSON形式のメッセージリストを出力
 			PrintWriter out = resp.getWriter();
 			out.println(jsonList);

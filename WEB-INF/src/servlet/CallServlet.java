@@ -43,11 +43,11 @@ public class CallServlet extends HttpServlet {
 			//現在のヘルプ状態から遷移する None->Troubled, Troubled,Supporting->None
 			switch (preHelpStatus){
 				case None:
-					StartServlet.setHelpStatus("ics"+myPcId, "Troubled");
+					StartServlet.setHelpStatus("ics"+myPcId, HelpStatus.Troubled);
 					StartServlet.setHandTime("ics"+myPcId, false);
 					break;
 				default:
-					StartServlet.setHelpStatus("ics"+myPcId, "None");
+					StartServlet.setHelpStatus("ics"+myPcId, HelpStatus.None);
 					StartServlet.setHandTime("ics"+myPcId, true);
 					break;
 			}

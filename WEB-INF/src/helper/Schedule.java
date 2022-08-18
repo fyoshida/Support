@@ -1,4 +1,4 @@
-package servlet;
+package helper;
 
 import java.sql.Timestamp;
 import java.text.SimpleDateFormat;
@@ -9,12 +9,13 @@ import java.util.Date;
 import java.util.List;
 import java.util.TimerTask;
 
+import beans.HelpStatus;
 import beans.Pc;
 
-class ScheduleServlet extends TimerTask {
+class Schedule extends TimerTask {
 
-    private static ScheduleServlet instance = new ScheduleServlet();
-    private ScheduleServlet() {
+    private static Schedule instance = new Schedule();
+    private Schedule() {
     }
 
     @Override
@@ -28,7 +29,7 @@ class ScheduleServlet extends TimerTask {
 		cal.setTime(dt);
 		//現在時刻から30分前に閾値をセット
 		cal.add(Calendar.MINUTE, -30);
-		
+
 		List<Pc> pcList = StartServlet.getPcList();
 		ArrayList<String> handTimeList = new ArrayList<>(); //座席数分のリストを用意
 		for(Pc pc : pcList) {
@@ -40,20 +41,20 @@ class ScheduleServlet extends TimerTask {
 				//挙手の順番をリセット
 				pc.setHandPriority(-1);
 			}
-			
+
 			//ログイン中かつ手をあげていない状態のみログイン状態を継続するか確認する
-			if(pc.getLastRequestTime() != null && pc.getHelpStatus() == "None") {
+			if(pc.getLastRequestTime() != null && pc.getHelpStatus() == HelpStatus.None) {
 				Calendar pc_cal = Calendar.getInstance();
 				pc_cal.setTime(pc.getLastRequestTime());
 				if(pc_cal.before(cal)) {
 					//ログイン状態をfalseにする
 					pc.setIsLogin(false);
 					pc.setLastRequestTime(null);
-					pc.setHelpStatus("None");
+					pc.setHelpStatus(HelpStatus.None);
 				}
 			}
 		}
-		
+
 		//挙手の時間をソートし順番を決める
 		Collections.sort(handTimeList);
 		//手をあげた順番をhandPriorityにセットする
@@ -73,7 +74,7 @@ class ScheduleServlet extends TimerTask {
 		}
     }
 
-    public static ScheduleServlet getInstance() {
+    public static Schedule getInstance() {
         return instance;
     }
 }

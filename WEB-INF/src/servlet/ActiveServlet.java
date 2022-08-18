@@ -54,7 +54,6 @@ public class ActiveServlet extends HttpServlet {
 	}
 
 
-
 	//---------------補助関数-----------------------------------------------------
 	private String getJsonList(List<PcJson> pcJsonList) throws JsonProcessingException{
 		String jsonList = "";

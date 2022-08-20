@@ -21,18 +21,18 @@ import javax.servlet.annotation.WebListener;
 
 import model.HelpStatus;
 import model.Pc;
-import model.PcListManager;
+import model.PcManager;
 import schedule.PcListFileReader;
 import schedule.ScheduleManager;
 
 @WebListener
 public class StartServiceServlet implements ServletContextListener {
-	private static PcListManager pcListManager;
+	private static PcManager pcListManager;
 
 	private ScheduleManager schedule=null;
 
 	//-----------アクセッサ-----------------------------------------------------------------
-	public static PcListManager getPcListManager() {
+	public static PcManager getPcListManager() {
 		return pcListManager;
 	}
 
@@ -42,7 +42,7 @@ public class StartServiceServlet implements ServletContextListener {
 		//ファイルの読み込み
 		PcListFileReader reader = new PcListFileReader();
 		List<Pc> pcList =reader.getPcListFromFile(PCLIST_FILENAME);
-		PcListManager pcManager=new PcListManager(pcList);
+		PcManager pcManager=new PcManager(pcList);
 
 		schedule = ScheduleManager.getInstance();
 		schedule.start();

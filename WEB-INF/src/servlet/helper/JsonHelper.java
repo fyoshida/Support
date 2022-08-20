@@ -9,7 +9,7 @@ import model.PcJson;
 
 public class JsonHelper {
 
-	public static String getJsonText(PcJson pcJson) throws JsonProcessingException{
+	public static String getJsonText(Pc pc) throws JsonProcessingException{
 		String jsonText = "";
 
 		if(pcJson == null ) {
@@ -18,7 +18,7 @@ public class JsonHelper {
 
 		ObjectMapper mapper = new ObjectMapper();
 		try {
-			jsonText = mapper.writeValueAsString(pcJson);
+			jsonText = mapper.writeValueAsString(pc);
 		} catch (JsonProcessingException e) {
 			e.printStackTrace();
 		}
@@ -26,7 +26,7 @@ public class JsonHelper {
 		return jsonText;
 	}
 
-	public static String getJsonText(List<PcJson> pcJsonList) throws JsonProcessingException{
+	public static String getJsonText(List<Pc> pcList) throws JsonProcessingException{
 		String jsonText = "";
 
 		if(pcJsonList == null ) {
@@ -35,7 +35,7 @@ public class JsonHelper {
 
 		ObjectMapper mapper = new ObjectMapper();
 		try {
-			jsonText = mapper.writeValueAsString(pcJsonList);
+			jsonText = mapper.writeValueAsString(pcList);
 		} catch (JsonProcessingException e) {
 			e.printStackTrace();
 		}

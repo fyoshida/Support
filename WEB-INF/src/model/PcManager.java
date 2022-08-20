@@ -8,11 +8,11 @@ import java.util.Optional;
 
 import servlet.StartServiceServlet;
 
-public class PcListManager {
+public class PcManager {
 
 	private final List<Pc> pcList;
 
-	public PcListManager(List<Pc> pcList) {
+	public PcManager(List<Pc> pcList) {
 		this.pcList=pcList;
 	}
 

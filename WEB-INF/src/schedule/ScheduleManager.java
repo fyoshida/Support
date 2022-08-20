@@ -21,6 +21,13 @@ public class ScheduleManager extends Thread {
         System.out.println("定期実行の開始");
         timer = new Timer();
         timer.schedule(Schedule.getInstance(), 0, 1 * 1000);
+
+    }
+
+    public synchronized void stop() {
+    	timer.cancel();  // Terminates this timer, discarding any currently scheduled tasks.
+    	timer.purge();   // Removes all cancelled tasks from this timer's task queue.
+
     }
 
     public static ScheduleManager getInstance() {

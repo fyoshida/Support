@@ -74,6 +74,9 @@ class Schedule extends TimerTask {
 		}
     }
 
+    public void stop() {
+    }
+
     public static Schedule getInstance() {
         return instance;
     }

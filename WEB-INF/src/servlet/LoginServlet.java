@@ -10,6 +10,8 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import model.Pc;
+import network.NetworkInterface;
+import network.ServletNetwork;
 
 @WebServlet(urlPatterns = { "/LoginServlet" })
 public class LoginServlet extends HttpServlet {
@@ -21,28 +23,20 @@ public class LoginServlet extends HttpServlet {
 		req.setCharacterEncoding("UTF-8");
 		resp.setContentType("text/html;charset=UTF-8");
 
-		//クライアントIPアドレスの取得
-		//テスト用
-		// String clientIpAddr = req.getParameter("pcIpAddr");
-		//TODO: 本番用
-		String clientIpAddr = req.getRemoteAddr();
-		if(clientIpAddr.equals("0:0:0:0:0:0:0:1")) {
-			InetAddress cIpAddr = InetAddress.getLocalHost();
-			clientIpAddr = cIpAddr.getHostAddress();
+		// クライアントIPアドレスの取得
+		NetworkInterface network = new ServletNetwork(req);
+		String clientIpAddress = network.getClientIpAddress();
+
+		if(listManager.extisIpAddress(clientIpAddress)) {
+			Pc pc = listManager.getPcByIpAddress();
+			pc.login();
 		}
 
-		//ipアドレスからPC情報を取得
-		Pc pc = StartServiceServlet.getPcFromIpAddr(clientIpAddr);
-
-		//ipアドレスからpc情報を取得できたか
-		Boolean addrCollationFlag = false; //ログイン成否フラグ
-		if(pc != null) addrCollationFlag = true;
-
-		if(addrCollationFlag) {
-//			// ログイン成功時の処理
-			StartServiceServlet.setLogin(pc.getPcId(), true);
-			StartServiceServlet.setRequestTime(pc.getPcId());
-		}
+//		if(pc != null) {
+////			// ログイン成功時の処理
+//			StartServiceServlet.setLogin(pc.getPcId(), true);
+//			StartServiceServlet.setRequestTime(pc.getPcId());
+//		}
 
 		req.getRequestDispatcher("/index.html").forward(req,resp);
 	}

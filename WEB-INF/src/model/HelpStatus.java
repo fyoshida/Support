@@ -1,4 +1,4 @@
-package beans;
+package model;
 
 public enum HelpStatus {
   // 手を挙げていない

@@ -14,8 +14,9 @@ import javax.servlet.http.HttpServletResponse;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
-import beans.Pc;
-import beans.PcJson;
+import model.Pc;
+import model.PcJson;
+import servlet.helper.JsonHelper;
 
 @WebServlet(urlPatterns = { "/v1/active-seats" })
 //active-seatsの応答関数
@@ -28,29 +29,15 @@ public class GetActivePcListServlet extends HttpServlet {
 		req.setCharacterEncoding("UTF-8");
 		resp.setContentType("text/html;charset=UTF-8");
 
-		//pcJsonListをJsonに変換
-		String jsonList = "";
-		List<Pc> pcList = StartServlet.getPcList();
 
-		List<PcJson> pcJsonList = new LinkedList<PcJson>();
-		for(Pc pc : pcList) {
-			if(pc.getIsLogin()) {
-				PcJson pcJson = new PcJson();
-				pcJson.setPcId(pc.getPcId());
-				pcJson.setIpAdress(pc.getIpAdress());
-				pcJson.setIsLogin(pc.getIsLogin());
-				pcJson.setIsStudent(pc.getIsStudent());
-				pcJson.setHelpStatus(pc.getHelpStatus());
-				pcJson.setHandPriority(pc.getHandPriority());
-				pcJsonList.add(pcJson);
-			}
-		}
+		// アクティブなPCを取得
+		List<Pc> pcList = listManager.getActivePc();
 
-		jsonList = JsonHelper.getJsonList(pcJsonList);
 
-		// JSON形式のメッセージリストを出力
+		// アクティブなPCの情報をJSON形式で出力
 		PrintWriter out = resp.getWriter();
-		out.println(jsonList);
+		String jsonText = JsonHelper.getJsonText(pcList);
+		out.println(jsonText);
 	}
 
 }

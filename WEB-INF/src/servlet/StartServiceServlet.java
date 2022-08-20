@@ -19,17 +19,22 @@ import javax.servlet.ServletContextEvent;
 import javax.servlet.ServletContextListener;
 import javax.servlet.annotation.WebListener;
 
-import beans.HelpStatus;
-import beans.Pc;
-import helper.PcListFileReader;
-import helper.PcListManager;
-import helper.ScheduleManager;
+import model.HelpStatus;
+import model.Pc;
+import model.PcListManager;
+import schedule.PcListFileReader;
+import schedule.ScheduleManager;
 
 @WebListener
-public class StartServlet implements ServletContextListener {
-	private static final String PCLIST_FILENAME="/WEB-INF/data/pcIdTable.csv";
-
+public class StartServiceServlet implements ServletContextListener {
 	private static PcListManager pcListManager;
+
+	private ScheduleManager schedule=null;
+
+	//-----------アクセッサ-----------------------------------------------------------------
+	public static PcListManager getPcListManager() {
+		return pcListManager;
+	}
 
 	//--------サーバの初回起動時に実行される関数-------------------------------------------
 	public void contextInitialized(ServletContextEvent arg0) {
@@ -39,26 +44,15 @@ public class StartServlet implements ServletContextListener {
 		List<Pc> pcList =reader.getPcListFromFile(PCLIST_FILENAME);
 		PcListManager pcManager=new PcListManager(pcList);
 
-		ScheduleManager schedule = ScheduleManager.getInstance();
+		schedule = ScheduleManager.getInstance();
 		schedule.start();
 
 		System.out.println("サーバを起動します");
 	}
 
-	public void PcListManager(ServletContextEvent arg0) {
-		System.out.println("サーバがダウンされました");
-	}
-
-
-
-	//-----------アクセッサ-----------------------------------------------------------------
-	public static PcListManager getPcListManager() {
-		return pcListManager;
-	}
-
 	@Override
 	public void contextDestroyed(ServletContextEvent arg0) {
-		// TODO 自動生成されたメソッド・スタブ
-
+		// schedule.stop();
+		System.out.println("サーバがダウンされました");
 	}
 }

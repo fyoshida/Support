@@ -2,7 +2,7 @@ package repository.list;
 
 import java.util.List;
 
-import beans.Pc;
+import model.Pc;
 import repository.RepositoryInterface;
 
 public class ListRepository implements RepositoryInterface{

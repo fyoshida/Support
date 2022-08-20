@@ -1,4 +1,4 @@
-package helper;
+package model;
 
 import java.sql.Timestamp;
 import java.util.Date;
@@ -6,9 +6,7 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Optional;
 
-import beans.HelpStatus;
-import beans.Pc;
-import servlet.StartServlet;
+import servlet.StartServiceServlet;
 
 public class PcListManager {
 

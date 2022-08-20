@@ -21,9 +21,9 @@ import network.NetworkInterface;
 import network.ServletNetwork;
 import servlet.helper.JsonHelper;
 
-@WebServlet(urlPatterns = { "/v1/support/*" })
-//support/XXXの応答関数
-public class SupportServlet extends HttpServlet {
+@WebServlet(urlPatterns = { "/v1/call/*" })
+//call-teacher/XXXの応答関数
+public class HandRaiseServlet extends HttpServlet {
 
 	protected void doPost(HttpServletRequest req, HttpServletResponse resp)
 			throws ServletException, IOException {
@@ -39,24 +39,15 @@ public class SupportServlet extends HttpServlet {
 		// クライアントPCを取得
 		Pc pc = listManager.getPcFromId(clientId);
 
-		if(pc != null) {
-			//現在のヘルプ状態を取得
-			HelpStatus preHelpStatus = studentPc.getHelpStatus();
+		if (pc != null) {
+			pc.updateHelpStatus();
 
-			//現在のヘルプ状態から状態を遷移する "None"状態は遷移なし
-			if(preHelpStatus.equals("Troubled")) {
-				StartServiceServlet.setHelpStatus("ics"+myPcId, HelpStatus.Supporting);
-				StartServiceServlet.setHandTime("ics"+myPcId, true);
-			}else if(preHelpStatus.equals("Supporting")) {
-				StartServiceServlet.setHelpStatus("ics"+myPcId, HelpStatus.None);
-				StartServiceServlet.setHandTime("ics"+myPcId, true);
-			}else {
-				//"None"状態は遷移なし
-				System.out.println("予期しない状態遷移が発生しました");
-			}
+			// クライアントPCのリクエストタイムおハンドタイムを更新
+			pc.updateLastRequestTime();
+			pc.updateLastHandTime();
 
 			// アクティブなPCを取得
-			List<Pc> pcList = listManager.getActivePc();
+			List<Pc> pcList = listManager.getActivePcList();
 
 			// アクティブなPCの情報をJSON形式で出力
 			PrintWriter out = resp.getWriter();

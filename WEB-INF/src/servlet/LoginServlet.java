@@ -9,7 +9,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import beans.Pc;
+import model.Pc;
 
 @WebServlet(urlPatterns = { "/LoginServlet" })
 public class LoginServlet extends HttpServlet {
@@ -32,7 +32,7 @@ public class LoginServlet extends HttpServlet {
 		}
 
 		//ipアドレスからPC情報を取得
-		Pc pc = StartServlet.getPcFromIpAddr(clientIpAddr);
+		Pc pc = StartServiceServlet.getPcFromIpAddr(clientIpAddr);
 
 		//ipアドレスからpc情報を取得できたか
 		Boolean addrCollationFlag = false; //ログイン成否フラグ
@@ -40,8 +40,8 @@ public class LoginServlet extends HttpServlet {
 
 		if(addrCollationFlag) {
 //			// ログイン成功時の処理
-			StartServlet.setLogin(pc.getPcId(), true);
-			StartServlet.setRequestTime(pc.getPcId());
+			StartServiceServlet.setLogin(pc.getPcId(), true);
+			StartServiceServlet.setRequestTime(pc.getPcId());
 		}
 
 		req.getRequestDispatcher("/index.html").forward(req,resp);

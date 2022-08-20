@@ -1,4 +1,4 @@
-package helper;
+package schedule;
 
 import java.sql.Timestamp;
 import java.text.SimpleDateFormat;
@@ -9,8 +9,8 @@ import java.util.Date;
 import java.util.List;
 import java.util.TimerTask;
 
-import beans.HelpStatus;
-import beans.Pc;
+import model.HelpStatus;
+import model.Pc;
 
 class Schedule extends TimerTask {
 
@@ -30,7 +30,7 @@ class Schedule extends TimerTask {
 		//現在時刻から30分前に閾値をセット
 		cal.add(Calendar.MINUTE, -30);
 
-		List<Pc> pcList = StartServlet.getPcList();
+		List<Pc> pcList = StartServiceServlet.getPcList();
 		ArrayList<String> handTimeList = new ArrayList<>(); //座席数分のリストを用意
 		for(Pc pc : pcList) {
 			//挙手しているPCの数とその時間を調べる

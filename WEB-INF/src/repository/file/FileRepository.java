@@ -7,8 +7,8 @@ import java.nio.file.Paths;
 import java.util.LinkedList;
 import java.util.List;
 
-import beans.HelpStatus;
-import beans.Pc;
+import model.HelpStatus;
+import model.Pc;
 import repository.RepositoryInterface;
 
 public class FileRepository implements RepositoryInterface{

@@ -6,6 +6,8 @@ import java.util.Date;
 
 import org.junit.Test;
 
+import model.Pc;
+
 public class PcTest {
 
 	private static final Date SAMPLE_DATE1 = new Date(2022, 8, 15, 13, 24, 30);

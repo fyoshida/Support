@@ -4,6 +4,9 @@ import static org.junit.Assert.*;
 
 import org.junit.Test;
 
+import model.HelpStatus;
+import model.PcJson;
+
 public class PcJsonTest {
 
 	private static final String SAMPLE_ID1 = "ics801";

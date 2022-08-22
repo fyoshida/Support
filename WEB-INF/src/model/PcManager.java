@@ -2,37 +2,33 @@ package model;
 
 import java.sql.Timestamp;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
-import java.util.Optional;
-
-import servlet.StartServiceServlet;
+import java.util.Map;
 
 public class PcManager {
 
-	private final List<Pc> pcList;
+	private final Map<String,Pc> pcMap=new HashMap<String,Pc>();
+	private final List<Pc> handPcList=new LinkedList<Pc>();
 
 	public PcManager(List<Pc> pcList) {
-		this.pcList=pcList;
-	}
-
-	private Optional<Pc> getPc(String pcId) {
-//		for (Pc pc : pcList) {
-//			if (pc.isMatchPcId(pcId)) {
-//				return pc;
-//			}
-//		}
-////		return null;
-
-		return pcList.stream().filter(pc -> pc.isSamePcId(pcId)).forEach(pc ->pc.).findAny();
+		for(Pc pc :pcList) {
+			pcMap.put(pc.pcId,pc);
+		}
 	}
 
 	public void setLogin(String pcId, boolean b) {
-		Optional<Pc> optPc=getPc(pcId);
-		if( optPc.isPresent() ) {
-			optPc.get().setIsLogin(b);
+		Pc pc = pcMap.get(pcId);
+		if( pc != null ) {
+			pc.login();
 		}
 	}
+
+	public int getHandPriority(Student student) {
+		return handPriority;
+	}
+
 
 	public void setHelpStatus(String pcId, HelpStatus helpStatus) {
 		int i = 0;

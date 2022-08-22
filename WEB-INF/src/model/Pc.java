@@ -2,96 +2,21 @@ package model;
 
 import java.util.Date;
 
-import servlet.StartServiceServlet;
-
 public class Pc {
 
-	// PC固有の属性
-	protected String pcId = null; //icsXXX
-	protected String ipAdress = null; //ドメインは133.44.118.158-228の間
-	protected PcType type=null;
+	protected final String pcId; //icsXXX
+	protected final String ipAddress; //ドメインは133.44.118.158-228の間
 
-//	protected Boolean isStudent = null; // true:学生が利用するPC, false:TA,教員が利用するPC
+	private Boolean isLogin = false;
+	private Date loginTime=null;
 
-	// ユーザの属性
-	protected Boolean isLogin = null; // true:ログイン中, false:未ログイン
-	protected Date lastHandTime = null; //最終挙手時間
+	private HelpStatus helpStatus = null; // 手を挙げていない: None
+	private Date handTime = null; //最終挙手時間
 
-	// 挙手の順番（サポート優先順位）
-	protected int handPriority = -1;
-
-	// サポート状況
-	protected HelpStatus helpStatus = null; // 手を挙げていない: None
-	//	手を挙げている: Troubled
-	// TA教員対応中: Supporting
-
-	protected Date lastRequestTime = null; //最終リクエスト時間
-
-	//--------アクセッサ--------------
-
-	public Date getLastRequestTime() {
-		return lastRequestTime;
-	}
-
-	public void setLastRequestTime(Date lastRequestTime) {
-		this.lastRequestTime = lastRequestTime;
-	}
-
-	public Date getLastHandTime() {
-		return lastHandTime;
-	}
-
-	public void setLastHandTime(Date lastHandTime) {
-		this.lastHandTime = lastHandTime;
-	}
-
-	public void updateLastRequestTime() {
-		// TODO 自動生成されたメソッド・スタブ
-
-	}
-
-	void updateHelpStatusByStudent() {
-		//現在のヘルプ状態から遷移する None->Troubled, Troubled,Supporting->None
-		switch (helpStatus){
-			case None:
-				helpStatus = HelpStatus.Troubled;
-				break;
-			case Troubled:
-				helpStatus = HelpStatus.None;
-				break;
-			case Supporting:
-				break;
-		}
-	}
-
-	void updateHelpStatusBySupporter() {
-		//現在のヘルプ状態から状態を遷移する "None"状態は遷移なし
-		switch(helpStatus) {
-		case None:
-			break;
-		case Troubled:
-			helpStatus = HelpStatus.Supporting;
-			break;
-		case Supporting:
-			helpStatus = HelpStatus.None;
-			break;
-		}
-
-	}
-
-	public void raiseHand() {
-		updateHelpStatusByStudent();
-		updateLastHandTime();
-	}
-
-	public void support() {
-		updateHelpStatusBySupporter();
-		updateLasHandTime();
-	}
-
-	public void login() {
-		setLogin(true);
-		updateRequestTime();
+	//--------コンストラクタ--------------
+	public Pc(String pcId,String ipAddress){
+		this.pcId=pcId;
+		this.ipAddress=ipAddress;
 	}
 
 	//--------アクセッサ--------------
@@ -99,48 +24,60 @@ public class Pc {
 	public String getPcId() {
 		return pcId;
 	}
-	public void setPcId(String pcId) {
-		this.pcId = pcId;
-	}
 
 	public String getIpAdress() {
-		return ipAdress;
-	}
-	public void setIpAdress(String ipAdress) {
-		this.ipAdress = ipAdress;
+		return ipAddress;
 	}
 
-	public Boolean getIsStudent() {
-		return isStudent;
-	}
-	public void setIsStudent(Boolean isStudent) {
-		this.isStudent = isStudent;
+	//--------比較処理--------------
+	public boolean equals(Pc pc) {
+		if(pcId.equals(pc.pcId)) {
+			return true;
+		}else {
+			return false;
+		}
 	}
 
-	public Boolean getIsLogin() {
+	//--------Login処理---------------
+	public void login() {
+		isLogin = true;
+		loginTime = Clock.getCurrentTime();
+	}
+
+	private void updateLoginStatus(){
+		if(Clock.isLoginTimeOver()) {
+			isLogin=false;
+			loginTime=null;
+		}
+	}
+
+	public boolean isLogin() {
 		return isLogin;
 	}
-	public void setIsLogin(Boolean isLogin) {
-		this.isLogin = isLogin;
+
+	//--------挙手処理---------------
+	public void hand() {
+		helpStatus=HelpStatus.Troubled;
+		handTime=Clock.getCurrentTime();
+		updateLoginStatus();
+	}
+
+	public void supported() {
+		helpStatus=HelpStatus.Supporting;
+		updateLoginStatus();
+	}
+
+	public void troubleComplete() {
+		helpStatus=HelpStatus.None;
+		handTime=null;
+		updateLoginStatus();
 	}
 
 	public HelpStatus getHelpStatus() {
 		return helpStatus;
 	}
-	public void setHelpStatus(HelpStatus helpStatus) {
-		this.helpStatus = helpStatus;
-	}
 
-	public int getHandPriority() {
-		return handPriority;
+	public Date getHandTime() {
+		return handTime;
 	}
-	public void setHandPriority(int handPriority) {
-		this.handPriority = handPriority;
-	}
-
-	public boolean isSamePcId(String pcId) {
-		return this.pcId.equals(pcId);
-	}
-}
-
 }

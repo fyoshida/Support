@@ -6,20 +6,28 @@ public class Pc {
 
 	private final String pcId; //icsXXX
 	private final String ipAddress; //ドメインは133.44.118.158-228の間
-	private PcLoginStatus loginStatus;
-	private PcHelpStatus helpStatus;
 
+	private String userName = null;
+
+	private HelpStatus helpStatus = HelpStatus.None;
+	private Date handTime = null;
 
 	//--------コンストラクタ--------------
-	public Pc(String pcId,String ipAddress){
-		this.pcId=pcId;
-		this.ipAddress=ipAddress;
-		loginStatus=new PcLoginStatus();
-		helpStatus=new PcHelpStatus();
+	public Pc(String pcId, String ipAddress) {
+		this.pcId = pcId;
+		this.ipAddress = ipAddress;
 	}
 
-	//--------アクセッサ--------------
+	//--------比較処理--------------
+	public boolean equals(Pc pc) {
+		if (pcId.equals(pc.pcId)) {
+			return true;
+		} else {
+			return false;
+		}
+	}
 
+	//--------処理--------------
 	public String getPcId() {
 		return pcId;
 	}
@@ -28,29 +36,54 @@ public class Pc {
 		return ipAddress;
 	}
 
+	//--------login処理--------------
+	public void login(String name) {
+		userName = "name";
+	}
+
+	public void logout() {
+		userName = null;
+	}
+
+	public boolean isLogin() {
+		return (userName != null);
+	}
+
 	public String getUserName() {
-		String userName =loginStatus.getUserName();
-		if(userName != null) {
+		if (userName != null) {
 			return userName;
-		}else {
+		} else {
 			return pcId;
 		}
 	}
 
+	//--------hand処理--------------
+	public void hand() {
+		helpStatus = HelpStatus.Troubled;
+		handTime = Clock.getCurrentTime();
+		PriorityManager.regist(pcId);
+	}
+
+	public void supported() {
+		helpStatus = HelpStatus.Supporting;
+		PriorityManager.unregist(pcId);
+	}
+
+	public void troubleClear() {
+		helpStatus = HelpStatus.None;
+		handTime = null;
+		PriorityManager.unregist(pcId);
+	}
+
 	public HelpStatus getHelpStatus() {
-		return helpStatus.getHelpStatus();
+		return helpStatus;
 	}
 
 	public Date getHandTime() {
-		return helpStatus.getHandTime();
+		return handTime;
 	}
 
-	//--------比較処理--------------
-	public boolean equals(Pc pc) {
-		if(pcId.equals(pc.pcId)) {
-			return true;
-		}else {
-			return false;
-		}
+	public int getPriority() {
+		return PriorityManager.getPriority(pcId);
 	}
 }

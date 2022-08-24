@@ -1,53 +1,47 @@
 package repository.db;
 
 import java.sql.ResultSet;
+import java.time.LocalDateTime;
+import java.time.ZoneId;
+import java.util.Date;
 import java.util.List;
 
-import beans.Pc;
+import model.HelpStatus;
+import model.HelpStatusHelper;
+import model.Pc;
+import model.PcId;
 import repository.RepositoryInterface;
 
-public class DataBaseRepository implements RepositoryInterface{
+public class DataBaseRepository extends DataBaseManager implements RepositoryInterface{
 
-	public Object copyRecord(ResultSet rs) throws Exception{
-		Item item = new Item();
-		item.setRid(rs.getInt("RID"));
-		item.setName(rs.getString("Name"));
-		item.setPrice(rs.getInt("Price"));
-		item.setDetails(rs.getString("Details"));
-		item.setStock(rs.getInt("Stock"));
-		return item;
+	public Pc copyRecord(ResultSet rs) throws Exception{
+
+		// ------PC 情報------
+		String hostName = rs.getString("HostName");
+		String ipAddress = rs.getString("IpAddress");
+		boolean isStudent = rs.getBoolean("Student");
+
+		// ------HelpStatus------
+		String helpStatusString = rs.getNString("HelpStatus");
+		HelpStatus helpStatus = HelpStatusHelper.fromString(helpStatusString);
+
+		// ------HandUpTime------
+		Date date = rs.getDate("HandUpTime");
+		LocalDateTime handUpTime = LocalDateTime.ofInstant(date.toInstant(), ZoneId.systemDefault());
+
+		// ------PCオブジェクトに代入------
+		PcId pcId= new PcId(hostName,ipAddress);
+		Pc pc= new Pc();
+		pc.setPcId(pcId);
+		pc.setStudent(isStudent);
+		pc.setHelpStatus(helpStatus);
+		pc.setHandUpTime(handUpTime);
+
+		return pc;
 	}
-	
+
 	@Override
 	public List<Pc> getPcList() {
-		// TODO 自動生成されたメソッド・スタブ
-		return null;
+		return (List<Pc>)getRecords("select * from pc");
 	}
-
-	@Override
-	public void updatePc(Pc pc) {
-		// TODO 自動生成されたメソッド・スタブ
-		
-	}
-	
-
-
-	public void insert(Item aItem){
-		String sql = "";
-		sql += "Insert into stockItem (Name,Price,Details,Stock) values (";
-		sql += "'" + aItem.getName() + "'";
-		sql += ",";
-		sql += aItem.getPrice();
-		sql += ",";
-		sql += "'"+ aItem.getDetails() +"'";
-		sql += ",";
-		sql += aItem.getStock();
-		sql += ")";
-		updateRecord(sql);
-	}
-
-	public Item get(int id){
-		return (Item)getRecord("select * from stockItem where RID=" + id);
-	}
-
 }

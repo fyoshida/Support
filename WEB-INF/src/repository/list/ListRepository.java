@@ -3,27 +3,20 @@ package repository.list;
 import java.util.List;
 
 import model.Pc;
-import model.PcClient;
+import model.Pc;
 import model.PcId;
 import repository.RepositoryInterface;
 
 public class ListRepository implements RepositoryInterface{
-	final private List<PcClient> pcClientList;
+	final private List<Pc> pcClientList;
 
-	public ListRepository(List<PcClient> pcClientList) {
+	public ListRepository(List<Pc> pcClientList) {
 		this.pcClientList=pcClientList;
 	}
 
 	@Override
-	public List<PcClient> getPcClientList() {
+	public List<Pc> getPcList() {
 		return pcClientList;
 	}
-
-//	@Override
-//	public void updatePcClient(PcClient pcClient) {
-//		PcId pcId = pcClient.getPcId();
-//		pcClientList.put(pcId,pcClient);
-//	}
-
 
 }

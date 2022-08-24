@@ -1,10 +1,11 @@
 package repository;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
-import model.PcClient;
+import model.HelpStatus;
+import model.Pc;
 
 public interface RepositoryInterface {
-	public List<PcClient> getPcClientList();
-//	public void updatePcClient(PcClient pcClient);
+	public List<Pc> getPcList();
 }

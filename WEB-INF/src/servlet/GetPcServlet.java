@@ -16,6 +16,7 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import model.IpAddress;
+import model.IpAddressException;
 import model.Pc;
 import model.PcManager;
 import network.NetworkInterface;
@@ -42,7 +43,8 @@ public class GetPcServlet extends HttpServlet {
 		// クライアントIPアドレスの取得
 		NetworkInterface network = new ServletNetwork(req);
 		String clientIpAddress = network.getClientIpAddress();
-		IpAddress ipAddress=new IpAddress(clientIpAddress);
+		IpAddress ipAddress;
+
 
 		// クライアントPCを取得
 		Pc pc = pcManager.getPcFromIpAddress(ipAddress);

@@ -5,6 +5,7 @@ import java.io.PrintWriter;
 import java.net.InetAddress;
 import java.util.List;
 
+import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -14,15 +15,18 @@ import javax.servlet.http.HttpServletResponse;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
+import model.IpAddress;
 import model.Pc;
-import model.PcJson;
+import model.PcManager;
 import network.NetworkInterface;
 import network.ServletNetwork;
 import servlet.helper.JsonHelper;
+import servlet.helper.PcJson;
+import servlet.helper.PcJsonConverter;
 
 @WebServlet(urlPatterns = { "/v1/whoami" })
 //whoamiの応答関数
-public class GetClientPcServlet extends HttpServlet {
+public class GetPcServlet extends HttpServlet {
 
 	protected void doGet(HttpServletRequest req, HttpServletResponse resp)
 			throws ServletException, IOException {
@@ -31,20 +35,25 @@ public class GetClientPcServlet extends HttpServlet {
 		req.setCharacterEncoding("UTF-8");
 		resp.setContentType("text/html;charset=UTF-8");
 
+		// PcManagerを取得
+		ServletContext sc = getServletContext();
+		PcManager pcManager=(PcManager)sc.getAttribute("PcManager");
+
 		// クライアントIPアドレスの取得
 		NetworkInterface network = new ServletNetwork(req);
 		String clientIpAddress = network.getClientIpAddress();
+		IpAddress ipAddress=new IpAddress(clientIpAddress);
 
 		// クライアントPCを取得
-		Pc pc = listManager.getPcFromIpAddress(clientIpAddress);
+		Pc pc = pcManager.getPcFromIpAddress(ipAddress);
 
 		if (pc != null) {
-			// クライアントPCのリクエストタイムを更新
-			pc.updateLastRequestTime();
+			// Pc --> PcJson
+			PcJson pcJson =PcJsonConverter.getPcJsonFromPc(pc);
 
 			// クライアントPCの情報をJSON形式で出力
 			PrintWriter out = resp.getWriter();
-			String jsonText = JsonHelper.getJsonText(pc);
+			String jsonText = JsonHelper.getJsonText(pcJson);
 			out.println(jsonText);
 
 		} else {

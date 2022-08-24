@@ -7,7 +7,8 @@ import java.util.Date;
 import java.util.List;
 
 import model.HelpStatus;
-import model.HelpStatusHelper;
+import model.HelpStatusConverter;
+import model.IpAddress;
 import model.Pc;
 import model.PcId;
 import repository.RepositoryInterface;
@@ -18,21 +19,24 @@ public class DataBaseRepository extends DataBaseManager implements RepositoryInt
 
 		// ------PC 情報------
 		String hostName = rs.getString("HostName");
-		String ipAddress = rs.getString("IpAddress");
-		boolean isStudent = rs.getBoolean("Student");
+		String ipAddressString = rs.getString("IpAddress");
+		boolean isStudent = rs.getBoolean("IsStudent");
+
+		// ------IpAddress------
+		IpAddress ipAddress =new IpAddress(ipAddressString);
 
 		// ------HelpStatus------
 		String helpStatusString = rs.getNString("HelpStatus");
-		HelpStatus helpStatus = HelpStatusHelper.fromString(helpStatusString);
+		HelpStatus helpStatus = HelpStatusConverter.fromString(helpStatusString);
 
 		// ------HandUpTime------
 		Date date = rs.getDate("HandUpTime");
 		LocalDateTime handUpTime = LocalDateTime.ofInstant(date.toInstant(), ZoneId.systemDefault());
 
 		// ------PCオブジェクトに代入------
-		PcId pcId= new PcId(hostName,ipAddress);
 		Pc pc= new Pc();
-		pc.setPcId(pcId);
+		pc.setIpAddress(ipAddress);
+		pc.setHostName(hostName);
 		pc.setStudent(isStudent);
 		pc.setHelpStatus(helpStatus);
 		pc.setHandUpTime(handUpTime);

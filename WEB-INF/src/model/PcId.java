@@ -17,6 +17,14 @@ public class PcId {
 		}
 	}
 
+	public boolean equals(String ipAddress) {
+		if( this.ipAddress.equals(ipAddress)) {
+			return true;
+		}else{
+			return false;
+		}
+	}
+
 	public String getHostName() {
 		return hostName;
 	}

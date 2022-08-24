@@ -5,7 +5,8 @@ import java.time.LocalDateTime;
 
 public class Pc {
 
-	protected PcId pcId = null;;
+	protected IpAddress ipAddress=null;
+	protected String hostName="";
 	protected boolean isStudent = false;
 
 	private String userName = null;
@@ -16,12 +17,20 @@ public class Pc {
 	private WaitingManager waitingManager = null;
 
 	//--------アクセッサ--------------
-	public void setPcId(PcId pcId) {
-		this.pcId = pcId;
+	public void setIpAddress(IpAddress ipAddress) {
+		this.ipAddress = ipAddress;
 	}
 
-	public PcId getPcId() {
-		return pcId;
+	public IpAddress getIpAddress() {
+		return ipAddress;
+	}
+
+	public String getHostName() {
+		return hostName;
+	}
+
+	public void setHostName(String hostName) {
+		this.hostName = hostName;
 	}
 
 	public boolean isStudent() {
@@ -36,12 +45,28 @@ public class Pc {
 		this.helpStatus = helpStatus;
 	}
 
+	public HelpStatus getHelpStatus() {
+		return helpStatus;
+	}
+
 	public void setHandUpTime(LocalDateTime handUpTime) {
 		this.handUpTime = handUpTime;
 	}
 
+	public LocalDateTime getHandUpTime() {
+		return handUpTime;
+	}
+
 	public void setPriorityManager(WaitingManager priorityManager) {
 		this.waitingManager = priorityManager;
+	}
+
+	public String getUserName() {
+		if (userName != null) {
+			return userName;
+		} else {
+			return hostName;
+		}
 	}
 
 	//--------login処理--------------
@@ -57,43 +82,28 @@ public class Pc {
 		return (userName != null);
 	}
 
-	public String getUserName() {
-		if (userName != null) {
-			return userName;
-		} else {
-			return pcId.getHostName();
-		}
-	}
-
 	//--------hand処理--------------
 	public void handUp() {
 		helpStatus = HelpStatus.Troubled;
 		handUpTime = LocalDateTime.now();
-		waitingManager.regist(pcId);
+		waitingManager.regist(ipAddress);
 	}
 
 	public void supported() {
 		helpStatus = HelpStatus.Supporting;
-		waitingManager.unregist(pcId);
+		waitingManager.unregist(ipAddress);
 	}
 
 	public void handDown() {
 		helpStatus = HelpStatus.None;
 		handUpTime = null;
-		waitingManager.unregist(pcId);
+		waitingManager.unregist(ipAddress);
 	}
 
-	public HelpStatus getHelpStatus() {
-		return helpStatus;
-	}
 
-	public LocalDateTime getHandTime() {
-		return handUpTime;
-	}
-
-	//--------順序処理--------------
+	//--------待ち行列処理--------------
 	public int getPriority() {
-		return waitingManager.getPriority(pcId);
+		return waitingManager.getPriority(ipAddress);
 	}
 
 	public Duration getWaitingTime() {

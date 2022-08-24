@@ -5,30 +5,30 @@ import java.util.LinkedList;
 import java.util.Map;
 
 public class WaitingManager {
-	private LinkedList<PcId> waitingList = new LinkedList<PcId>();
-	private Map<PcId, Integer> orderMap = new HashMap<PcId, Integer>();
+	private LinkedList<IpAddress> waitingList = new LinkedList<IpAddress>();
+	private Map<IpAddress, Integer> orderMap = new HashMap<IpAddress, Integer>();
 
-	public void regist(PcId pcId) {
-		waitingList.addLast(pcId);
+	public void regist(IpAddress ipAddress) {
+		waitingList.addLast(ipAddress);
 		int pos = waitingList.size()-1;
-		orderMap.put(pcId, pos);
+		orderMap.put(ipAddress, pos);
 	}
 
-	public void unregist(PcId pcId) {
+	public void unregist(IpAddress pcId) {
 		int pos = orderMap.get(pcId);
 		waitingList.remove(pos);
 		for (int i = pos; i < waitingList.size(); i++) {
-			PcId mpcId = waitingList.get(i);
+			IpAddress mpcId = waitingList.get(i);
 			int mpos = orderMap.get(mpcId);
 			orderMap.put(mpcId, mpos - 1);
 		}
 	}
 
-	public int getPriority(PcId pcId) {
-		if( !orderMap.containsKey(pcId)) {
+	public int getPriority(IpAddress ipAddress) {
+		if( !orderMap.containsKey(ipAddress)) {
 			return 999;
 		}else {
-			return orderMap.get(pcId)+1;
+			return orderMap.get(ipAddress)+1;
 		}
 	}
 }

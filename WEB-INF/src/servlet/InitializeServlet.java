@@ -16,8 +16,10 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import model.Pc;
+import model.PcManager;
 import model.WaitingManager;
 import repository.RepositoryInterface;
+import repository.dummy.DummyRepository;
 import repository.file.FileRepository;
 import repository.list.ListRepository;
 import servlet.helper.JsonHelper;
@@ -33,9 +35,13 @@ public class InitializeServlet extends HttpServlet {
 		req.setCharacterEncoding("UTF-8");
 		resp.setContentType("text/html;charset=UTF-8");
 
-		// 全PCを取得
-		RepositoryInterface repository = new FileRepository("/WEB-INF/data/pcIdTable.csv");
+		// 全PC情報を取得
+//		RepositoryInterface repository = new FileRepository("/WEB-INF/data/pcIdTable.csv");
+		RepositoryInterface repository = new DummyRepository();
 		List<Pc> pcList = repository.getPcList();
+
+		// PcManagerを生成
+		PcManager pcManager=new PcManager(pcList);
 
 		// 待ち行列マネージャーを設定
 		WaitingManager waitingManager = new WaitingManager();
@@ -45,10 +51,10 @@ public class InitializeServlet extends HttpServlet {
 
 		// PcListをServletContextに保存
 		ServletContext sc = getServletContext();
-		sc.setAttribute("PcList", pcList);
+		sc.setAttribute("PcManager", pcManager);
 
 		// 開始用Servletへ移動
-		req.getRequestDispatcher("TopServlet").forward(req, resp);
+//		req.getRequestDispatcher("GetAllPcServlet").forward(req, resp);
 	}
 
 }

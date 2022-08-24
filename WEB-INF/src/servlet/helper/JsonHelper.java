@@ -5,11 +5,9 @@ import java.util.List;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
-import model.PcJson;
 
 public class JsonHelper {
-
-	public static String getJsonText(Pc pc) throws JsonProcessingException{
+	public static String getJsonText(PcJson pcJson) throws JsonProcessingException{
 		String jsonText = "";
 
 		if(pcJson == null ) {
@@ -18,7 +16,7 @@ public class JsonHelper {
 
 		ObjectMapper mapper = new ObjectMapper();
 		try {
-			jsonText = mapper.writeValueAsString(pc);
+			jsonText = mapper.writeValueAsString(pcJson);
 		} catch (JsonProcessingException e) {
 			e.printStackTrace();
 		}
@@ -26,7 +24,7 @@ public class JsonHelper {
 		return jsonText;
 	}
 
-	public static String getJsonText(List<Pc> pcList) throws JsonProcessingException{
+	public static String getJsonText(List<PcJson> pcJsonList) throws JsonProcessingException{
 		String jsonText = "";
 
 		if(pcJsonList == null ) {
@@ -35,7 +33,7 @@ public class JsonHelper {
 
 		ObjectMapper mapper = new ObjectMapper();
 		try {
-			jsonText = mapper.writeValueAsString(pcList);
+			jsonText = mapper.writeValueAsString(pcJsonList);
 		} catch (JsonProcessingException e) {
 			e.printStackTrace();
 		}

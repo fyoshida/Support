@@ -1,6 +1,6 @@
 package model;
 
-public class HelpStatusHelper {
+public class HelpStatusConverter {
 
 	public static HelpStatus fromString(String helpStatusString) {
 		if (helpStatusString.equals("Trounbled")) {

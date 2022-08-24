@@ -34,7 +34,6 @@ public class ServletNetwork implements NetworkInterface {
 	}
 
 	@Override
-	@Override
 	public String getClientId() {
 		String url = req.getRequestURI();
 

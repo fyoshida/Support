@@ -8,36 +8,11 @@ import java.util.LinkedList;
 import java.util.List;
 
 import model.HelpStatus;
-import model.Pc;
-import repository.RepositoryInterface;
+import model.PcClient;
+import model.PcId;
 
-public class FileRepository implements RepositoryInterface{
-	final private String fileName;
-	
-	public FileRepository(String fileName) {
-		this.fileName=fileName;
-		
-	}
-	
-	@Override
-	public List<Pc> getPcList() {
-		List<String> lines = getLinesFromFile(fileName);
-
-		//先頭行は列名なので除外
-		lines.remove(0);
-
-		return getPcListFromLines(lines);
-	}
-
-	@Override
-	public void updatePc(Pc pc) {
-
-		// TODO 自動生成されたメソッド・スタブ
-		
-	}
-
-	// --------------補助関数---------------
-
+public class FileRepository {
+	// ファイルから全行を読み込む
 	List<String> getLinesFromFile(String fileName) {
 		List<String> lines=new LinkedList<String>();
 
@@ -53,31 +28,28 @@ public class FileRepository implements RepositoryInterface{
 		return lines;
 	}
 
-	List<Pc> getPcListFromLines(List<String> lines) {
-		List<Pc> pcList = new LinkedList<Pc>();
+	// 全行分の文字列からPcListを生成
+	List<PcClient> getPcListFromLines(List<String> lines) {
+		List<PcClient> pcList = new LinkedList<PcClient>();
 
 		for (String line : lines) {
-			Pc pc = getPcInfoFromLine(line);
+			PcClient pc = getPcInfoFromLine(line);
 			pcList.add(pc);
 		}
 
 		return pcList;
 	}
 
-	Pc getPcInfoFromLine(String line) {
+	// 1行分の文字列からPcを生成
+	PcClient getPcInfoFromLine(String line) {
 		//カンマで分割した内容を配列に格納する
 		String[] lineData = line.split(",");
 
 		//読み込んだ行をPcクラスに格納
-		Pc pcData = new Pc();
-		pcData.setPcId(lineData[0]);
-		pcData.setIpAdress(lineData[1]);
-		pcData.setIsStudent(Boolean.valueOf(lineData[2]));
-		pcData.setIsLogin(false);
-		pcData.setHelpStatus(HelpStatus.None);
-		pcData.setLastRequestTime(null);
-		pcData.setLastHandTime(null);
-		return pcData;
+		PcClient pcClient = new PcClient();
+		PcId pcId = new PcId(lineData[0],lineData[1]);
+		pcClient.setPcId(pcId);
+		pcClient.setStudent(Boolean.valueOf(lineData[2]));
+		return pcClient;
 	}
-
 }

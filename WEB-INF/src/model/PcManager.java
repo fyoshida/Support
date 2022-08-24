@@ -6,15 +6,15 @@ import java.util.Map;
 
 public class PcManager {
 
-	private final Map<String,Pc> pcMap=new HashMap<String,Pc>();
+	private final Map<PcId,PcClient> pcMap=new HashMap<PcId,PcClient>();
 
-	public PcManager(List<Pc> pcList) {
-		for(Pc pc :pcList) {
+	public PcManager(List<PcClient> pcList) {
+		for(PcClient pc :pcList) {
 			pcMap.put(pc.getPcId(),pc);
 		}
 	}
 
-	public Pc getPc(String pcId){
+	public PcClient getPc(PcId pcId){
 		return pcMap.get(pcId);
 	}
 

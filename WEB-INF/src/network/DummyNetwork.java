@@ -12,4 +12,10 @@ public class DummyNetwork implements NetworkInterface{
 		return "133.44.118.191";
 	}
 
+	@Override
+	public String getClientId() {
+		// TODO 自動生成されたメソッド・スタブ
+		return "ics834";
+	}
+
 }

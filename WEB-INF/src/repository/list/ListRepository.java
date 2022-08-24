@@ -3,23 +3,27 @@ package repository.list;
 import java.util.List;
 
 import model.Pc;
+import model.PcClient;
+import model.PcId;
 import repository.RepositoryInterface;
 
 public class ListRepository implements RepositoryInterface{
-	final private List<Pc> pcList;
-	
-	public ListRepository(List<Pc> pcList) {
-		this.pcList=pcList;
-	}
-	
-	@Override
-	public List<Pc> getPcList() {
-		return pcList;
+	final private List<PcClient> pcClientList;
+
+	public ListRepository(List<PcClient> pcClientList) {
+		this.pcClientList=pcClientList;
 	}
 
 	@Override
-	public void updatePc(Pc pc) {
-		// TODO 自動生成されたメソッド・スタブ
-		
+	public List<PcClient> getPcClientList() {
+		return pcClientList;
 	}
+
+//	@Override
+//	public void updatePcClient(PcClient pcClient) {
+//		PcId pcId = pcClient.getPcId();
+//		pcClientList.put(pcId,pcClient);
+//	}
+
+
 }

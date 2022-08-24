@@ -2,9 +2,9 @@ package repository;
 
 import java.util.List;
 
-import model.Pc;
+import model.PcClient;
 
 public interface RepositoryInterface {
-	public List<Pc> getPcList();
-	public void updatePc(Pc pc);
+	public List<PcClient> getPcClientList();
+//	public void updatePcClient(PcClient pcClient);
 }

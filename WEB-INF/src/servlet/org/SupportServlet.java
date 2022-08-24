@@ -1,4 +1,4 @@
-package servlet;
+package servlet.org;
 
 import java.io.IOException;
 import java.io.PrintWriter;

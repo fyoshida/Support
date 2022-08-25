@@ -15,6 +15,7 @@ import model.Pc;
 import model.PcManager;
 import network.NetworkInterface;
 import network.ServletNetwork;
+import servlet.helper.NetworkHelper;
 
 @WebServlet(urlPatterns = { "/LoginServlet" })
 public class LoginServlet extends HttpServlet {
@@ -31,9 +32,7 @@ public class LoginServlet extends HttpServlet {
 		PcManager pcManager=(PcManager)sc.getAttribute("PcManager");
 
 		// クライアントIPアドレスの取得
-		NetworkInterface network = new ServletNetwork(req);
-		String clientIpAddress = network.getClientIpAddress();
-		IpAddress ipAddress=new IpAddress(clientIpAddress);
+		IpAddress ipAddress = NetworkHelper.getIpAddressWithServletNetwork(req);
 
 		if(pcManager.existPc(ipAddress)) {
 			// クライアントPCを取得

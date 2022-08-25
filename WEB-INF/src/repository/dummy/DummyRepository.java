@@ -85,7 +85,7 @@ public class DummyRepository implements RepositoryInterface{
 		};
 
 	@Override
-	public List<Pc> getPcList() {
+	public List<Pc> getPcList() throws Exception {
 		List<Pc> pcList = new LinkedList<Pc>();
 
 		for(int i=0;i<pcDataArray.length;i++) {

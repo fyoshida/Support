@@ -22,6 +22,7 @@ import model.PcManager;
 import network.NetworkInterface;
 import network.ServletNetwork;
 import servlet.helper.JsonHelper;
+import servlet.helper.NetworkHelper;
 import servlet.helper.PcJson;
 import servlet.helper.PcJsonConverter;
 
@@ -41,10 +42,7 @@ public class GetPcServlet extends HttpServlet {
 		PcManager pcManager=(PcManager)sc.getAttribute("PcManager");
 
 		// クライアントIPアドレスの取得
-		NetworkInterface network = new ServletNetwork(req);
-		String clientIpAddress = network.getClientIpAddress();
-		IpAddress ipAddress=new IpAddress(clientIpAddress);
-
+		IpAddress ipAddress = NetworkHelper.getIpAddressWithServletNetwork(req);
 
 		// クライアントPCを取得
 		Pc pc = pcManager.getPc(ipAddress);

@@ -22,6 +22,7 @@ import model.PcManager;
 import network.NetworkInterface;
 import network.ServletNetwork;
 import servlet.helper.JsonHelper;
+import servlet.helper.NetworkHelper;
 import servlet.helper.PcJson;
 import servlet.helper.PcJsonConverter;
 
@@ -41,9 +42,7 @@ public class HandUpServlet extends HttpServlet {
 		PcManager pcManager=(PcManager)sc.getAttribute("PcManager");
 
 		// クライアントIPアドレスの取得
-		NetworkInterface network = new ServletNetwork(req);
-		String clientId = network.getClientId();
-		IpAddress ipAddress =new IpAddress(clientId);
+		IpAddress ipAddress = NetworkHelper.getIpAddressWithServletNetwork(req);
 
 		// クライアントPCを取得
 		Pc pc = pcManager.getPc(ipAddress);

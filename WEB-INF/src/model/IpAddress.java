@@ -1,46 +1,28 @@
 package model;
 
+import static org.apache.commons.lang3.Validate.*;
 import java.util.StringTokenizer;
 
 public class IpAddress {
-	private char[] addresses = new char[4];
+	private int[] addresses = new int[4];
 
 	public IpAddress(String ipAddressString) {
-		try {
-			if (ipAddressString == null || ipAddressString.equals("")) {
-				throw new NullPointerException();
-			}
+		notNull(ipAddressString);
+		notBlank(ipAddressString);
 
-			StringTokenizer st = new StringTokenizer(ipAddressString, ".");
-			if (st.countTokens() != 4) {
-				throw new IpAddressException();
-			}
+		StringTokenizer st = new StringTokenizer(ipAddressString, ".");
+		isTrue(st.countTokens()==4);
 
-			for (int i = 0; i < 4; i++) {
-				int address = Integer.parseInt(st.nextToken());
-				addresses[i] = checkAddress(address);
-			}
-		} catch (Exception e) {
-			e.printStackTrace();
+		for (int i = 0; i < 4; i++) {
+			int address = Integer.parseInt(st.nextToken());
+			inclusiveBetween(0,255,address);
+
+			addresses[i] = address;
 		}
-	}
-
-	public void set(int i, char address) {
-		addresses[i] = checkAddress(address);
 	}
 
 	public String get() {
 		return "" + addresses[0] + "." + addresses[1] + "." + addresses[2] + "." + addresses[3];
 	}
 
-	private char checkAddress(int address) {
-		try {
-			if (address < 0 || address >= 255) {
-				throw new IpAddressException();
-			}
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-		return (char) address;
-	}
 }

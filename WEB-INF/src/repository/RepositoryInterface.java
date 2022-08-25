@@ -6,5 +6,5 @@ import model.IpAddressException;
 import model.Pc;
 
 public interface RepositoryInterface {
-	public List<Pc> getPcList();
+	public List<Pc> getPcList() ;
 }

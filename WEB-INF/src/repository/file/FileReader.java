@@ -13,7 +13,7 @@ import model.Pc;
 
 public class FileReader {
 
-	public List<Pc> getPcListFromFile(String fileName) {
+	public List<Pc> getPcListFromFile(String fileName) throws Exception {
 		List<String> lines = getLinesFromFile(fileName);
 		return getPcListFromLines(lines);
 	}
@@ -35,7 +35,7 @@ public class FileReader {
 	}
 
 	// 全行分の文字列からPcListを生成
-	List<Pc> getPcListFromLines(List<String> lines) {
+	List<Pc> getPcListFromLines(List<String> lines) throws Exception {
 		List<Pc> pcList = new LinkedList<Pc>();
 
 		for (String line : lines) {
@@ -47,7 +47,7 @@ public class FileReader {
 	}
 
 	// 1行分の文字列からPcを生成
-	Pc getPcInfoFromLine(String line) {
+	Pc getPcInfoFromLine(String line) throws Exception {
 		//カンマで分割した内容を配列に格納する
 		String[] lineData = line.split(",");
 		String hostName = lineData[0];

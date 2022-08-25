@@ -38,20 +38,26 @@ public class InitializeServlet extends HttpServlet {
 		// 全PC情報を取得
 //		RepositoryInterface repository = new FileRepository("/WEB-INF/data/pcIdTable.csv");
 		RepositoryInterface repository = new DummyRepository();
-		List<Pc> pcList = repository.getPcList();
 
-		// PcManagerを生成
-		PcManager pcManager=new PcManager(pcList);
+		List<Pc> pcList;
+		try {
+			pcList = repository.getPcList();
 
-		// 待ち行列マネージャーを設定
-		WaitingManager waitingManager = new WaitingManager();
-		for (Pc pc : pcList) {
-			pc.setPriorityManager(waitingManager);
+			// PcManagerを生成
+			PcManager pcManager=new PcManager(pcList);
+
+			// 待ち行列マネージャーを設定
+			WaitingManager waitingManager = new WaitingManager();
+			for (Pc pc : pcList) {
+				pc.setPriorityManager(waitingManager);
+			}
+
+			// PcListをServletContextに保存
+			ServletContext sc = getServletContext();
+			sc.setAttribute("PcManager", pcManager);
+		} catch (Exception e) {
+			e.printStackTrace();
 		}
-
-		// PcListをServletContextに保存
-		ServletContext sc = getServletContext();
-		sc.setAttribute("PcManager", pcManager);
 
 		// 開始用Servletへ移動
 //		req.getRequestDispatcher("GetAllPcServlet").forward(req, resp);

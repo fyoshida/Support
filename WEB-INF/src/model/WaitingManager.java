@@ -22,6 +22,7 @@ public class WaitingManager {
 			int mpos = orderMap.get(mpcId);
 			orderMap.put(mpcId, mpos - 1);
 		}
+		orderMap.remove(pcId);
 	}
 
 	public int getPriority(IpAddress ipAddress) {

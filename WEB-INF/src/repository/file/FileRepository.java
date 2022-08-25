@@ -13,7 +13,7 @@ public class FileRepository implements RepositoryInterface {
 	}
 
 	@Override
-	public List<Pc> getPcList() {
+	public List<Pc> getPcList() throws Exception {
 		FileReader fileReader = new FileReader();
 		return fileReader.getPcListFromFile(FILE_NAME);
 	}

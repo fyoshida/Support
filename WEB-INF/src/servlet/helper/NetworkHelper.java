@@ -6,33 +6,44 @@ import java.net.UnknownHostException;
 import javax.servlet.http.HttpServletRequest;
 
 import model.IpAddress;
+import network.NetworkInterface;
+import network.ServletNetwork;
 
 public class NetworkHelper {
-	public String getIpAddress() {
-		String clientIpAddr=null;
+	public static IpAddress getIpAddressWithServletNetwork(HttpServletRequest req) {
+		IpAddress ipAddress = null;
 
 		try {
-			InetAddress cIpAddr = InetAddress.getLocalHost();
-			clientIpAddr = cIpAddr.getHostAddress();
-		} catch (UnknownHostException e) {
+			NetworkInterface network = new ServletNetwork(req);
+			String clientId = network.getClientId();
+			ipAddress = new IpAddress(clientId);
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
 
-		return clientIpAddr;
+		return ipAddress;
 	}
 
-	public String getIpAddress(HttpServletRequest req) {
-		String clientIpAddr = req.getRemoteAddr();
+	public static IpAddress getIpAddress(HttpServletRequest req) {
+		IpAddress ipAddress = null;
 
 		try {
+			String clientIpAddr = req.getRemoteAddr();
 			if (clientIpAddr.equals("0:0:0:0:0:0:0:1")) {
 				InetAddress cIpAddr = InetAddress.getLocalHost();
 				clientIpAddr = cIpAddr.getHostAddress();
 			}
-		} catch (UnknownHostException e) {
+			ipAddress = new IpAddress(clientIpAddr);
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
 
-		return clientIpAddr;
+		return ipAddress;
 	}
+
+//	public static IpAddress getIpAddress(HttpServletRequest req) {
+//		NetworkInterface network = new ServletNetwork(req);
+//		String clientId = network.getClientId();
+//		IpAddress ipAddress = new IpAddress(clientId);
+//	}
 }

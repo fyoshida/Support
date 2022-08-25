@@ -7,7 +7,6 @@ import java.util.List;
 import model.IpAddress;
 import model.IpAddressException;
 import model.Pc;
-import model.PcId;
 import repository.RepositoryInterface;
 
 public class DummyRepository implements RepositoryInterface{
@@ -86,7 +85,7 @@ public class DummyRepository implements RepositoryInterface{
 		};
 
 	@Override
-	public List<Pc> getPcList() throws Exception {
+	public List<Pc> getPcList() {
 		List<Pc> pcList = new LinkedList<Pc>();
 
 		for(int i=0;i<pcDataArray.length;i++) {

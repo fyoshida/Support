@@ -3,8 +3,6 @@ package repository.list;
 import java.util.List;
 
 import model.Pc;
-import model.Pc;
-import model.PcId;
 import repository.RepositoryInterface;
 
 public class ListRepository implements RepositoryInterface{

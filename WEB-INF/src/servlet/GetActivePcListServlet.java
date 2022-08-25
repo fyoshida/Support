@@ -5,6 +5,7 @@ import java.io.PrintWriter;
 import java.util.LinkedList;
 import java.util.List;
 
+import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -15,8 +16,10 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import model.Pc;
-import model.PcJson;
+import model.PcManager;
 import servlet.helper.JsonHelper;
+import servlet.helper.PcJson;
+import servlet.helper.PcJsonConverter;
 
 @WebServlet(urlPatterns = { "/v1/active-seats" })
 //active-seatsの応答関数
@@ -29,14 +32,19 @@ public class GetActivePcListServlet extends HttpServlet {
 		req.setCharacterEncoding("UTF-8");
 		resp.setContentType("text/html;charset=UTF-8");
 
+		// PcManagerを取得
+		ServletContext sc = getServletContext();
+		PcManager pcManager=(PcManager)sc.getAttribute("PcManager");
 
 		// アクティブなPCを取得
-		List<Pc> pcList = listManager.getActivePc();
+		List<Pc> pcList = pcManager.getPcList();
 
+		// Pc --> PcJson
+		List<PcJson> pcJsonList=PcJsonConverter.getPcJson(pcList);
 
 		// アクティブなPCの情報をJSON形式で出力
 		PrintWriter out = resp.getWriter();
-		String jsonText = JsonHelper.getJsonText(pcList);
+		String jsonText = JsonHelper.getJsonText(pcJsonList);
 		out.println(jsonText);
 	}
 

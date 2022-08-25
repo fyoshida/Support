@@ -43,15 +43,15 @@ public class GetPcServlet extends HttpServlet {
 		// クライアントIPアドレスの取得
 		NetworkInterface network = new ServletNetwork(req);
 		String clientIpAddress = network.getClientIpAddress();
-		IpAddress ipAddress;
+		IpAddress ipAddress=new IpAddress(clientIpAddress);
 
 
 		// クライアントPCを取得
-		Pc pc = pcManager.getPcFromIpAddress(ipAddress);
+		Pc pc = pcManager.getPc(ipAddress);
 
 		if (pc != null) {
 			// Pc --> PcJson
-			PcJson pcJson =PcJsonConverter.getPcJsonFromPc(pc);
+			PcJson pcJson =PcJsonConverter.getPcJson(pc);
 
 			// クライアントPCの情報をJSON形式で出力
 			PrintWriter out = resp.getWriter();

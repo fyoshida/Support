@@ -7,11 +7,10 @@ import java.util.Date;
 import java.util.List;
 
 import model.HelpStatus;
-import model.HelpStatusConverter;
 import model.IpAddress;
 import model.Pc;
-import model.PcId;
 import repository.RepositoryInterface;
+import servlet.helper.HelpStatusConverter;
 
 public class DataBaseRepository extends DataBaseManager implements RepositoryInterface{
 
@@ -27,7 +26,7 @@ public class DataBaseRepository extends DataBaseManager implements RepositoryInt
 
 		// ------HelpStatus------
 		String helpStatusString = rs.getNString("HelpStatus");
-		HelpStatus helpStatus = HelpStatusConverter.fromString(helpStatusString);
+		HelpStatus helpStatus = HelpStatusConverter.getHelpStatus(helpStatusString);
 
 		// ------HandUpTime------
 		Date date = rs.getDate("HandUpTime");

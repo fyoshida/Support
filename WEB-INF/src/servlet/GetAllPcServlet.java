@@ -33,10 +33,11 @@ public class GetAllPcServlet extends HttpServlet {
 		ServletContext sc = getServletContext();
 		PcManager pcManager=(PcManager)sc.getAttribute("PcManager");
 
+		// 全PCを取得
+		List<Pc> pcList = pcManager.getPcList();
 
 		// Pc --> PcJson
-		List<Pc> pcList = pcManager.getPcList();
-		List<PcJson> pcJsonList=PcJsonConverter.getPcJsonFromPcList(pcList);
+		List<PcJson> pcJsonList=PcJsonConverter.getPcJson(pcList);
 
 		// クライアントPCの情報をJSON形式で出力
 		PrintWriter out = resp.getWriter();

@@ -7,7 +7,7 @@ import model.Pc;
 
 public class PcJsonConverter {
 
-	public static PcJson getPcJsonFromPc(Pc pc) {
+	public static PcJson getPcJson(Pc pc) {
 		PcJson pcJson=new PcJson();
 
 		pcJson.setPcId(pc.getHostName());
@@ -20,11 +20,11 @@ public class PcJsonConverter {
 		return pcJson;
 	}
 
-	public static List<PcJson> getPcJsonFromPcList(List<Pc> pcList) {
+	public static List<PcJson> getPcJson(List<Pc> pcList) {
 		List<PcJson> pcJsonList = new LinkedList<PcJson>();
 
 		for(Pc pc : pcList) {
-			PcJson pcJson = getPcJsonFromPc(pc);
+			PcJson pcJson = getPcJson(pc);
 			pcJsonList.add(pcJson);
 		}
 

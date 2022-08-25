@@ -15,16 +15,16 @@ public class PcManager {
 		}
 	}
 
-	public Pc getPc(IpAddress ipAddress) {
-		return pcMap.get(ipAddress);
-	}
-
 	public List<Pc> getPcList(){
 		return (List<Pc>)pcMap.values();
 	}
 
-	public Pc getPcFromIpAddress(IpAddress ipAddress) {
+	public Pc getPc(IpAddress ipAddress) {
 		return pcMap.get(ipAddress);
+	}
+
+	public boolean existPc(IpAddress ipAddress) {
+		return pcMap.containsKey(ipAddress);
 	}
 
 	public List<Pc> getHandUpPc() {

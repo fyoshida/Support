@@ -70,6 +70,9 @@ public class Pc {
 	}
 
 	//--------login処理--------------
+	public void login() {
+		userName = hostName;
+	}
 	public void login(String name) {
 		userName = "name";
 	}

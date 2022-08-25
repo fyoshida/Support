@@ -8,19 +8,19 @@ import java.util.LinkedList;
 import java.util.List;
 
 import model.HelpStatus;
+import model.IpAddress;
 import model.Pc;
-import model.PcId;
 
 public class FileReader {
 
 	public List<Pc> getPcListFromFile(String fileName) {
-		List<String> lines=getLinesFromFile(fileName);
+		List<String> lines = getLinesFromFile(fileName);
 		return getPcListFromLines(lines);
 	}
 
 	// ファイルから全行を読み込む
 	List<String> getLinesFromFile(String fileName) {
-		List<String> lines=new LinkedList<String>();
+		List<String> lines = new LinkedList<String>();
 
 		// テキストファイルのパス
 		Path file = Paths.get(fileName);
@@ -50,12 +50,15 @@ public class FileReader {
 	Pc getPcInfoFromLine(String line) {
 		//カンマで分割した内容を配列に格納する
 		String[] lineData = line.split(",");
+		String hostName = lineData[0];
+		IpAddress ipAddress = new IpAddress(lineData[1]);
+		boolean isStudent = Boolean.valueOf(lineData[2]);
 
 		//読み込んだ行をPcクラスに格納
-		Pc pcClient = new Pc();
-		PcId pcId = new PcId(lineData[0],lineData[1]);
-		pcClient.setPcId(pcId);
-		pcClient.setStudent(Boolean.valueOf(lineData[2]));
-		return pcClient;
+		Pc pc = new Pc();
+		pc.setHostName(hostName);
+		pc.setIpAddress(ipAddress);
+		pc.setStudent(isStudent);
+		return pc;
 	}
 }

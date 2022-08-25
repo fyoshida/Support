@@ -5,35 +5,42 @@ import java.util.StringTokenizer;
 public class IpAddress {
 	private char[] addresses = new char[4];
 
-	public IpAddress(String ipAddressString) throws IpAddressException {
-		StringTokenizer st = new StringTokenizer(ipAddressString, ".");
-		if (st.countTokens() > 4) {
-			throw new IpAddressException();
-		}
+	public IpAddress(String ipAddressString) {
+		try {
+			if (ipAddressString == null || ipAddressString.equals("")) {
+				throw new NullPointerException();
+			}
 
-		for (int i = 0; i < 4; i++) {
-			int address = Integer.parseInt(st.nextToken());
-			addresses[i] = checkAddress(address);
+			StringTokenizer st = new StringTokenizer(ipAddressString, ".");
+			if (st.countTokens() != 4) {
+				throw new IpAddressException();
+			}
+
+			for (int i = 0; i < 4; i++) {
+				int address = Integer.parseInt(st.nextToken());
+				addresses[i] = checkAddress(address);
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
 		}
 	}
 
-	public void set(int i, char address) throws IpAddressException {
+	public void set(int i, char address) {
 		addresses[i] = checkAddress(address);
-	}
-
-	public char get(int i) {
-		return addresses[i];
 	}
 
 	public String get() {
 		return "" + addresses[0] + "." + addresses[1] + "." + addresses[2] + "." + addresses[3];
 	}
 
-	private char checkAddress(int address) throws IpAddressException {
-		if (address >= 255) {
-			throw new IpAddressException();
+	private char checkAddress(int address) {
+		try {
+			if (address < 0 || address >= 255) {
+				throw new IpAddressException();
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
 		}
-
 		return (char) address;
 	}
 }

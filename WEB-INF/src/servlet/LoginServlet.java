@@ -3,13 +3,16 @@ package servlet;
 import java.io.IOException;
 import java.net.InetAddress;
 
+import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import model.IpAddress;
 import model.Pc;
+import model.PcManager;
 import network.NetworkInterface;
 import network.ServletNetwork;
 
@@ -23,13 +26,24 @@ public class LoginServlet extends HttpServlet {
 		req.setCharacterEncoding("UTF-8");
 		resp.setContentType("text/html;charset=UTF-8");
 
+		// PcManagerを取得
+		ServletContext sc = getServletContext();
+		PcManager pcManager=(PcManager)sc.getAttribute("PcManager");
+
 		// クライアントIPアドレスの取得
 		NetworkInterface network = new ServletNetwork(req);
 		String clientIpAddress = network.getClientIpAddress();
+		IpAddress ipAddress=new IpAddress(clientIpAddress);
 
-		if(listManager.extisIpAddress(clientIpAddress)) {
-			Pc pc = listManager.getPcByIpAddress();
-			pc.login();
+		if(pcManager.existPc(ipAddress)) {
+			// クライアントPCを取得
+			Pc pc = pcManager.getPc(ipAddress);
+
+			// ログイン
+			pc.login("");
+
+			//pcManagerを保存.
+			sc.setAttribute("PcManager", pcManager);
 		}
 
 //		if(pc != null) {

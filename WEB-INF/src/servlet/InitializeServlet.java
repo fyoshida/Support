@@ -22,7 +22,7 @@ import repository.RepositoryInterface;
 import repository.dummy.DummyRepository;
 import repository.file.FileRepository;
 import repository.list.ListRepository;
-import servlet.helper.JsonHelper;
+import servlet.helper.JsonConverter;
 
 @WebServlet(urlPatterns = { "/v1/initialize" })
 //active-seatsの応答関数

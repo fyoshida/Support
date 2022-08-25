@@ -21,7 +21,7 @@ import model.Pc;
 import model.PcManager;
 import network.NetworkInterface;
 import network.ServletNetwork;
-import servlet.helper.JsonHelper;
+import servlet.helper.JsonConverter;
 import servlet.helper.NetworkHelper;
 import servlet.helper.PcJson;
 import servlet.helper.PcJsonConverter;
@@ -53,7 +53,7 @@ public class GetPcServlet extends HttpServlet {
 
 			// クライアントPCの情報をJSON形式で出力
 			PrintWriter out = resp.getWriter();
-			String jsonText = JsonHelper.getJsonText(pcJson);
+			String jsonText = JsonConverter.getJsonText(pcJson);
 			out.println(jsonText);
 
 		} else {

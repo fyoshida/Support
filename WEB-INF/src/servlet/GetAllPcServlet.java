@@ -14,7 +14,7 @@ import javax.servlet.http.HttpServletResponse;
 
 import model.Pc;
 import model.PcManager;
-import servlet.helper.JsonHelper;
+import servlet.helper.JsonConverter;
 import servlet.helper.PcJson;
 import servlet.helper.PcJsonConverter;
 
@@ -41,7 +41,7 @@ public class GetAllPcServlet extends HttpServlet {
 
 		// クライアントPCの情報をJSON形式で出力
 		PrintWriter out = resp.getWriter();
-		String jsonText = JsonHelper.getJsonText(pcJsonList);
+		String jsonText = JsonConverter.getJsonText(pcJsonList);
 		out.println(jsonText);
 	}
 

@@ -17,7 +17,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 
 import model.Pc;
 import model.PcManager;
-import servlet.helper.JsonHelper;
+import servlet.helper.JsonConverter;
 import servlet.helper.PcJson;
 import servlet.helper.PcJsonConverter;
 
@@ -44,7 +44,7 @@ public class GetActivePcListServlet extends HttpServlet {
 
 		// アクティブなPCの情報をJSON形式で出力
 		PrintWriter out = resp.getWriter();
-		String jsonText = JsonHelper.getJsonText(pcJsonList);
+		String jsonText = JsonConverter.getJsonText(pcJsonList);
 		out.println(jsonText);
 	}
 

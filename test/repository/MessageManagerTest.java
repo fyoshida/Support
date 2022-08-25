@@ -1,4 +1,4 @@
-package db;
+package repository;
 
 public class MessageManagerTest {
 //	private static final String SAMPLE_TEXT = "オレと友達になってください！";

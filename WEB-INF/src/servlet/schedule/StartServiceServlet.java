@@ -22,8 +22,7 @@ import javax.servlet.annotation.WebListener;
 import model.HelpStatus;
 import model.Pc;
 import model.PcManager;
-import schedule.PcListFileReader;
-import schedule.ScheduleManager;
+
 
 @WebListener
 public class StartServiceServlet implements ServletContextListener {
@@ -38,11 +37,6 @@ public class StartServiceServlet implements ServletContextListener {
 
 	//--------サーバの初回起動時に実行される関数-------------------------------------------
 	public void contextInitialized(ServletContextEvent arg0) {
-
-		//ファイルの読み込み
-		PcListFileReader reader = new PcListFileReader();
-		List<Pc> pcList =reader.getPcListFromFile(PCLIST_FILENAME);
-		PcManager pcManager=new PcManager(pcList);
 
 		schedule = ScheduleManager.getInstance();
 		schedule.start();

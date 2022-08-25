@@ -1,10 +1,5 @@
 package network;
 
-import java.net.InetAddress;
-import java.net.UnknownHostException;
-
-import javax.servlet.http.HttpServletRequest;
-
 public class DummyNetwork implements NetworkInterface{
 
 	@Override
@@ -13,8 +8,7 @@ public class DummyNetwork implements NetworkInterface{
 	}
 
 	@Override
-	public String getClientId() {
-		// TODO 自動生成されたメソッド・スタブ
+	public String getClientHostName() {
 		return "ics834";
 	}
 

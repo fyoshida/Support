@@ -4,5 +4,5 @@ public interface NetworkInterface {
 
 	public String getClientIpAddress();
 
-	public String getClientId();
+	public String getClientHostName();
 }

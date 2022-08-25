@@ -34,7 +34,7 @@ public class ServletNetwork implements NetworkInterface {
 	}
 
 	@Override
-	public String getClientId() {
+	public String getClientHostName() {
 		String url = req.getRequestURI();
 
 		int beginIdx = url.lastIndexOf("/"); //icsのsの位置を取得

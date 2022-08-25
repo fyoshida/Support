@@ -15,7 +15,7 @@ public class NetworkHelper {
 
 		try {
 			NetworkInterface network = new ServletNetwork(req);
-			String clientId = network.getClientId();
+			String clientId = network.getClientHostName();
 			ipAddress = new IpAddress(clientId);
 		} catch (Exception e) {
 			e.printStackTrace();

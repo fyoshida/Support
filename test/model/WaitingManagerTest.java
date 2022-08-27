@@ -43,9 +43,9 @@ public class WaitingManagerTest {
 		wm.unregist(ipAddress1);
 		wm.unregist(ipAddress3);
 
-		assertEquals(wm.getPriority(ipAddress1), 999);
-		assertEquals(wm.getPriority(ipAddress2), 999);
-		assertEquals(wm.getPriority(ipAddress3), 999);
+		assertEquals(wm.getPriority(ipAddress1), WaitingManager.NOT_REGISTED);
+		assertEquals(wm.getPriority(ipAddress2), WaitingManager.NOT_REGISTED);
+		assertEquals(wm.getPriority(ipAddress3), WaitingManager.NOT_REGISTED);
 	}
 
 	@Test
@@ -57,7 +57,7 @@ public class WaitingManagerTest {
 		wm.regist(ipAddress3);
 		wm.unregist(ipAddress1);
 
-		assertEquals(wm.getPriority(ipAddress1), 999);
+		assertEquals(wm.getPriority(ipAddress1), WaitingManager.NOT_REGISTED);
 		assertEquals(wm.getPriority(ipAddress2), 1);
 		assertEquals(wm.getPriority(ipAddress3), 2);
 	}
@@ -72,7 +72,7 @@ public class WaitingManagerTest {
 		wm.unregist(ipAddress2);
 
 		assertEquals(wm.getPriority(ipAddress1), 1);
-		assertEquals(wm.getPriority(ipAddress2), 999);
+		assertEquals(wm.getPriority(ipAddress2), WaitingManager.NOT_REGISTED);
 		assertEquals(wm.getPriority(ipAddress3), 2);
 	}
 

@@ -5,6 +5,8 @@ import java.util.LinkedList;
 import java.util.Map;
 
 public class WaitingManager {
+	public static final int NOT_REGISTED=999;
+
 	private LinkedList<IpAddress> waitingList = new LinkedList<IpAddress>();
 	private Map<IpAddress, Integer> orderMap = new HashMap<IpAddress, Integer>();
 

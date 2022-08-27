@@ -35,7 +35,7 @@ public class IpAddressTest {
 	}
 
 	@Test
-	public void 要素が0ー255でないとIPアドレスを生成できない() {
+	public void 要素の値が0ー255でないとIPアドレスを生成できない() {
 		assertThrows(IllegalArgumentException.class, () -> new IpAddress(ERR_IPADDRESS_LITTLE));
 		assertThrows(IllegalArgumentException.class, () -> new IpAddress(ERR_IPADDRESS_OVER));
 	}

@@ -7,32 +7,42 @@ import java.util.Map;
 
 public class PcManager {
 
-	private final Map<IpAddress, Pc> pcMap = new HashMap<IpAddress, Pc>();
+	private final Map<IpAddress, Pc> pcIpAddressMap = new HashMap<IpAddress, Pc>();
+	private final Map<String, Pc> pcHostNameMap = new HashMap<String, Pc>();
+	private final WaitingManager waitingManager = new WaitingManager();
 
 	public PcManager(List<PcBean> pcBeanList) {
-		WaitingManager waitingManager = new WaitingManager();
 		for (PcBean pcBean : pcBeanList) {
 			Pc pc = convert(pcBean, waitingManager);
-			pcMap.put(pc.getIpAddress(), pc);
+			pcIpAddressMap.put(pc.getIpAddress(), pc);
+			pcHostNameMap.put(pc.getHostName(), pc);
 		}
 	}
 
 	public List<Pc> getPcList() {
-		return (List<Pc>) pcMap.values();
+		return (List<Pc>) pcIpAddressMap.values();
 	}
 
 	public Pc getPc(IpAddress ipAddress) {
-		return pcMap.get(ipAddress);
+		return pcIpAddressMap.get(ipAddress);
+	}
+
+	public Pc getPc(String hostName) {
+		return pcHostNameMap.get(hostName);
 	}
 
 	public boolean existPc(IpAddress ipAddress) {
-		return pcMap.containsKey(ipAddress);
+		return pcIpAddressMap.containsKey(ipAddress);
+	}
+
+	public boolean existPc(String hostName) {
+		return pcHostNameMap.containsKey(hostName);
 	}
 
 	public List<Pc> getHandUpPc() {
 		List<Pc> pcList = new LinkedList<Pc>();
 
-		for (Pc pc : pcMap.values()) {
+		for (Pc pc : pcIpAddressMap.values()) {
 			switch (pc.getHelpStatus()) {
 			case None:
 				break;
@@ -56,5 +66,4 @@ public class PcManager {
 
 		return pc;
 	}
-
 }

@@ -9,7 +9,6 @@ public class Pc extends PcBean {
 
 	private HelpStatus helpStatus = HelpStatus.None;
 	private LocalDateTime handUpTime = null;
-
 	private WaitingManager waitingManager = null;
 
 	//--------コンストラクタ--------------

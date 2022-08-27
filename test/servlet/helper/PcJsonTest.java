@@ -2,81 +2,75 @@ package servlet.helper;
 
 import static org.junit.Assert.*;
 
+import org.junit.Before;
 import org.junit.Test;
-
-import model.HelpStatus;
 
 public class PcJsonTest {
 
-	private static final String SAMPLE_ID1 = "ics801";
-	private static final String SAMPLE_ID2 = "ics725";
+	protected String helpStatus = null; // 手を挙げていない: None
+											//	手を挙げている: Troubled
+											// TA教員対応中: Supporting
+	protected int handPriority = -1;
 
-	private static final String SAMPLE_IPADDRESS1 = "133.44.118.158";
-	private static final String SAMPLE_IPADDRESS2 = "133.44.118.228";
+	public static final String IPADDRESS_GATEWAY = "133.44.118.254";
+	private PcJson pcJson;
 
-//	@Test
-//	public void 属性PcIdはアクセッサで読み書きできる() {
-//		PcJson pcjson = new PcJson();
-//
-//		pcjson.setPcId(SAMPLE_ID1);
-//		assertEquals(pcjson.getPcId(), SAMPLE_ID1);
-//
-//		pcjson.setPcId(SAMPLE_ID2);
-//		assertEquals(pcjson.getPcId(), SAMPLE_ID2);
-//	}
-//
-//	@Test
-//	public void 属性IpAdresseはアクセッサで読み書きできる() {
-//		PcJson pcjson = new PcJson();
-//
-//		pcjson.setIpAdress(SAMPLE_IPADDRESS1);
-//		assertEquals(pcjson.getIpAdress(), SAMPLE_IPADDRESS1);
-//
-//		pcjson.setIpAdress(SAMPLE_IPADDRESS2);
-//		assertEquals(pcjson.getIpAdress(), SAMPLE_IPADDRESS2);
-//	}
-//
-//	@Test
-//	public void 属性IsStudentはアクセッサで読み書きできる() {
-//		PcJson pcjson = new PcJson();
-//
-//		pcjson.setIsStudent(true);
-//		assertTrue(pcjson.getIsStudent());
-//
-//		pcjson.setIsStudent(false);
-//		assertFalse(pcjson.getIsStudent());
-//	}
-//
-//	@Test
-//	public void 属性IsLoginはアクセッサで読み書きできる() {
-//		PcJson pcjson = new PcJson();
-//
-//		pcjson.setIsLogin(true);
-//		assertTrue(pcjson.getIsLogin());
-//
-//		pcjson.setIsLogin(false);
-//		assertFalse(pcjson.getIsLogin());
-//	}
-//
-//	@Test
-//	public void 属性HelpStatusはアクセッサで読み書きできる() {
-//		PcJson pcjson = new PcJson();
-//
-//		pcjson.setHelpStatus(HelpStatus.None);
-//		assertEquals(pcjson.getHelpStatus(),HelpStatus.None);
-//
-//		pcjson.setHelpStatus(HelpStatus.Troubled);
-//		assertEquals(pcjson.getHelpStatus(),HelpStatus.Troubled);
-//
-//		pcjson.setHelpStatus(HelpStatus.Supporting);
-//		assertEquals(pcjson.getHelpStatus(),HelpStatus.Supporting);
-//	}
-//
-//	@Test
-//	public void 属性HandPriorityはアクセッサで読み書きできる() {
-//		PcJson pcjson = new PcJson();
-//
-//		pcjson.setHandPriority(-1);
-//		assertEquals(pcjson.getHandPriority(),-1);
-//	}
+	@Before
+	public void setUp() {
+		pcJson = new PcJson();
+	}
+
+	@Test
+	public void 属性IPアドレスをアクセッサで読み書きできる() {
+		pcJson.setIpAdress(IPADDRESS_GATEWAY);
+
+		assertEquals(pcJson.getIpAdress(),IPADDRESS_GATEWAY);
+	}
+	@Test
+	public void 属性HostNameアクセッサで読み書きできる() {
+		pcJson.setPcId("ics800");
+
+		assertEquals(pcJson.getPcId(),"ics800");
+	}
+
+	@Test
+	public void 属性IsStudentをアクセッサで読み書きできる() {
+		pcJson.setIsStudent(true);
+		assertTrue(pcJson.getIsStudent());
+
+		pcJson.setIsStudent(false);
+		assertFalse(pcJson.getIsStudent());
+	}
+
+	@Test
+	public void 属性IsLoginをアクセッサで読み書きできる() {
+		pcJson.setIsLogin(true);
+		assertTrue(pcJson.getIsLogin());
+
+		pcJson.setIsLogin(false);
+		assertFalse(pcJson.getIsLogin());
+	}
+
+	@Test
+	public void 属性HelpStatusをアクセッサで読み書きできる() {
+		pcJson.setHelpStatus("None");
+		assertEquals(pcJson.getHelpStatus(),"None");
+
+		pcJson.setHelpStatus("Troubled");
+		assertEquals(pcJson.getHelpStatus(),"Troubled");
+
+		pcJson.setHelpStatus("Supporting");
+		assertEquals(pcJson.getHelpStatus(),"Supporting");
+	}
+
+	@Test
+	public void 属性HandPriorityをアクセッサで読み書きできる() {
+		pcJson.setHandPriority(1);
+		assertEquals(pcJson.getHandPriority(),1);
+
+		pcJson.setHandPriority(999);
+		assertEquals(pcJson.getHandPriority(),999);
+	}
+
 }
+

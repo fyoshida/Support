@@ -12,6 +12,27 @@ public class PcJson{
 	protected int handPriority = -1;
 
 	//--------アクセッサ---------
+	public String getPcId() {
+		return pcId;
+	}
+	public void setPcId(String pcId) {
+		this.pcId = pcId;
+	}
+
+	public String getIpAdress() {
+		return ipAdress;
+	}
+	public void setIpAdress(String ipAdress) {
+		this.ipAdress = ipAdress;
+	}
+
+	public Boolean getIsStudent() {
+		return isStudent;
+	}
+	public void setIsStudent(Boolean isStudent) {
+		this.isStudent = isStudent;
+	}
+
 	public int getHandPriority() {
 		return handPriority;
 	}
@@ -24,28 +45,13 @@ public class PcJson{
 	public void setHelpStatus(String helpStatus) {
 		this.helpStatus = helpStatus;
 	}
-	public String getIpAdress() {
-		return ipAdress;
-	}
-	public void setIpAdress(String ipAdress) {
-		this.ipAdress = ipAdress;
-	}
+
 	public Boolean getIsLogin() {
 		return isLogin;
 	}
 	public void setIsLogin(Boolean isLogin) {
 		this.isLogin = isLogin;
 	}
-	public String getPcId() {
-		return pcId;
-	}
-	public void setPcId(String pcId) {
-		this.pcId = pcId;
-	}
-	public Boolean getIsStudent() {
-		return isStudent;
-	}
-	public void setIsStudent(Boolean isStudent) {
-		this.isStudent = isStudent;
-	}
+
+
 }

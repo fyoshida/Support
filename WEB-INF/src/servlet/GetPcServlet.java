@@ -2,8 +2,6 @@ package servlet;
 
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.net.InetAddress;
-import java.util.List;
 
 import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
@@ -12,15 +10,9 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
-
 import model.IpAddress;
-import model.IpAddressException;
 import model.Pc;
 import model.PcManager;
-import network.NetworkInterface;
-import network.ServletNetwork;
 import servlet.helper.JsonConverter;
 import servlet.helper.NetworkHelper;
 import servlet.helper.PcJson;

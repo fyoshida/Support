@@ -14,8 +14,10 @@ public class PcManager {
 	public PcManager(List<PcBean> pcBeanList) {
 		for (PcBean pcBean : pcBeanList) {
 			Pc pc = convert(pcBean, waitingManager);
-			pcIpAddressMap.put(pc.getIpAddress(), pc);
-			pcHostNameMap.put(pc.getHostName(), pc);
+			if (pc.isStudent()) {
+				pcIpAddressMap.put(pc.getIpAddress(), pc);
+				pcHostNameMap.put(pc.getHostName(), pc);
+			}
 		}
 	}
 
@@ -60,7 +62,6 @@ public class PcManager {
 		boolean isStudent = pcBean.isStudent();
 
 		Pc pc = new Pc(ipAddress, waitingManager);
-
 		pc.setHostName(hostName);
 		pc.setStudent(isStudent);
 

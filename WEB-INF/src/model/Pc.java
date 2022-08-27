@@ -1,5 +1,7 @@
 package model;
 
+import static org.apache.commons.lang3.Validate.*;
+
 import java.time.Duration;
 import java.time.LocalDateTime;
 
@@ -12,9 +14,16 @@ public class Pc extends PcBean {
 	private WaitingManager waitingManager = null;
 
 	//--------コンストラクタ--------------
-	public Pc(IpAddress ipAddress, WaitingManager wm) {
+	public Pc(IpAddress ipAddress, WaitingManager waitingManager) {
+		notNull(ipAddress);
+		notNull(waitingManager);
 		this.ipAddress = ipAddress;
-		this.waitingManager = wm;
+		this.waitingManager = waitingManager;
+	}
+
+	//--------equals--------------
+	public boolean equals(Pc pc) {
+		return ipAddress.equals(pc.getIpAddress());
 	}
 
 	//--------アクセッサ--------------
@@ -22,16 +31,8 @@ public class Pc extends PcBean {
 		return helpStatus;
 	}
 
-	public void setHandUpTime(LocalDateTime handUpTime) {
-		this.handUpTime = handUpTime;
-	}
-
 	public LocalDateTime getHandUpTime() {
 		return handUpTime;
-	}
-
-	public void setWaitingManager(WaitingManager waitingManager) {
-		this.waitingManager = waitingManager;
 	}
 
 	public String getUserName() {

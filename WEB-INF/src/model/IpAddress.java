@@ -1,6 +1,7 @@
 package model;
 
 import static org.apache.commons.lang3.Validate.*;
+
 import java.util.StringTokenizer;
 
 public class IpAddress {
@@ -25,4 +26,15 @@ public class IpAddress {
 		return "" + addresses[0] + "." + addresses[1] + "." + addresses[2] + "." + addresses[3];
 	}
 
+	public boolean equals(IpAddress ipAddress) {
+		if(addresses.length !=ipAddress.addresses.length) {
+			return false;
+		}
+		for(int i=0;i<3;i++) {
+			if(addresses[i]!=ipAddress.addresses[i]) {
+				return false;
+			}
+		}
+		return true;
+	}
 }

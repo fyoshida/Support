@@ -35,7 +35,7 @@ public class PcTest {
 	}
 
 	@Test
-	public void ログインするとユーザ名を指定できる() {
+	public void ログインするとgetUserNameでユーザ名が得られる() {
 		pc.login("abc");
 		assertEquals(pc.getUserName(), "abc");
 	}
@@ -54,22 +54,17 @@ public class PcTest {
 		pc.login("abc");
 		assertEquals(pc.getUserName(), "abc");
 
-		pc.logout();
-		assertEquals(pc.getUserName(), pc.getHostName());
-
 		pc.login("def");
 		assertEquals(pc.getUserName(), "def");
-
-		pc.login("ghi");
-		assertEquals(pc.getUserName(), "ghi");
 	}
 
 	@Test
 	public void 生成直後は手を上げていない() {
 		assertEquals(pc.getHelpStatus(), HelpStatus.None);
+		assertEquals(pc.getPriority(), 999);
+
 		assertNull(pc.getHandUpTime());
 		assertNull(pc.getWaitingTime());
-		assertEquals(pc.getPriority(), 999);
 	}
 
 	@Test
@@ -77,9 +72,10 @@ public class PcTest {
 		pc.handUp();
 
 		assertEquals(pc.getHelpStatus(), HelpStatus.Troubled);
+		assertEquals(pc.getPriority(), 1);
+
 		assertNotNull(pc.getHandUpTime());
 		assertNotNull(pc.getWaitingTime());
-		assertEquals(pc.getPriority(), 1);
 	}
 
 	@Test
@@ -88,9 +84,10 @@ public class PcTest {
 		pc.handDown();
 
 		assertEquals(pc.getHelpStatus(), HelpStatus.None);
+		assertEquals(pc.getPriority(), 999);
+
 		assertNull(pc.getHandUpTime());
 		assertNull(pc.getWaitingTime());
-		assertEquals(pc.getPriority(), 999);
 	}
 
 	@Test
@@ -99,9 +96,10 @@ public class PcTest {
 		pc.supported();
 
 		assertEquals(pc.getHelpStatus(), HelpStatus.Supporting);
+		assertEquals(pc.getPriority(), 999);
+
 		assertNotNull(pc.getHandUpTime());
 		assertNotNull(pc.getWaitingTime());
-		assertEquals(pc.getPriority(), 999);
 	}
 
 	@Test
@@ -147,7 +145,7 @@ public class PcTest {
 		assertNotNull(pc.getHandUpTime());
 
 		pc.supported();
-		
+
 		assertNotNull(pc.getHandUpTime());
 
 		pc.handDown();

@@ -1,8 +1,6 @@
 package servlet;
 
 import java.io.IOException;
-import java.io.PrintWriter;
-import java.util.LinkedList;
 import java.util.List;
 
 import javax.servlet.ServletContext;
@@ -12,17 +10,10 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
-
-import model.Pc;
+import model.PcBean;
 import model.PcManager;
-import model.WaitingManager;
 import repository.RepositoryInterface;
 import repository.dummy.DummyRepository;
-import repository.file.FileRepository;
-import repository.list.ListRepository;
-import servlet.helper.JsonConverter;
 
 @WebServlet(urlPatterns = { "/v1/initialize" })
 //active-seatsの応答関数
@@ -39,18 +30,13 @@ public class InitializeServlet extends HttpServlet {
 //		RepositoryInterface repository = new FileRepository("/WEB-INF/data/pcIdTable.csv");
 		RepositoryInterface repository = new DummyRepository();
 
-		List<Pc> pcList;
+		List<PcBean> pcBeanList;
 		try {
-			pcList = repository.getPcList();
+			// PcBeanの取得
+			pcBeanList = repository.getPcList();
 
 			// PcManagerを生成
-			PcManager pcManager=new PcManager(pcList);
-
-			// 待ち行列マネージャーを設定
-			WaitingManager waitingManager = new WaitingManager();
-			for (Pc pc : pcList) {
-				pc.setPriorityManager(waitingManager);
-			}
+			PcManager pcManager=new PcManager(pcBeanList);
 
 			// PcListをServletContextに保存
 			ServletContext sc = getServletContext();

@@ -3,11 +3,7 @@ package model;
 import java.time.Duration;
 import java.time.LocalDateTime;
 
-public class Pc {
-
-	protected IpAddress ipAddress=null;
-	protected String hostName="";
-	protected boolean isStudent = false;
+public class Pc extends PcBean {
 
 	private String userName = null;
 
@@ -16,35 +12,13 @@ public class Pc {
 
 	private WaitingManager waitingManager = null;
 
-	//--------アクセッサ--------------
-	public void setIpAddress(IpAddress ipAddress) {
+	//--------コンストラクタ--------------
+	public Pc(IpAddress ipAddress, WaitingManager wm) {
 		this.ipAddress = ipAddress;
+		this.waitingManager = wm;
 	}
 
-	public IpAddress getIpAddress() {
-		return ipAddress;
-	}
-
-	public String getHostName() {
-		return hostName;
-	}
-
-	public void setHostName(String hostName) {
-		this.hostName = hostName;
-	}
-
-	public boolean isStudent() {
-		return isStudent;
-	}
-
-	public void setStudent(boolean isStudent) {
-		this.isStudent = isStudent;
-	}
-
-	public void setHelpStatus(HelpStatus helpStatus) {
-		this.helpStatus = helpStatus;
-	}
-
+	//--------アクセッサ--------------
 	public HelpStatus getHelpStatus() {
 		return helpStatus;
 	}
@@ -57,8 +31,8 @@ public class Pc {
 		return handUpTime;
 	}
 
-	public void setPriorityManager(WaitingManager priorityManager) {
-		this.waitingManager = priorityManager;
+	public void setWaitingManager(WaitingManager waitingManager) {
+		this.waitingManager = waitingManager;
 	}
 
 	public String getUserName() {
@@ -70,11 +44,8 @@ public class Pc {
 	}
 
 	//--------login処理--------------
-	public void login() {
-		userName = hostName;
-	}
 	public void login(String name) {
-		userName = "name";
+		userName = name;
 	}
 
 	public void logout() {
@@ -103,15 +74,18 @@ public class Pc {
 		waitingManager.unregist(ipAddress);
 	}
 
-
 	//--------待ち行列処理--------------
 	public int getPriority() {
 		return waitingManager.getPriority(ipAddress);
 	}
 
 	public Duration getWaitingTime() {
-		LocalDateTime currentTime = LocalDateTime.now();
-		return Duration.between(currentTime, handUpTime);
+		if (handUpTime == null) {
+			return null;
+		} else {
+			LocalDateTime currentTime = LocalDateTime.now();
+			return Duration.between(currentTime, handUpTime);
+		}
 	}
 
 }

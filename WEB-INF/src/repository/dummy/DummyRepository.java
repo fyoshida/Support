@@ -1,12 +1,10 @@
 package repository.dummy;
 
-import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 
 import model.IpAddress;
-import model.IpAddressException;
-import model.Pc;
+import model.PcBean;
 import repository.RepositoryInterface;
 
 public class DummyRepository implements RepositoryInterface{
@@ -85,15 +83,15 @@ public class DummyRepository implements RepositoryInterface{
 		};
 
 	@Override
-	public List<Pc> getPcList() {
-		List<Pc> pcList = new LinkedList<Pc>();
+	public List<PcBean> getPcList() {
+		List<PcBean> pcList = new LinkedList<PcBean>();
 
 		for(int i=0;i<pcDataArray.length;i++) {
 			String hostName =pcDataArray[i][0];
 			IpAddress ipAddress =new IpAddress(pcDataArray[i][1]);
 			boolean student=Boolean.parseBoolean(pcDataArray[i][2]);
 
-			Pc pc = new Pc();
+			PcBean pc = new PcBean();
 			pc.setIpAddress(ipAddress);
 			pc.setHostName(hostName);
 			pc.setStudent(student);

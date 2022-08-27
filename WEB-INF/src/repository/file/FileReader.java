@@ -7,13 +7,12 @@ import java.nio.file.Paths;
 import java.util.LinkedList;
 import java.util.List;
 
-import model.HelpStatus;
 import model.IpAddress;
-import model.Pc;
+import model.PcBean;
 
 public class FileReader {
 
-	public List<Pc> getPcListFromFile(String fileName) throws Exception {
+	public List<PcBean> getPcListFromFile(String fileName) throws Exception {
 		List<String> lines = getLinesFromFile(fileName);
 		return getPcListFromLines(lines);
 	}
@@ -35,19 +34,19 @@ public class FileReader {
 	}
 
 	// 全行分の文字列からPcListを生成
-	List<Pc> getPcListFromLines(List<String> lines) throws Exception {
-		List<Pc> pcList = new LinkedList<Pc>();
+	List<PcBean> getPcListFromLines(List<String> lines) throws Exception {
+		List<PcBean> pcList = new LinkedList<PcBean>();
 
 		for (String line : lines) {
-			Pc pc = getPcInfoFromLine(line);
-			pcList.add(pc);
+			PcBean pcBean = getPcInfoFromLine(line);
+			pcList.add(pcBean);
 		}
 
 		return pcList;
 	}
 
 	// 1行分の文字列からPcを生成
-	Pc getPcInfoFromLine(String line) throws Exception {
+	PcBean getPcInfoFromLine(String line) throws Exception {
 		//カンマで分割した内容を配列に格納する
 		String[] lineData = line.split(",");
 		String hostName = lineData[0];
@@ -55,7 +54,7 @@ public class FileReader {
 		boolean isStudent = Boolean.valueOf(lineData[2]);
 
 		//読み込んだ行をPcクラスに格納
-		Pc pc = new Pc();
+		PcBean pc = new PcBean();
 		pc.setHostName(hostName);
 		pc.setIpAddress(ipAddress);
 		pc.setStudent(isStudent);

@@ -9,6 +9,10 @@ import repository.RepositoryInterface;
 
 public class DataBaseRepository extends DataBaseManager implements RepositoryInterface{
 
+	public DataBaseRepository(String dataBaseName,String userName,String passWord) {
+		super(dataBaseName,userName,passWord);
+	}
+
 	public Pc copyRecord(ResultSet rs) throws Exception{
 
 		// ------PC 情報------

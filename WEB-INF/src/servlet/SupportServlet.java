@@ -2,7 +2,6 @@ package servlet;
 
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.util.LinkedList;
 import java.util.List;
 
 import javax.servlet.ServletContext;
@@ -12,20 +11,13 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
-
-import model.HelpStatus;
 import model.IpAddress;
 import model.Student;
 import model.StudentManager;
-import network.NetworkInterface;
-import network.ServletNetwork;
 import servlet.helper.JsonConverter;
 import servlet.helper.NetworkHelper;
 import servlet.helper.PcJson;
 import servlet.helper.PcJsonConverter;
-import servlet.schedule.StartServiceServlet;
 
 @WebServlet(urlPatterns = { "/v1/support/*" })
 //support/XXXの応答関数
@@ -38,31 +30,30 @@ public class SupportServlet extends HttpServlet {
 		req.setCharacterEncoding("UTF-8");
 		resp.setContentType("text/html;charset=UTF-8");
 
-		// PcManagerを取得
+		// StudentManagerを取得
 		ServletContext sc = getServletContext();
-		StudentManager pcManager = (StudentManager) sc.getAttribute("PcManager");
+		StudentManager studentManager = (StudentManager) sc.getAttribute("StudentManager");
 
 		// クライアントIPアドレスの取得
 		IpAddress ipAddress = NetworkHelper.getIpAddressWithServletNetwork(req);
 
-		// クライアントPCを取得
-		Student pc = pcManager.getPc(ipAddress);
-
-		if (pc == null) {
+		// 学生を取得
+		Student student = studentManager.getStudent(ipAddress);
+		if (student == null) {
 			req.getRequestDispatcher("/error.html").forward(req, resp);
 			return;
 		}
 
 		// サポート
-		pc.supported();
+		student.supported();
 
-		// 全PCを取得
-		List<Student> pcList = pcManager.getPcList();
+		// 全学生を取得
+		List<Student> studentList = studentManager.getStudentList();
 
-		// Pc --> PcJson
-		List<PcJson> pcJsonList=PcJsonConverter.getPcJson(pcList);
+		// Student --> PcJson
+		List<PcJson> pcJsonList=PcJsonConverter.getPcJson(studentList);
 
-		// クライアントPCの情報をJSON形式で出力
+		// JSON形式で出力
 		PrintWriter out = resp.getWriter();
 		String jsonText = JsonConverter.getJsonText(pcJsonList);
 		out.println(jsonText);

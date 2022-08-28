@@ -29,28 +29,27 @@ public class GetPcServlet extends HttpServlet {
 		req.setCharacterEncoding("UTF-8");
 		resp.setContentType("text/html;charset=UTF-8");
 
-		// PcManagerを取得
+		// StudentManagerを取得
 		ServletContext sc = getServletContext();
-		StudentManager pcManager=(StudentManager)sc.getAttribute("PcManager");
+		StudentManager pcManager = (StudentManager) sc.getAttribute("StudentManager");
 
 		// クライアントIPアドレスの取得
 		IpAddress ipAddress = NetworkHelper.getIpAddressWithServletNetwork(req);
 
-		// クライアントPCを取得
-		Student pc = pcManager.getPc(ipAddress);
-
-		if (pc != null) {
-			// Pc --> PcJson
-			PcJson pcJson =PcJsonConverter.getPcJson(pc);
-
-			// クライアントPCの情報をJSON形式で出力
-			PrintWriter out = resp.getWriter();
-			String jsonText = JsonConverter.getJsonText(pcJson);
-			out.println(jsonText);
-
-		} else {
+		// 学生を取得
+		Student student = pcManager.getStudent(ipAddress);
+		if (student == null) {
 			req.getRequestDispatcher("/error.html").forward(req, resp);
+			return;
 		}
+
+		// Student --> PcJson
+		PcJson pcJson = PcJsonConverter.getPcJson(student);
+
+		// JSON形式で出力
+		PrintWriter out = resp.getWriter();
+		String jsonText = JsonConverter.getJsonText(pcJson);
+		out.println(jsonText);
 	}
 
 }

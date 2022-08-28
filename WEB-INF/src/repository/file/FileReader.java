@@ -38,8 +38,11 @@ public class FileReader {
 		List<Pc> pcList = new LinkedList<Pc>();
 
 		for (String line : lines) {
-			Pc pc = getPcInfoFromLine(line);
-			pcList.add(pc);
+			try {
+				Pc pc = getPcInfoFromLine(line);
+				pcList.add(pc);
+			} catch (Exception e) {
+			}
 		}
 
 		return pcList;
@@ -54,7 +57,7 @@ public class FileReader {
 		boolean isStudent = Boolean.valueOf(lineData[2]);
 
 		//読み込んだ行をPcクラスに格納
-		Pc pc = new Pc(ipAddress,hostName);
+		Pc pc = new Pc(ipAddress, hostName);
 		pc.setStudent(isStudent);
 		return pc;
 	}

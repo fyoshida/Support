@@ -2,6 +2,8 @@ package model;
 
 import static org.junit.Assert.*;
 
+import java.time.LocalDateTime;
+
 import org.junit.Before;
 import org.junit.Test;
 
@@ -66,7 +68,7 @@ public class StudentTest {
 		assertEquals(student.getPriority(), WaitingManager.NOT_REGISTED);
 
 		assertNull(student.getHandUpTime());
-		assertNull(student.getWaitingTime());
+		assertNull(student.getWaitingTime(LocalDateTime.now()));
 	}
 
 	@Test
@@ -77,7 +79,7 @@ public class StudentTest {
 		assertEquals(student.getPriority(), 1);
 
 		assertNotNull(student.getHandUpTime());
-		assertNotNull(student.getWaitingTime());
+		assertNotNull(student.getWaitingTime(LocalDateTime.now()));
 	}
 
 	@Test
@@ -89,7 +91,7 @@ public class StudentTest {
 		assertEquals(student.getPriority(), WaitingManager.NOT_REGISTED);
 
 		assertNull(student.getHandUpTime());
-		assertNull(student.getWaitingTime());
+		assertNull(student.getWaitingTime(LocalDateTime.now()));
 	}
 
 	@Test
@@ -101,7 +103,7 @@ public class StudentTest {
 		assertEquals(student.getPriority(), WaitingManager.NOT_REGISTED);
 
 		assertNull(student.getHandUpTime());
-		assertNull(student.getWaitingTime());
+		assertNull(student.getWaitingTime(LocalDateTime.now()));
 	}
 
 	@Test
@@ -157,18 +159,18 @@ public class StudentTest {
 
 	@Test
 	public void 手の上げ下げやサポートによってWaitingTimeが変わる() {
-		assertNull(student.getWaitingTime());
+		assertNull(student.getWaitingTime(LocalDateTime.now()));
 
 		student.handUp();
 
-		assertNotNull(student.getWaitingTime());
+		assertNotNull(student.getWaitingTime(LocalDateTime.now()));
 
 		student.supported();
 
-		assertNull(student.getWaitingTime());
+		assertNull(student.getWaitingTime(LocalDateTime.now()));
 
 		student.handDown();
 
-		assertNull(student.getWaitingTime());
+		assertNull(student.getWaitingTime(LocalDateTime.now()));
 	}
 }

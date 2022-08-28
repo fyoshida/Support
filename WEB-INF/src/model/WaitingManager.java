@@ -24,10 +24,10 @@ public class WaitingManager {
 		waitingList.remove(rank);
 		rankMap.remove(ipAddress);
 
-		resetRankMap(rank);
+		updateRankMap(rank);
 	}
 
-	public void resetRankMap(int unregistRank) {
+	public void updateRankMap(int unregistRank) {
 		for (IpAddress ipAddress : rankMap.keySet()) {
 			int rank = rankMap.get(ipAddress);
 			if (rank > unregistRank) {

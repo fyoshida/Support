@@ -30,7 +30,7 @@ public class IpAddress {
 		if(addresses.length !=ipAddress.addresses.length) {
 			return false;
 		}
-		for(int i=0;i<3;i++) {
+		for(int i=0;i<4;i++) {
 			if(addresses[i]!=ipAddress.addresses[i]) {
 				return false;
 			}

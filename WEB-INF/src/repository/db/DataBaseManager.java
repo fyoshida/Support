@@ -10,11 +10,17 @@ import java.util.LinkedList;
 abstract public class DataBaseManager {
 	static final String driver = "com.microsoft.sqlserver.jdbc.SQLServerDriver";
 
-	static final String dburl = "jdbc:sqlserver://mis.nagaokaut.ac.jp;DataBaseName=000000";
+	private final String dburl;
 
-	static final String dbuser = "000000";
+	private final String dbuser;
 
-	static final String dbpassword = "00000000";
+	private final String dbpassword;
+
+	public DataBaseManager(String dataBaseName,String userName,String passWord) {
+		this.dburl="jdbc:sqlserver://mis.nagaokaut.ac.jp;DataBaseName="+dataBaseName;
+		this.dbuser=userName;
+		this.dbpassword=passWord;
+	}
 
 	public void updateRecord(String query) {
 		Connection con = null;

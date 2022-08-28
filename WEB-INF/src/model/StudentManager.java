@@ -21,7 +21,7 @@ public class StudentManager {
 		}
 	}
 
-	public List<Student> getPcList() {
+	public List<Student> getStudentList() {
 		return (List<Student>) pcIpAddressMap.values();
 	}
 

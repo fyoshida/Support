@@ -1,7 +1,6 @@
 package servlet;
 
 import java.io.IOException;
-import java.net.InetAddress;
 
 import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
@@ -13,8 +12,6 @@ import javax.servlet.http.HttpServletResponse;
 import model.IpAddress;
 import model.Student;
 import model.StudentManager;
-import network.NetworkInterface;
-import network.ServletNetwork;
 import servlet.helper.NetworkHelper;
 
 @WebServlet(urlPatterns = { "/LoginServlet" })
@@ -27,22 +24,22 @@ public class LoginServlet extends HttpServlet {
 		req.setCharacterEncoding("UTF-8");
 		resp.setContentType("text/html;charset=UTF-8");
 
-		// PcManagerを取得
+		// StudentManagerを取得
 		ServletContext sc = getServletContext();
-		StudentManager pcManager=(StudentManager)sc.getAttribute("PcManager");
+		StudentManager studentManager=(StudentManager)sc.getAttribute("StudentManager");
 
 		// クライアントIPアドレスの取得
 		IpAddress ipAddress = NetworkHelper.getIpAddressWithServletNetwork(req);
 
-		if(pcManager.existPc(ipAddress)) {
-			// クライアントPCを取得
-			Student pc = pcManager.getPc(ipAddress);
+		if(studentManager.existStudent(ipAddress)) {
+			// 学生を取得
+			Student student = studentManager.getStudent(ipAddress);
 
 			// ログイン
-			pc.login("");
+			student.login("");
 
-			//pcManagerを保存.
-			sc.setAttribute("PcManager", pcManager);
+			//studentManagerを保存.
+			sc.setAttribute("StudentManager", studentManager);
 		}
 
 //		if(pc != null) {

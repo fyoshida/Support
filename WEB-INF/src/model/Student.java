@@ -86,11 +86,10 @@ public class Student {
 		return waitingManager.getPriority(pc.getIpAddress());
 	}
 
-	public Duration getWaitingTime() {
+	public Duration getWaitingTime(LocalDateTime currentTime) {
 		if (handUpTime == null) {
 			return null;
 		} else {
-			LocalDateTime currentTime = LocalDateTime.now();
 			return Duration.between(currentTime, handUpTime);
 		}
 	}

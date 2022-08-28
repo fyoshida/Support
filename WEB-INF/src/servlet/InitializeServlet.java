@@ -30,17 +30,18 @@ public class InitializeServlet extends HttpServlet {
 //		RepositoryInterface repository = new FileRepository("/WEB-INF/data/pcIdTable.csv");
 		RepositoryInterface repository = new DummyRepository();
 
-		List<Pc> pcBeanList;
+		List<Pc> pcList;
 		try {
-			// PcBeanの取得
-			pcBeanList = repository.getPcList();
+			// Pcの取得
+			pcList = repository.getPcList();
 
-			// PcManagerを生成
-			StudentManager pcManager=new StudentManager(pcBeanList);
+			// StudentManagerを生成
+			StudentManager studentManager=new StudentManager(pcList);
 
-			// PcListをServletContextに保存
+			// StudentManagerをServletContextに保存
 			ServletContext sc = getServletContext();
-			sc.setAttribute("PcManager", pcManager);
+			sc.setAttribute("StudentManager", studentManager);
+
 		} catch (Exception e) {
 			e.printStackTrace();
 		}

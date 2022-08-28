@@ -2,7 +2,6 @@ package servlet;
 
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.net.InetAddress;
 import java.util.List;
 
 import javax.servlet.ServletContext;
@@ -29,17 +28,17 @@ public class GetAllPcServlet extends HttpServlet {
 		req.setCharacterEncoding("UTF-8");
 		resp.setContentType("text/html;charset=UTF-8");
 
-		// PcManagerを取得
+		// StudentManagerを取得
 		ServletContext sc = getServletContext();
-		StudentManager pcManager=(StudentManager)sc.getAttribute("PcManager");
+		StudentManager studentManager=(StudentManager)sc.getAttribute("StudentManager");
 
-		// 全PCを取得
-		List<Student> pcList = pcManager.getPcList();
+		// 全学生を取得
+		List<Student> studentList = studentManager.getStudentList();
 
-		// Pc --> PcJson
-		List<PcJson> pcJsonList=PcJsonConverter.getPcJson(pcList);
+		// Student --> PcJson
+		List<PcJson> pcJsonList=PcJsonConverter.getPcJson(studentList);
 
-		// クライアントPCの情報をJSON形式で出力
+		// JSON形式で出力
 		PrintWriter out = resp.getWriter();
 		String jsonText = JsonConverter.getJsonText(pcJsonList);
 		out.println(jsonText);

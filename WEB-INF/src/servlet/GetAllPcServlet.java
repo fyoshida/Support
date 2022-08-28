@@ -6,7 +6,6 @@ import java.util.List;
 
 import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
-import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -17,11 +16,11 @@ import servlet.helper.JsonConverter;
 import servlet.helper.PcJson;
 import servlet.helper.PcJsonConverter;
 
-@WebServlet(urlPatterns = { "/v1/" })
+//@WebServlet(urlPatterns = { "/v1/" })
 //whoamiの応答関数
 public class GetAllPcServlet extends HttpServlet {
 
-	protected void doGet(HttpServletRequest req, HttpServletResponse resp)
+	public void doGet(HttpServletRequest req, HttpServletResponse resp)
 			throws ServletException, IOException {
 
 		// 設定（文字コード、Session）

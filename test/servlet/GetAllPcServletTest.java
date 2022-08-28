@@ -4,6 +4,9 @@ import static org.junit.Assert.*;
 
 import java.io.IOException;
 import java.net.MalformedURLException;
+import java.util.HashMap;
+import java.util.LinkedList;
+import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 
@@ -12,25 +15,23 @@ import javax.servlet.ServletException;
 import org.junit.Test;
 
 import common.TestServlet;
+import model.Pc;
 import model.StudentManager;
 
-public class InitializeServletTest extends TestServlet {
+public class GetAllPcServletTest extends TestServlet {
 
-	private static final String SERVLET_NAME = "InitializeServlet";
+	private static final String SERVLET_NAME = "GetAllPcServlet";
 
 	@Test
 	public void servletにGetメソッドでアクセスできる() throws Exception {
-		getMessages();
-		assertNotNull(webResponse);
-	}
-
-	@Test
-	public void GetメソッドでアクセスするとServletContextにStudentManagerが取得できる() throws Exception {
-		getMessages();
-		assertNotNull(webResponse);
+		List<Pc> pcList=new LinkedList<Pc>();
+		StudentManager studentManager=new StudentManager(pcList);
 		
-		StudentManager studentManager =(StudentManager)servletContext.getAttribute("StudentManager");
-		assertEquals(studentManager.getStudentList().size(),62);
+		Map<String,Object> scParameters=new HashMap<String,Object>();
+		scParameters.put("StudentManager", studentManager);
+		
+		getMessages(scParameters);
+		assertNotNull(webResponse);
 	}
 	
 	protected void getMessages(Map<String,Object> scParameters) throws MalformedURLException, IOException, ServletException, Exception {
@@ -69,4 +70,6 @@ public class InitializeServletTest extends TestServlet {
 		startServer();
 		callServlet();
 	}
+
+
 }

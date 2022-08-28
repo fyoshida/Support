@@ -9,6 +9,8 @@ import java.util.Map.Entry;
 
 import javax.servlet.ServletException;
 
+import org.junit.After;
+import org.junit.Before;
 import org.junit.Test;
 
 import common.TestServlet;
@@ -16,7 +18,14 @@ import model.StudentManager;
 
 public class InitializeServletTest extends TestServlet {
 
-	private static final String SERVLET_NAME = "InitializeServlet";
+	private static String SERVLET_NAME = "InitializeServlet";
+
+	@Before
+	public void setUp() throws Exception {
+		super.setUp();
+
+		registServlet("InitializeServlet");
+	}
 
 	@Test
 	public void servletにGetメソッドでアクセスできる() throws Exception {
@@ -28,11 +37,11 @@ public class InitializeServletTest extends TestServlet {
 	public void GetメソッドでアクセスするとServletContextにStudentManagerが取得できる() throws Exception {
 		getMessages();
 		assertNotNull(webResponse);
-		
+
 		StudentManager studentManager =(StudentManager)servletContext.getAttribute("StudentManager");
 		assertEquals(studentManager.getStudentList().size(),62);
 	}
-	
+
 	protected void getMessages(Map<String,Object> scParameters) throws MalformedURLException, IOException, ServletException, Exception {
 		setServletName(SERVLET_NAME);
 		setMethodType(MethodType.GET);
@@ -45,7 +54,7 @@ public class InitializeServletTest extends TestServlet {
 	}
 
 	protected void getMessages() throws MalformedURLException, IOException, ServletException, Exception {
-		setServletName(SERVLET_NAME);
+		setServletName("InitializeServlet");
 		setMethodType(MethodType.GET);
 
 		startServer();
@@ -68,5 +77,10 @@ public class InitializeServletTest extends TestServlet {
 		webRequest.setParameter("Name", name);
 		startServer();
 		callServlet();
+	}
+
+	@After
+	public void tearDown() {
+		super.tearDown();
 	}
 }

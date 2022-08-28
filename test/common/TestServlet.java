@@ -114,6 +114,19 @@ public class TestServlet {
 		session = request.getSession();
 	}
 
+	protected void startServer2() throws MalformedURLException, IOException, ServletException{
+		sc = sr.newClient();
+		sc.setHeaderField("Cookie", sessionID);
+		ic = sc.newInvocation(webRequest);
+
+		servlet = ic.getServlet();
+		request = ic.getRequest();
+		servletContext = servlet.getServletConfig().getServletContext();
+		response = ic.getResponse();
+		session = request.getSession();
+
+	}
+
 	protected void callServlet() throws Exception {
 		Method m = servlet.getClass().getMethod(methodName,
 				new Class[] { HttpServletRequest.class, HttpServletResponse.class });

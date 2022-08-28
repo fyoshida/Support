@@ -19,7 +19,7 @@ import repository.dummy.DummyRepository;
 //active-seatsの応答関数
 public class InitializeServlet extends HttpServlet {
 
-	protected void doGet(HttpServletRequest req, HttpServletResponse resp)
+	public void doGet(HttpServletRequest req, HttpServletResponse resp)
 			throws ServletException, IOException {
 
 		// 設定（文字コード、Session）

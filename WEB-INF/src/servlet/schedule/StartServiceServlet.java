@@ -20,18 +20,18 @@ import javax.servlet.ServletContextListener;
 import javax.servlet.annotation.WebListener;
 
 import model.HelpStatus;
-import model.Pc;
-import model.PcManager;
+import model.Student;
+import model.StudentManager;
 
 
 @WebListener
 public class StartServiceServlet implements ServletContextListener {
-	private static PcManager pcListManager;
+	private static StudentManager pcListManager;
 
 	private ScheduleManager schedule=null;
 
 	//-----------アクセッサ-----------------------------------------------------------------
-	public static PcManager getPcListManager() {
+	public static StudentManager getPcListManager() {
 		return pcListManager;
 	}
 

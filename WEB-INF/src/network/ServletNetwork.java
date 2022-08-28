@@ -5,7 +5,7 @@ import java.net.UnknownHostException;
 
 import javax.servlet.http.HttpServletRequest;
 
-import model.Pc;
+import model.Student;
 
 public class ServletNetwork implements NetworkInterface {
 	private HttpServletRequest req;

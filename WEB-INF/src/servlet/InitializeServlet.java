@@ -10,8 +10,8 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import model.PcBean;
-import model.PcManager;
+import model.Pc;
+import model.StudentManager;
 import repository.RepositoryInterface;
 import repository.dummy.DummyRepository;
 
@@ -30,13 +30,13 @@ public class InitializeServlet extends HttpServlet {
 //		RepositoryInterface repository = new FileRepository("/WEB-INF/data/pcIdTable.csv");
 		RepositoryInterface repository = new DummyRepository();
 
-		List<PcBean> pcBeanList;
+		List<Pc> pcBeanList;
 		try {
 			// PcBeanの取得
 			pcBeanList = repository.getPcList();
 
 			// PcManagerを生成
-			PcManager pcManager=new PcManager(pcBeanList);
+			StudentManager pcManager=new StudentManager(pcBeanList);
 
 			// PcListをServletContextに保存
 			ServletContext sc = getServletContext();

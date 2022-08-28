@@ -4,7 +4,7 @@ import java.util.LinkedList;
 import java.util.List;
 
 import model.IpAddress;
-import model.PcBean;
+import model.Pc;
 import repository.RepositoryInterface;
 
 public class DummyRepository implements RepositoryInterface{
@@ -83,17 +83,15 @@ public class DummyRepository implements RepositoryInterface{
 		};
 
 	@Override
-	public List<PcBean> getPcList() {
-		List<PcBean> pcList = new LinkedList<PcBean>();
+	public List<Pc> getPcList() {
+		List<Pc> pcList = new LinkedList<Pc>();
 
 		for(int i=0;i<pcDataArray.length;i++) {
 			String hostName =pcDataArray[i][0];
 			IpAddress ipAddress =new IpAddress(pcDataArray[i][1]);
 			boolean student=Boolean.parseBoolean(pcDataArray[i][2]);
 
-			PcBean pc = new PcBean();
-			pc.setIpAddress(ipAddress);
-			pc.setHostName(hostName);
+			Pc pc = new Pc(ipAddress,hostName);
 			pc.setStudent(student);
 
 			pcList.add(pc);

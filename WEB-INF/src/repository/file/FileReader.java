@@ -8,11 +8,11 @@ import java.util.LinkedList;
 import java.util.List;
 
 import model.IpAddress;
-import model.PcBean;
+import model.Pc;
 
 public class FileReader {
 
-	public List<PcBean> getPcListFromFile(String fileName) throws Exception {
+	public List<Pc> getPcListFromFile(String fileName) throws Exception {
 		List<String> lines = getLinesFromFile(fileName);
 		return getPcListFromLines(lines);
 	}
@@ -34,19 +34,19 @@ public class FileReader {
 	}
 
 	// 全行分の文字列からPcListを生成
-	List<PcBean> getPcListFromLines(List<String> lines) throws Exception {
-		List<PcBean> pcList = new LinkedList<PcBean>();
+	List<Pc> getPcListFromLines(List<String> lines) throws Exception {
+		List<Pc> pcList = new LinkedList<Pc>();
 
 		for (String line : lines) {
-			PcBean pcBean = getPcInfoFromLine(line);
-			pcList.add(pcBean);
+			Pc pc = getPcInfoFromLine(line);
+			pcList.add(pc);
 		}
 
 		return pcList;
 	}
 
 	// 1行分の文字列からPcを生成
-	PcBean getPcInfoFromLine(String line) throws Exception {
+	Pc getPcInfoFromLine(String line) throws Exception {
 		//カンマで分割した内容を配列に格納する
 		String[] lineData = line.split(",");
 		String hostName = lineData[0];
@@ -54,9 +54,7 @@ public class FileReader {
 		boolean isStudent = Boolean.valueOf(lineData[2]);
 
 		//読み込んだ行をPcクラスに格納
-		PcBean pc = new PcBean();
-		pc.setHostName(hostName);
-		pc.setIpAddress(ipAddress);
+		Pc pc = new Pc(ipAddress,hostName);
 		pc.setStudent(isStudent);
 		return pc;
 	}

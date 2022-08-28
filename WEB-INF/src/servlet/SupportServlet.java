@@ -17,8 +17,8 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 
 import model.HelpStatus;
 import model.IpAddress;
-import model.Pc;
-import model.PcManager;
+import model.Student;
+import model.StudentManager;
 import network.NetworkInterface;
 import network.ServletNetwork;
 import servlet.helper.JsonConverter;
@@ -40,13 +40,13 @@ public class SupportServlet extends HttpServlet {
 
 		// PcManagerを取得
 		ServletContext sc = getServletContext();
-		PcManager pcManager = (PcManager) sc.getAttribute("PcManager");
+		StudentManager pcManager = (StudentManager) sc.getAttribute("PcManager");
 
 		// クライアントIPアドレスの取得
 		IpAddress ipAddress = NetworkHelper.getIpAddressWithServletNetwork(req);
 
 		// クライアントPCを取得
-		Pc pc = pcManager.getPc(ipAddress);
+		Student pc = pcManager.getPc(ipAddress);
 
 		if (pc == null) {
 			req.getRequestDispatcher("/error.html").forward(req, resp);
@@ -57,7 +57,7 @@ public class SupportServlet extends HttpServlet {
 		pc.supported();
 
 		// 全PCを取得
-		List<Pc> pcList = pcManager.getPcList();
+		List<Student> pcList = pcManager.getPcList();
 
 		// Pc --> PcJson
 		List<PcJson> pcJsonList=PcJsonConverter.getPcJson(pcList);

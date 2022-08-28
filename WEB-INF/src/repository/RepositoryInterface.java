@@ -2,8 +2,8 @@ package repository;
 
 import java.util.List;
 
-import model.PcBean;
+import model.Pc;
 
 public interface RepositoryInterface {
-	public List<PcBean> getPcList() throws Exception;
+	public List<Pc> getPcList() throws Exception;
 }

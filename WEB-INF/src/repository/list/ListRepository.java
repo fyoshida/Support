@@ -2,18 +2,18 @@ package repository.list;
 
 import java.util.List;
 
-import model.PcBean;
+import model.Pc;
 import repository.RepositoryInterface;
 
 public class ListRepository implements RepositoryInterface {
-	final private List<PcBean> pcClientList;
+	final private List<Pc> pcClientList;
 
-	public ListRepository(List<PcBean> pcClientList) {
+	public ListRepository(List<Pc> pcClientList) {
 		this.pcClientList = pcClientList;
 	}
 
 	@Override
-	public List<PcBean> getPcList() {
+	public List<Pc> getPcList() {
 		return pcClientList;
 	}
 

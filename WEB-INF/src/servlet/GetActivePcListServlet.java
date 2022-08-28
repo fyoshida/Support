@@ -15,8 +15,8 @@ import javax.servlet.http.HttpServletResponse;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
-import model.Pc;
-import model.PcManager;
+import model.Student;
+import model.StudentManager;
 import servlet.helper.JsonConverter;
 import servlet.helper.PcJson;
 import servlet.helper.PcJsonConverter;
@@ -34,10 +34,10 @@ public class GetActivePcListServlet extends HttpServlet {
 
 		// PcManagerを取得
 		ServletContext sc = getServletContext();
-		PcManager pcManager=(PcManager)sc.getAttribute("PcManager");
+		StudentManager pcManager=(StudentManager)sc.getAttribute("PcManager");
 
 		// アクティブなPCを取得
-		List<Pc> pcList = pcManager.getPcList();
+		List<Student> pcList = pcManager.getPcList();
 
 		// Pc --> PcJson
 		List<PcJson> pcJsonList=PcJsonConverter.getPcJson(pcList);

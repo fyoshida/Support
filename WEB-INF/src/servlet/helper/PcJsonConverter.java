@@ -3,11 +3,11 @@ package servlet.helper;
 import java.util.LinkedList;
 import java.util.List;
 
-import model.Pc;
+import model.Student;
 
 public class PcJsonConverter {
 
-	public static PcJson getPcJson(Pc pc) {
+	public static PcJson getPcJson(Student pc) {
 		PcJson pcJson=new PcJson();
 
 		pcJson.setPcId(pc.getHostName());
@@ -20,10 +20,10 @@ public class PcJsonConverter {
 		return pcJson;
 	}
 
-	public static List<PcJson> getPcJson(List<Pc> pcList) {
+	public static List<PcJson> getPcJson(List<Student> pcList) {
 		List<PcJson> pcJsonList = new LinkedList<PcJson>();
 
-		for(Pc pc : pcList) {
+		for(Student pc : pcList) {
 			PcJson pcJson = getPcJson(pc);
 			pcJsonList.add(pcJson);
 		}

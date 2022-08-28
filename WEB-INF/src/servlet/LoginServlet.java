@@ -11,8 +11,8 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import model.IpAddress;
-import model.Pc;
-import model.PcManager;
+import model.Student;
+import model.StudentManager;
 import network.NetworkInterface;
 import network.ServletNetwork;
 import servlet.helper.NetworkHelper;
@@ -29,14 +29,14 @@ public class LoginServlet extends HttpServlet {
 
 		// PcManagerを取得
 		ServletContext sc = getServletContext();
-		PcManager pcManager=(PcManager)sc.getAttribute("PcManager");
+		StudentManager pcManager=(StudentManager)sc.getAttribute("PcManager");
 
 		// クライアントIPアドレスの取得
 		IpAddress ipAddress = NetworkHelper.getIpAddressWithServletNetwork(req);
 
 		if(pcManager.existPc(ipAddress)) {
 			// クライアントPCを取得
-			Pc pc = pcManager.getPc(ipAddress);
+			Student pc = pcManager.getPc(ipAddress);
 
 			// ログイン
 			pc.login("");

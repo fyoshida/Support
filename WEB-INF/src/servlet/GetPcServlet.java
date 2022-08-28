@@ -11,8 +11,8 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import model.IpAddress;
-import model.Pc;
-import model.PcManager;
+import model.Student;
+import model.StudentManager;
 import servlet.helper.JsonConverter;
 import servlet.helper.NetworkHelper;
 import servlet.helper.PcJson;
@@ -31,13 +31,13 @@ public class GetPcServlet extends HttpServlet {
 
 		// PcManagerを取得
 		ServletContext sc = getServletContext();
-		PcManager pcManager=(PcManager)sc.getAttribute("PcManager");
+		StudentManager pcManager=(StudentManager)sc.getAttribute("PcManager");
 
 		// クライアントIPアドレスの取得
 		IpAddress ipAddress = NetworkHelper.getIpAddressWithServletNetwork(req);
 
 		// クライアントPCを取得
-		Pc pc = pcManager.getPc(ipAddress);
+		Student pc = pcManager.getPc(ipAddress);
 
 		if (pc != null) {
 			// Pc --> PcJson

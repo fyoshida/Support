@@ -10,7 +10,7 @@ import java.util.List;
 
 import org.junit.Test;
 
-import model.Pc;
+import model.Student;
 
 public class PcListFileReaderTest{
 

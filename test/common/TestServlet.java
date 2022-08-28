@@ -1,12 +1,11 @@
 package common;
 
-import java.io.File;
 import java.io.IOException;
 import java.lang.reflect.Method;
 import java.net.MalformedURLException;
-import java.util.ArrayList;
-import java.util.List;
 
+import javax.servlet.Servlet;
+import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -41,11 +40,11 @@ public class TestServlet {
 	private ServletRunner sr;
 	private ServletUnitClient sc;
 	private InvocationContext ic;
-	Object servlet;
+	private Servlet servlet;
 
 	protected WebRequest webRequest;
 	protected WebResponse webResponse;
-
+	protected ServletContext servletContext;
 	protected HttpServletRequest request;
 	protected HttpServletResponse response;
 	protected HttpSession session;
@@ -110,6 +109,7 @@ public class TestServlet {
 
 		servlet = ic.getServlet();
 		request = ic.getRequest();
+		servletContext = servlet.getServletConfig().getServletContext();
 		response = ic.getResponse();
 		session = request.getSession();
 	}

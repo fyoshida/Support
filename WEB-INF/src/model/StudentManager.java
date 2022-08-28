@@ -22,7 +22,13 @@ public class StudentManager {
 	}
 
 	public List<Student> getStudentList() {
-		return (List<Student>) pcIpAddressMap.values();
+		List<Student> studentList = new LinkedList<Student>();
+
+		for(Student student : pcIpAddressMap.values()) {
+			studentList.add(student);
+		}
+
+		return studentList;
 	}
 
 	public Student getStudent(IpAddress ipAddress) {

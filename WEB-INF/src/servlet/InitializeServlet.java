@@ -30,10 +30,9 @@ public class InitializeServlet extends HttpServlet {
 //		RepositoryInterface repository = new FileRepository("/WEB-INF/data/pcIdTable.csv");
 		RepositoryInterface repository = new DummyRepository();
 
-		List<Pc> pcList;
 		try {
 			// Pcの取得
-			pcList = repository.getPcList();
+			List<Pc> pcList = repository.getPcList();
 
 			// StudentManagerを生成
 			StudentManager studentManager=new StudentManager(pcList);

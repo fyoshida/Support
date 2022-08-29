@@ -14,6 +14,7 @@ import model.Pc;
 import model.StudentManager;
 import network.DummyNetwork;
 import network.INetwork;
+import network.NetworkFactory;
 import repository.IRepository;
 import repository.RepositoryFactory;
 import repository.dummy.DummyRepository;
@@ -31,9 +32,6 @@ public class InitializeServlet extends HttpServlet {
 
 		// リポジトリを取得
 		IRepository repository=RepositoryFactory.getRepository();
-
-		// ネットワークを取得
-		INetwork network=new DummyNetwork();
 
 		try {
 			// Pcの取得

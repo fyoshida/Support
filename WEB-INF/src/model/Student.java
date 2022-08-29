@@ -23,11 +23,6 @@ public class Student {
 		this.waitingManager = waitingManager;
 	}
 
-	//	//--------equals--------------
-	//	public boolean equals(Student pc) {
-	//		return ipAddress.equals(pc.getIpAddress());
-	//	}
-
 	//--------アクセッサ--------------
 	public Pc getPc() {
 		return pc;

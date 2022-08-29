@@ -34,14 +34,18 @@ public class WaitingManager {
 				rankMap.put(ipAddress, rank - 1);
 			}
 		}
-
 	}
 
 	public int getPriority(IpAddress ipAddress) {
 		if (!rankMap.containsKey(ipAddress)) {
-			return 999;
+			return NOT_REGISTED;
 		} else {
 			return rankMap.get(ipAddress) + 1;
 		}
+	}
+
+	public void clrar() {
+		waitingList.clear();
+		rankMap.clear();
 	}
 }

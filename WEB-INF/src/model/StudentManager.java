@@ -4,6 +4,7 @@ import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
+import static org.apache.commons.lang3.Validate.*;
 
 public class StudentManager {
 
@@ -12,6 +13,7 @@ public class StudentManager {
 	private final WaitingManager waitingManager = new WaitingManager();
 
 	public StudentManager(List<Pc> pcList) {
+		notNull(pcList);
 		for (Pc pc : pcList) {
 			Student student = new Student(pc, waitingManager);
 			if (pc.isStudent()) {
@@ -31,6 +33,21 @@ public class StudentManager {
 		return studentList;
 	}
 
+	public List<Student> getHandUpStudent() {
+		List<Student> pcList = new LinkedList<Student>();
+
+		for (Student student : pcIpAddressMap.values()) {
+			switch (student.getHelpStatus()) {
+			case None:
+				break;
+			default:
+				pcList.add(student);
+			}
+		}
+
+		return pcList;
+	}
+
 	public Student getStudent(IpAddress ipAddress) {
 		return pcIpAddressMap.get(ipAddress);
 	}
@@ -47,20 +64,7 @@ public class StudentManager {
 		return pcHostNameMap.containsKey(hostName);
 	}
 
-	public List<Student> getHandUpStudent() {
-		List<Student> pcList = new LinkedList<Student>();
 
-		for (Student pc : pcIpAddressMap.values()) {
-			switch (pc.getHelpStatus()) {
-			case None:
-				break;
-			default:
-				pcList.add(pc);
-			}
-		}
-
-		return pcList;
-	}
 
 
 }

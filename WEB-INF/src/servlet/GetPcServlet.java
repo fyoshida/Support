@@ -13,6 +13,8 @@ import javax.servlet.http.HttpServletResponse;
 import model.IpAddress;
 import model.Student;
 import model.StudentManager;
+import network.DummyNetwork;
+import network.NetworkInterface;
 import servlet.helper.JsonConverter;
 import servlet.helper.NetworkHelper;
 import servlet.helper.PcJson;
@@ -22,7 +24,7 @@ import servlet.helper.PcJsonConverter;
 //whoamiの応答関数
 public class GetPcServlet extends HttpServlet {
 
-	protected void doGet(HttpServletRequest req, HttpServletResponse resp)
+	public void doGet(HttpServletRequest req, HttpServletResponse resp)
 			throws ServletException, IOException {
 
 		// 設定（文字コード、Session）
@@ -31,13 +33,17 @@ public class GetPcServlet extends HttpServlet {
 
 		// StudentManagerを取得
 		ServletContext sc = getServletContext();
-		StudentManager pcManager = (StudentManager) sc.getAttribute("StudentManager");
+		StudentManager studentManager = (StudentManager) sc.getAttribute("StudentManager");
 
 		// クライアントIPアドレスの取得
-		IpAddress ipAddress = NetworkHelper.getIpAddressWithServletNetwork(req);
+		//		IpAddress ipAddress = NetworkHelper.getIpAddressWithServletNetwork(req);
+
+		NetworkInterface network = new DummyNetwork("133.44.118.158","ics801");
+		String ipAddressString = network.getClientIpAddress();
+		IpAddress ipAddress = new IpAddress(ipAddressString);
 
 		// 学生を取得
-		Student student = pcManager.getStudent(ipAddress);
+		Student student = studentManager.getStudent(ipAddress);
 		if (student == null) {
 			req.getRequestDispatcher("/error.html").forward(req, resp);
 			return;

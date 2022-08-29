@@ -12,6 +12,8 @@ import javax.servlet.http.HttpServletResponse;
 
 import model.Pc;
 import model.StudentManager;
+import network.DummyNetwork;
+import network.NetworkInterface;
 import repository.RepositoryInterface;
 import repository.dummy.DummyRepository;
 
@@ -26,9 +28,12 @@ public class InitializeServlet extends HttpServlet {
 		req.setCharacterEncoding("UTF-8");
 		resp.setContentType("text/html;charset=UTF-8");
 
-		// 全PC情報を取得
+		// リポジトリを設定
 //		RepositoryInterface repository = new FileRepository("/WEB-INF/data/pcIdTable.csv");
 		RepositoryInterface repository = new DummyRepository();
+
+		// ネットワークを設定
+		NetworkInterface network=new DummyNetwork();
 
 		try {
 			// Pcの取得

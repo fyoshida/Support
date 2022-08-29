@@ -11,7 +11,7 @@ import network.NetworkType;
 import repository.RepositoryFactory;
 import repository.RepositoryType;
 
-public class GetPcServletTest extends TestServletBase {
+public class HandUpServletTest extends TestServletBase {
 
 	@BeforeClass
 	public static void リポジトリとネットワークを設定() {
@@ -23,13 +23,14 @@ public class GetPcServletTest extends TestServletBase {
 	public void setUp() throws Exception {
 		super.setUp();
 		registServlet("InitializeServlet");
-		registServlet("GetPcServlet");
+		registServlet("HandUpServlet");
 	}
 
 	@Test
-	public void GetメソッドでアクセスするとアクセスしたPCの情報を取得できる() throws Exception {
+	public void GETメソッドでアクセスすると手を上げて全PCの情報を取得できる() throws Exception {
 		getMessages("InitializeServlet");
-		getMessages("GetPcServlet");
+		webRequest.setParameter("HostName", ""+NetworkFactory.hostName);
+		getMessages("HandUpServlet");
 		String response = webResponse.getText();
 //		System.out.println(response);
 		assertNotNull(webResponse);

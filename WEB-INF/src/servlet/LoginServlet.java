@@ -12,12 +12,13 @@ import javax.servlet.http.HttpServletResponse;
 import model.IpAddress;
 import model.Student;
 import model.StudentManager;
-import servlet.helper.NetworkHelper;
+import network.INetwork;
+import network.NetworkFactory;
 
 @WebServlet(urlPatterns = { "/LoginServlet" })
 public class LoginServlet extends HttpServlet {
 
-	protected void doPost(HttpServletRequest req, HttpServletResponse resp)
+	public void doPost(HttpServletRequest req, HttpServletResponse resp)
 			throws ServletException, IOException {
 
 		// 設定（文字コード、Session）
@@ -29,7 +30,9 @@ public class LoginServlet extends HttpServlet {
 		StudentManager studentManager=(StudentManager)sc.getAttribute("StudentManager");
 
 		// クライアントIPアドレスの取得
-		IpAddress ipAddress = NetworkHelper.getIpAddressWithServletNetwork(req);
+		INetwork network = NetworkFactory.getNetwork(req);
+		String ipAddressString = network.getClientIpAddress();
+		IpAddress ipAddress = new IpAddress(ipAddressString);
 
 		if(studentManager.existStudent(ipAddress)) {
 			// 学生を取得

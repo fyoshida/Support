@@ -5,8 +5,6 @@ import java.net.UnknownHostException;
 
 import javax.servlet.http.HttpServletRequest;
 
-import model.Student;
-
 public class ServletNetwork implements INetwork {
 	private HttpServletRequest req;
 
@@ -35,11 +33,12 @@ public class ServletNetwork implements INetwork {
 
 	@Override
 	public String getClientHostName() {
-		String url = req.getRequestURI();
-
-		int beginIdx = url.lastIndexOf("/"); //icsのsの位置を取得
-		String clientId = url.substring(beginIdx + 1); //実際は番号だけ知りたいので+1する
-
-		return clientId;
+		return req.getParameter("HostName");
+//		String url = req.getRequestURI();
+//
+//		int beginIdx = url.lastIndexOf("/"); //icsのsの位置を取得
+//		String clientId = url.substring(beginIdx + 1); //実際は番号だけ知りたいので+1する
+//
+//		return clientId;
 	}
 }

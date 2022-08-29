@@ -1,7 +1,6 @@
-package servlet.helper;
+package helper;
 
 import java.net.InetAddress;
-import java.net.UnknownHostException;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -9,7 +8,7 @@ import model.IpAddress;
 import network.INetwork;
 import network.ServletNetwork;
 
-public class NetworkHelper {
+public class _NetworkHelper {
 	public static IpAddress getIpAddressWithServletNetwork(HttpServletRequest req) {
 		IpAddress ipAddress = null;
 
@@ -41,9 +40,4 @@ public class NetworkHelper {
 		return ipAddress;
 	}
 
-//	public static IpAddress getIpAddress(HttpServletRequest req) {
-//		NetworkInterface network = new ServletNetwork(req);
-//		String clientId = network.getClientId();
-//		IpAddress ipAddress = new IpAddress(clientId);
-//	}
 }

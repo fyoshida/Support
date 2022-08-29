@@ -1,16 +1,13 @@
-package servlet.helper;
+package helper;
 
 import static org.junit.Assert.*;
 
 import org.junit.Before;
 import org.junit.Test;
 
-public class PcJsonTest {
+import helper.PcJson;
 
-	protected String helpStatus = null; // 手を挙げていない: None
-											//	手を挙げている: Troubled
-											// TA教員対応中: Supporting
-	protected int handPriority = -1;
+public class PcJsonTest {
 
 	public static final String IPADDRESS_GATEWAY = "133.44.118.254";
 	private PcJson pcJson;
@@ -53,6 +50,10 @@ public class PcJsonTest {
 
 	@Test
 	public void 属性HelpStatusをアクセッサで読み書きできる() {
+		//手を挙げていない: None
+		//手を挙げている: Troubled
+		//TA教員対応中: Supporting
+
 		pcJson.setHelpStatus("None");
 		assertEquals(pcJson.getHelpStatus(),"None");
 

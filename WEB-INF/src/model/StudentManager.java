@@ -1,15 +1,16 @@
 package model;
 
-import java.util.HashMap;
+import static org.apache.commons.lang3.Validate.*;
+
+import java.util.LinkedHashMap;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
-import static org.apache.commons.lang3.Validate.*;
 
 public class StudentManager {
 
-	private final Map<IpAddress, Student> pcIpAddressMap = new HashMap<IpAddress, Student>();
-	private final Map<String, Student> pcHostNameMap = new HashMap<String, Student>();
+	private final Map<IpAddress, Student> pcIpAddressMap = new LinkedHashMap<IpAddress, Student>();
+	private final Map<String, Student> pcHostNameMap = new LinkedHashMap<String, Student>();
 	private final WaitingManager waitingManager = new WaitingManager();
 
 	public StudentManager(List<Pc> pcList) {

@@ -1,11 +1,19 @@
+・StudentManager
+  ・clear()のテスト
+  ・getList()のテスト
+  ・IPaddress（異なるインスタンス）での動作確認
+・残りのServletのテスト
+・webResponseのJSON出力のテスト
+・シナリオテスト
+・クライアントの動作確認、および修正
+
+・assertThatへの変更
+
+------------------------------------------------
 ・ScheduleManagerの使い方
 ・JacksonでのList出力
 ・クライアントIPの取得方法
 ・@WebListener
-
-・モデルの設計をどうするか
-
-・クライアントをIPで識別したり、送信文字列で識別してるのは何のため
 
 ・lastRequestTime=最新のリクエスト日時
 （目的）

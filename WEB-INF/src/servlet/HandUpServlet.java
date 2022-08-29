@@ -11,19 +11,19 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import model.IpAddress;
+import helper.JsonConverter;
+import helper.PcJson;
+import helper.PcJsonConverter;
 import model.Student;
 import model.StudentManager;
-import servlet.helper.JsonConverter;
-import servlet.helper.NetworkHelper;
-import servlet.helper.PcJson;
-import servlet.helper.PcJsonConverter;
+import network.INetwork;
+import network.NetworkFactory;
 
 @WebServlet(urlPatterns = { "/v1/call/*" })
 //call-teacher/XXXの応答関数
 public class HandUpServlet extends HttpServlet {
 
-	protected void doPost(HttpServletRequest req, HttpServletResponse resp)
+	public void doGet(HttpServletRequest req, HttpServletResponse resp)
 			throws ServletException, IOException {
 
 		// 設定（文字コード、Session）
@@ -34,11 +34,12 @@ public class HandUpServlet extends HttpServlet {
 		ServletContext sc = getServletContext();
 		StudentManager studentManager=(StudentManager)sc.getAttribute("StudentManager");
 
-		// クライアントIPアドレスの取得
-		IpAddress ipAddress = NetworkHelper.getIpAddressWithServletNetwork(req);
+		// クライアントのHostNameを取得
+		INetwork network = NetworkFactory.getNetwork(req);
+		String hostName = network.getClientHostName();
 
 		// 学生を取得
-		Student student = studentManager.getStudent(ipAddress);
+		Student student = studentManager.getStudent(hostName);
 		if (student == null) {
 			req.getRequestDispatcher("/error.html").forward(req,resp);
 			return;

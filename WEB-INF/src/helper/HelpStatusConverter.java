@@ -1,4 +1,4 @@
-package servlet.helper;
+package helper;
 
 import model.HelpStatus;
 

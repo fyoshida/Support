@@ -1,8 +1,9 @@
-package servlet.helper;
+package helper;
 
 import java.util.List;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 
@@ -39,6 +40,23 @@ public class JsonConverter {
 		}
 
 		return jsonText;
+	}
+	
+	public static List<PcJson> getPcJsonList(String jsonText) throws JsonProcessingException{
+		List<PcJson> pcJsonList=null;
+
+		if(jsonText == null ) {
+			return null;
+		}
+
+		ObjectMapper mapper = new ObjectMapper();
+		try {
+			pcJsonList = mapper.readValue(jsonText, new TypeReference<>() {});
+		} catch (JsonProcessingException e) {
+			e.printStackTrace();
+		}
+
+		return pcJsonList;
 	}
 
 

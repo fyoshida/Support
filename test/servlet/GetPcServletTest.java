@@ -19,7 +19,7 @@ public class GetPcServletTest extends TestServletBase {
 		getMessages("InitializeServlet");
 		getMessages("GetPcServlet");
 		String response = webResponse.getText();
-		System.out.println(response);
+//		System.out.println(response);
 		assertNotNull(webResponse);
 	}
 }

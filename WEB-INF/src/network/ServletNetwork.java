@@ -7,7 +7,7 @@ import javax.servlet.http.HttpServletRequest;
 
 import model.Student;
 
-public class ServletNetwork implements NetworkInterface {
+public class ServletNetwork implements INetwork {
 	private HttpServletRequest req;
 
 	public ServletNetwork(HttpServletRequest req) {

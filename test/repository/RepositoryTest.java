@@ -29,7 +29,7 @@ abstract public class RepositoryTest {
 
 	protected String hostNameGateWay="icsGateWay";
 
-	protected RepositoryInterface repository;
+	protected IRepository repository;
 
 	@Before
 	public void setUp() {

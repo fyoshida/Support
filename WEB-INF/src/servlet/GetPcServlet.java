@@ -14,7 +14,7 @@ import model.IpAddress;
 import model.Student;
 import model.StudentManager;
 import network.DummyNetwork;
-import network.NetworkInterface;
+import network.INetwork;
 import network.ServletNetwork;
 import servlet.helper.JsonConverter;
 import servlet.helper.NetworkHelper;
@@ -37,11 +37,9 @@ public class GetPcServlet extends HttpServlet {
 		StudentManager studentManager = (StudentManager) sc.getAttribute("StudentManager");
 
 		// クライアントIPアドレスの取得
-		NetworkInterface network = new ServletNetwork(req);
+//		NetworkInterface network = new ServletNetwork(req);
 
-		//		IpAddress ipAddress = NetworkHelper.getIpAddressWithServletNetwork(req);
-
-//		NetworkInterface network = new DummyNetwork("133.44.118.158","ics801");
+		INetwork network = new DummyNetwork("133.44.118.158","ics801");
 		String ipAddressString = network.getClientIpAddress();
 		IpAddress ipAddress = new IpAddress(ipAddressString);
 

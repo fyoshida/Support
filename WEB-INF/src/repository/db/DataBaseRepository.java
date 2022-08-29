@@ -5,9 +5,9 @@ import java.util.List;
 
 import model.IpAddress;
 import model.Pc;
-import repository.RepositoryInterface;
+import repository.IRepository;
 
-public class DataBaseRepository extends DataBaseManager implements RepositoryInterface{
+public class DataBaseRepository extends DataBaseManager implements IRepository{
 
 	public DataBaseRepository(String dataBaseName,String userName,String passWord) {
 		super(dataBaseName,userName,passWord);

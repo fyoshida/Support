@@ -5,9 +5,9 @@ import java.util.List;
 
 import model.IpAddress;
 import model.Pc;
-import repository.RepositoryInterface;
+import repository.IRepository;
 
-public class DummyRepository implements RepositoryInterface{
+public class DummyRepository implements IRepository{
 	private static String[][] pcDataArray = {
 			{"ics801","133.44.118.158","true" },
 			{"ics802","133.44.118.159","true" },

@@ -2,11 +2,12 @@ package repository;
 
 import repository.dummy.DummyRepository;
 
-public class DummyRepositotyTest extends RepositoryTest{
+public class DummyRepositotyTest extends RepositoryTest {
 
 	@Override
 	public void initializeRepository() {
-		repository = new DummyRepository();
+		RepositoryFactory.repositoryType = RepositoryType.Dummy;
+		repository = RepositoryFactory.getRepository();
 	}
 
 }

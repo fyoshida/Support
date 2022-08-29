@@ -1,6 +1,6 @@
 package network;
 
-public interface NetworkInterface {
+public interface INetwork {
 
 	public String getClientIpAddress();
 

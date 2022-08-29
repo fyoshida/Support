@@ -6,7 +6,7 @@ import java.net.UnknownHostException;
 import javax.servlet.http.HttpServletRequest;
 
 import model.IpAddress;
-import network.NetworkInterface;
+import network.INetwork;
 import network.ServletNetwork;
 
 public class NetworkHelper {
@@ -14,7 +14,7 @@ public class NetworkHelper {
 		IpAddress ipAddress = null;
 
 		try {
-			NetworkInterface network = new ServletNetwork(req);
+			INetwork network = new ServletNetwork(req);
 			String clientId = network.getClientHostName();
 			ipAddress = new IpAddress(clientId);
 		} catch (Exception e) {

@@ -1,6 +1,6 @@
 package network;
 
-public class DummyNetwork implements NetworkInterface {
+public class DummyNetwork implements INetwork {
 
 	String default_ipAddress = "133.44.118.191";
 	String default_hostName = "ics834";

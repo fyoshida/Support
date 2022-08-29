@@ -4,6 +4,6 @@ import java.util.List;
 
 import model.Pc;
 
-public interface RepositoryInterface {
+public interface IRepository {
 	public List<Pc> getPcList() throws Exception;
 }

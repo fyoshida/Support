@@ -6,6 +6,8 @@ import org.junit.Before;
 import org.junit.Test;
 
 import model.StudentManager;
+import repository.RepositoryFactory;
+import repository.RepositoryType;
 
 public class InitializeServletTest extends TestServletBase {
 
@@ -13,6 +15,7 @@ public class InitializeServletTest extends TestServletBase {
 	public void setUp() throws Exception {
 		super.setUp();
 
+		RepositoryFactory.repositoryType=RepositoryType.File;
 		registServlet("InitializeServlet");
 	}
 

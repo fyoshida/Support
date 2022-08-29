@@ -3,19 +3,20 @@ package repository.file;
 import java.util.List;
 
 import model.Pc;
-import repository.RepositoryInterface;
+import repository.IRepository;
 
-public class FileRepository implements RepositoryInterface {
-	private String FILE_NAME;
+public class FileRepository implements IRepository {
+
+	private String fileName;
 
 	public FileRepository(String fileName) {
-		this.FILE_NAME = fileName;
+		this.fileName = fileName;
 	}
 
 	@Override
 	public List<Pc> getPcList() throws Exception {
 		FileReader fileReader = new FileReader();
-		return fileReader.getPcListFromFile(FILE_NAME);
+		return fileReader.getPcListFromFile(fileName);
 	}
 
 }

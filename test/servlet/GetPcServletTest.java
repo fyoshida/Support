@@ -6,6 +6,9 @@ import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
+import common.TestServletBase;
+import helper.JsonConverter;
+import helper.PcJson;
 import network.NetworkFactory;
 import network.NetworkType;
 import repository.RepositoryFactory;
@@ -30,8 +33,12 @@ public class GetPcServletTest extends TestServletBase {
 	public void GetメソッドでアクセスするとアクセスしたPCの情報を取得できる() throws Exception {
 		getMessages("InitializeServlet");
 		getMessages("GetPcServlet");
+
 		String response = webResponse.getText();
-//		System.out.println(response);
-		assertNotNull(webResponse);
+		PcJson pcJson =JsonConverter.getPcJson(response);
+		assertNotNull(pcJson);
+		assertEquals(pcJson.getIpAdress(),NetworkFactory.ipAddress);
+		assertEquals(pcJson.getPcId(),NetworkFactory.hostName);
+		
 	}
 }

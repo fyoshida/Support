@@ -18,7 +18,7 @@ import network.NetworkFactory;
 @WebServlet(urlPatterns = { "/LoginServlet" })
 public class LoginServlet extends HttpServlet {
 
-	public void doPost(HttpServletRequest req, HttpServletResponse resp)
+	public void doGet(HttpServletRequest req, HttpServletResponse resp)
 			throws ServletException, IOException {
 
 		// 設定（文字コード、Session）
@@ -27,30 +27,27 @@ public class LoginServlet extends HttpServlet {
 
 		// StudentManagerを取得
 		ServletContext sc = getServletContext();
-		StudentManager studentManager=(StudentManager)sc.getAttribute("StudentManager");
+		StudentManager studentManager = (StudentManager) sc.getAttribute("StudentManager");
 
 		// クライアントIPアドレスの取得
 		INetwork network = NetworkFactory.getNetwork(req);
 		String ipAddressString = network.getClientIpAddress();
 		IpAddress ipAddress = new IpAddress(ipAddressString);
 
-		if(studentManager.existStudent(ipAddress)) {
+		if (studentManager.existStudent(ipAddress)) {
+			// ログイン名を取得
+			String userName = req.getParameter("UserName");
+
 			// 学生を取得
 			Student student = studentManager.getStudent(ipAddress);
 
 			// ログイン
-			student.login("");
+			student.login(userName);
 
 			//studentManagerを保存.
 			sc.setAttribute("StudentManager", studentManager);
 		}
 
-//		if(pc != null) {
-////			// ログイン成功時の処理
-//			StartServiceServlet.setLogin(pc.getPcId(), true);
-//			StartServiceServlet.setRequestTime(pc.getPcId());
-//		}
-
-		req.getRequestDispatcher("/index.html").forward(req,resp);
+		req.getRequestDispatcher("/index.html").forward(req, resp);
 	}
 }

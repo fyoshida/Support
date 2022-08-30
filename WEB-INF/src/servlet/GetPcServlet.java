@@ -12,8 +12,7 @@ import javax.servlet.http.HttpServletResponse;
 
 import helper.JsonConverter;
 import helper.PcJson;
-import helper.PcJsonConverter;
-import helper._NetworkHelper;
+import helper.PcJsonHelper;
 import model.IpAddress;
 import model.Student;
 import model.StudentManager;
@@ -52,7 +51,7 @@ public class GetPcServlet extends HttpServlet {
 		}
 
 		// Student --> PcJson
-		PcJson pcJson = PcJsonConverter.getPcJson(student);
+		PcJson pcJson = PcJsonHelper.getPcJson(student);
 
 		// JSON形式で出力
 		PrintWriter out = resp.getWriter();

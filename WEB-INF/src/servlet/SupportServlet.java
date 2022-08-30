@@ -13,7 +13,7 @@ import javax.servlet.http.HttpServletResponse;
 
 import helper.JsonConverter;
 import helper.PcJson;
-import helper.PcJsonConverter;
+import helper.PcJsonHelper;
 import model.Student;
 import model.StudentManager;
 import network.INetwork;
@@ -23,7 +23,7 @@ import network.NetworkFactory;
 //support/XXXの応答関数
 public class SupportServlet extends HttpServlet {
 
-	public void doPost(HttpServletRequest req, HttpServletResponse resp)
+	public void doGet(HttpServletRequest req, HttpServletResponse resp)
 			throws ServletException, IOException {
 
 		// 設定（文字コード、Session）
@@ -53,7 +53,7 @@ public class SupportServlet extends HttpServlet {
 		List<Student> studentList = studentManager.getStudentList();
 
 		// Student --> PcJson
-		List<PcJson> pcJsonList=PcJsonConverter.getPcJson(studentList);
+		List<PcJson> pcJsonList=PcJsonHelper.getPcJson(studentList);
 
 		// JSON形式で出力
 		PrintWriter out = resp.getWriter();

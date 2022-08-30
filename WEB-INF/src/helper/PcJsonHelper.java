@@ -1,11 +1,18 @@
 package helper;
 
+import static org.junit.Assert.*;
+
 import java.util.LinkedList;
 import java.util.List;
 
+import model.HelpStatus;
+import model.IpAddress;
+import model.Pc;
 import model.Student;
+import model.WaitingManager;
+import network.NetworkFactory;
 
-public class PcJsonConverter {
+public class PcJsonHelper {
 
 	public static PcJson getPcJson(Student student) {
 		PcJson pcJson = new PcJson();
@@ -31,29 +38,12 @@ public class PcJsonConverter {
 		return pcJsonList;
 	}
 
-	public static Student getStudent(PcJson pcJson) {
-		Student student = null;
-
-//		pcJson.setPcId(student.getPc().getHostName());
-//		pcJson.setIpAdress(student.getPc().getIpAddress().get());
-//		pcJson.setIsStudent(student.getPc().isStudent());
-//		pcJson.setHelpStatus(student.getHelpStatus().toString());
-//		pcJson.setHandPriority(student.getPriority());
-//		pcJson.setIsLogin(false);
-
-		return student;
-	}
-
-	public static List<Student> getStudent(List<PcJson> pcJsonList) {
-		List<Student> studentList = new LinkedList<Student>();
-
-		for (PcJson pcJson : pcJsonList) {
-			Student student = getStudent(pcJson);
-			if (student != null) {
-				studentList.add(student);
+	public static PcJson findPcJson(List<PcJson> pcJsonList,String ipAddress) {
+		for(PcJson pcJson : pcJsonList) {
+			if(pcJson.getIpAdress().equals(NetworkFactory.ipAddress)) {
+				return pcJson;
 			}
 		}
-
-		return studentList;
+		return null;
 	}
 }

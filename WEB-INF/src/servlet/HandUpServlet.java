@@ -13,7 +13,7 @@ import javax.servlet.http.HttpServletResponse;
 
 import helper.JsonConverter;
 import helper.PcJson;
-import helper.PcJsonConverter;
+import helper.PcJsonHelper;
 import model.Student;
 import model.StudentManager;
 import network.INetwork;
@@ -55,13 +55,14 @@ public class HandUpServlet extends HttpServlet {
 		List<Student> studentList = studentManager.getStudentList();
 
 		// Student --> PcJson
-		List<PcJson> pcJsonList=PcJsonConverter.getPcJson(studentList);
+		List<PcJson> pcJsonList=PcJsonHelper.getPcJson(studentList);
 
 		// JSON形式で出力
 		PrintWriter out = resp.getWriter();
 		String jsonText = JsonConverter.getJsonText(pcJsonList);
 		out.println(jsonText);
+
+//		// 全学生情報出力用Servletへ移動
+//		req.getRequestDispatcher("GetAllPcServlet").forward(req, resp);
 	}
-
-
 }

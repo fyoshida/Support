@@ -13,7 +13,7 @@ import javax.servlet.http.HttpServletResponse;
 
 import helper.JsonConverter;
 import helper.PcJson;
-import helper.PcJsonConverter;
+import helper.PcJsonHelper;
 import model.Student;
 import model.StudentManager;
 
@@ -36,7 +36,7 @@ public class GetActivePcListServlet extends HttpServlet {
 		List<Student> studentList = studentManager.getHandUpStudent();
 
 		// Student --> PcJson
-		List<PcJson> pcJsonList=PcJsonConverter.getPcJson(studentList);
+		List<PcJson> pcJsonList=PcJsonHelper.getPcJson(studentList);
 
 		// JSON形式で出力
 		PrintWriter out = resp.getWriter();

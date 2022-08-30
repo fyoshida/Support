@@ -1,4 +1,4 @@
-package servlet;
+package common;
 
 import java.io.IOException;
 import java.net.MalformedURLException;
@@ -6,8 +6,6 @@ import java.util.Map;
 import java.util.Map.Entry;
 
 import javax.servlet.ServletException;
-
-import common.TestServlet;
 
 public class TestServletBase extends TestServlet{
 

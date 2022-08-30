@@ -18,7 +18,7 @@ import network.NetworkType;
 import repository.RepositoryFactory;
 import repository.RepositoryType;
 
-public class HandUpServletTest extends TestServletBase {
+public class SupportServletTest extends TestServletBase {
 
 	@BeforeClass
 	public static void リポジトリとネットワークを設定() {
@@ -31,25 +31,32 @@ public class HandUpServletTest extends TestServletBase {
 		super.setUp();
 		registServlet("InitializeServlet");
 		registServlet("HandUpServlet");
+		registServlet("HandDownServlet");
+		registServlet("SupportServlet");
 	}
 
 	@Test
-	public void GETメソッドでアクセスすると手を上げられる() throws Exception {
+	public void GETメソッドでアクセスするとサポートできる() throws Exception {
 		String targetPcIpAddress = NetworkFactory.ipAddress;
 		String targetPcHostName = NetworkFactory.hostName;
-		
+
 		getMessages("InitializeServlet");
 
-		webRequest.setParameter("HostName", ""+targetPcHostName);
+		webRequest.setParameter("HostName", "" + targetPcHostName);
 		getMessages("HandUpServlet");
 
-		List<PcJson> pcJsonList =JsonConverter.getPcJsonList(webResponse.getText());
-		assertNotNull(pcJsonList);
-		assertEquals(pcJsonList.size(),62);
+		webRequest.setParameter("HostName", "" + targetPcHostName);
+		getMessages("SupportServlet");
 
-		PcJson pcJson = PcJsonHelper.findPcJson(pcJsonList,targetPcIpAddress);
+		String response = webResponse.getText();
+		List<PcJson> pcJsonList = JsonConverter.getPcJsonList(response);
+		assertNotNull(pcJsonList);
+		assertEquals(pcJsonList.size(), 62);
+
+		PcJson pcJson = PcJsonHelper.findPcJson(pcJsonList, targetPcIpAddress);
 		assertNotNull(pcJson);
-		assertEquals(pcJson.getPcId(),targetPcHostName);
-		assertEquals(pcJson.getHelpStatus(),HelpStatus.Troubled.toString());
+		assertEquals(pcJson.getPcId(), targetPcHostName);
+		assertEquals(pcJson.getHelpStatus(), HelpStatus.Supporting.toString());
+
 	}
 }

@@ -49,6 +49,5 @@ public class LoginServletTest extends TestServletBase {
 		assertEquals(pcJson.getPcId(),targetPcHostName);
 		assertFalse(pcJson.getIsLogin());
 
-
 	}
 }

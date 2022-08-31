@@ -5,11 +5,9 @@ import static org.junit.Assert.*;
 import org.junit.Before;
 import org.junit.Test;
 
-import helper.PcJson;
+import _test_data.Cnst;
 
 public class PcJsonTest {
-
-	public static final String IPADDRESS_GATEWAY = "133.44.118.254";
 	private PcJson pcJson;
 
 	@Before
@@ -19,9 +17,9 @@ public class PcJsonTest {
 
 	@Test
 	public void 属性IPアドレスをアクセッサで読み書きできる() {
-		pcJson.setIpAdress(IPADDRESS_GATEWAY);
+		pcJson.setIpAdress(Cnst.IPADDRESS_GATEWAY);
 
-		assertEquals(pcJson.getIpAdress(),IPADDRESS_GATEWAY);
+		assertEquals(pcJson.getIpAdress(),Cnst.IPADDRESS_GATEWAY);
 	}
 	@Test
 	public void 属性HostNameアクセッサで読み書きできる() {

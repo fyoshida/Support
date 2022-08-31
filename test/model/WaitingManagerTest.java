@@ -5,20 +5,18 @@ import static org.junit.Assert.*;
 import org.junit.Before;
 import org.junit.Test;
 
-public class WaitingManagerTest {
-	public static final String IPADDRESS_GATEWAY = "133.44.118.254";
-	public static final String IPADDRESS_1 = "133.44.118.158";
-	public static final String IPADDRESS_2 = "133.44.118.228";
+import _test_data.Cnst;
 
+public class WaitingManagerTest {
 	private IpAddress ipAddress1;
 	private IpAddress ipAddress2;
 	private IpAddress ipAddress3;
 
 	@Before
 	public void setUp() {
-		ipAddress1 = new IpAddress(IpAddressTest.IPADDRESS_1);
-		ipAddress2 = new IpAddress(IpAddressTest.IPADDRESS_2);
-		ipAddress3 = new IpAddress(IpAddressTest.IPADDRESS_GATEWAY);
+		ipAddress1 = new IpAddress(Cnst.IPADDRESS_1);
+		ipAddress2 = new IpAddress(Cnst.IPADDRESS_2);
+		ipAddress3 = new IpAddress(Cnst.IPADDRESS_GATEWAY);
 	}
 
 	@Test

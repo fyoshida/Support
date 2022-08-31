@@ -1,4 +1,3 @@
-package _test_data;
 
 
 public class Cnst {

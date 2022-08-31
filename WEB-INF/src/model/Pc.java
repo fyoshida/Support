@@ -1,16 +1,26 @@
 package model;
+
 import static org.apache.commons.lang3.Validate.*;
+
 public class Pc {
 	protected final IpAddress ipAddress;
 	protected final String hostName;
 	protected boolean isStudent = false;
 
 	//--------コンストラクタ--------------
-	public Pc(IpAddress ipAddress,String hostName) {
+	public Pc(IpAddress ipAddress, String hostName) {
 		notNull(ipAddress);
 		notNull(hostName);
-		this.ipAddress=ipAddress;
-		this.hostName=hostName;
+		this.ipAddress = ipAddress;
+		this.hostName = hostName;
+	}
+
+	public Pc(IpAddress ipAddress, String hostName, boolean isStudent) {
+		notNull(ipAddress);
+		notNull(hostName);
+		this.ipAddress = ipAddress;
+		this.hostName = hostName;
+		this.isStudent = isStudent;
 	}
 
 	//--------アクセッサ--------------

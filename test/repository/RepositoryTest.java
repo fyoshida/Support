@@ -7,19 +7,12 @@ import java.util.List;
 import org.junit.Before;
 import org.junit.Test;
 
+import _test_data.Cnst;
 import model.IpAddress;
 import model.Pc;
 
 abstract public class RepositoryTest {
-	public static final String IPADDRESS_GATEWAY = "133.44.118.254";
-	public static final String IPADDRESS_NOTREGISTED_1 = "133.44.118.157";
-	public static final String IPADDRESS_NOTREGISTED_2 = "133.44.118.229";
 
-	public static final String IPADDRESS_REGISTED_1 = "133.44.118.158";
-	public static final String IPADDRESS_REGISTED_2 = "133.44.118.228";
-
-	public static final String HOSTNAME_REGISTED_1 = "ics801";
-	public static final String HOSTNAME_REGISTED_2 = "ics871";
 
 	protected IpAddress ipAddressGateWay;
 	protected IpAddress ipAddressNotRegisted1;
@@ -33,11 +26,11 @@ abstract public class RepositoryTest {
 
 	@Before
 	public void setUp() {
-		ipAddressGateWay = new IpAddress(IPADDRESS_GATEWAY);
-		ipAddressNotRegisted1 = new IpAddress(IPADDRESS_NOTREGISTED_1);
-		ipAddressNotRegisted2 = new IpAddress(IPADDRESS_NOTREGISTED_2);
-		ipAddressRegisted1 = new IpAddress(IPADDRESS_REGISTED_1);
-		ipAddressRegisted2 = new IpAddress(IPADDRESS_REGISTED_2);
+		ipAddressGateWay = new IpAddress(Cnst.IPADDRESS_GATEWAY);
+		ipAddressNotRegisted1 = new IpAddress(Cnst.IPADDRESS_NOTREGISTED_1);
+		ipAddressNotRegisted2 = new IpAddress(Cnst.IPADDRESS_NOTREGISTED_2);
+		ipAddressRegisted1 = new IpAddress(Cnst.IPADDRESS_1);
+		ipAddressRegisted2 = new IpAddress(Cnst.IPADDRESS_2);
 
 		initializeRepository();
 	}
@@ -66,11 +59,11 @@ abstract public class RepositoryTest {
 
 		Pc pc1 = getPc(pcList,ipAddressRegisted1);
 		assertTrue(pc1.getIpAddress().equals(ipAddressRegisted1));
-		assertEquals(pc1.getHostName(),HOSTNAME_REGISTED_1);
+		assertEquals(pc1.getHostName(),Cnst.HOSTNAME_1);
 
 		Pc pc2 = getPc(pcList,ipAddressRegisted2);
 		assertTrue(pc2.getIpAddress().equals(ipAddressRegisted2));
-		assertEquals(pc2.getHostName(),HOSTNAME_REGISTED_2);
+		assertEquals(pc2.getHostName(),Cnst.HOSTNAME_2);
 	}
 
 	protected Pc getPc(List<Pc> pcList,IpAddress ipAddress) {

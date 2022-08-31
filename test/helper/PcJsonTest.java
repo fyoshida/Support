@@ -7,7 +7,7 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.ValueSource;
 
-import _test_data.Cnst;
+import _data.Const;
 
 public class PcJsonTest {
 	private PcJson pcJson;
@@ -20,11 +20,11 @@ public class PcJsonTest {
 	@Test
 	void 属性IPアドレスをアクセッサで読み書きできる() {
 		// 処理
-		pcJson.setIpAdress(Cnst.IPADDRESS_GATEWAY);
+		pcJson.setIpAdress(Const.IPADDRESS_GATEWAY);
 
 		// 結果
 		String actual = pcJson.getIpAdress();
-		String expect = Cnst.IPADDRESS_GATEWAY;
+		String expect = Const.IPADDRESS_GATEWAY;
 		assertThat(actual).isEqualTo(expect);
 	}
 

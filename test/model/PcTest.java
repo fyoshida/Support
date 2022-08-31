@@ -5,7 +5,7 @@ import static org.junit.Assert.*;
 import org.junit.Before;
 import org.junit.Test;
 
-import _test_data.Cnst;
+import _data.Const;
 
 public class PcTest {
 
@@ -15,7 +15,7 @@ public class PcTest {
 
 	@Before
 	public void setUp() {
-		ipAddress=new IpAddress(Cnst.IPADDRESS_GATEWAY);
+		ipAddress=new IpAddress(Const.IPADDRESS_GATEWAY);
 		pc = new Pc(ipAddress,hostName);
 	}
 

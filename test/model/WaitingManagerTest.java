@@ -5,7 +5,7 @@ import static org.junit.Assert.*;
 import org.junit.Before;
 import org.junit.Test;
 
-import _test_data.Cnst;
+import _data.Const;
 
 public class WaitingManagerTest {
 	private IpAddress ipAddress1;
@@ -14,9 +14,9 @@ public class WaitingManagerTest {
 
 	@Before
 	public void setUp() {
-		ipAddress1 = new IpAddress(Cnst.IPADDRESS_1);
-		ipAddress2 = new IpAddress(Cnst.IPADDRESS_2);
-		ipAddress3 = new IpAddress(Cnst.IPADDRESS_GATEWAY);
+		ipAddress1 = new IpAddress(Const.IPADDRESS_1);
+		ipAddress2 = new IpAddress(Const.IPADDRESS_2);
+		ipAddress3 = new IpAddress(Const.IPADDRESS_GATEWAY);
 	}
 
 	@Test

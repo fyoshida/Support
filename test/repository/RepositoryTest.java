@@ -7,7 +7,7 @@ import java.util.List;
 import org.junit.Before;
 import org.junit.Test;
 
-import _test_data.Cnst;
+import _data.Const;
 import model.IpAddress;
 import model.Pc;
 
@@ -26,11 +26,11 @@ abstract public class RepositoryTest {
 
 	@Before
 	public void setUp() {
-		ipAddressGateWay = new IpAddress(Cnst.IPADDRESS_GATEWAY);
-		ipAddressNotRegisted1 = new IpAddress(Cnst.IPADDRESS_NOTREGISTED_1);
-		ipAddressNotRegisted2 = new IpAddress(Cnst.IPADDRESS_NOTREGISTED_2);
-		ipAddressRegisted1 = new IpAddress(Cnst.IPADDRESS_1);
-		ipAddressRegisted2 = new IpAddress(Cnst.IPADDRESS_2);
+		ipAddressGateWay = new IpAddress(Const.IPADDRESS_GATEWAY);
+		ipAddressNotRegisted1 = new IpAddress(Const.IPADDRESS_NOTREGISTED_1);
+		ipAddressNotRegisted2 = new IpAddress(Const.IPADDRESS_NOTREGISTED_2);
+		ipAddressRegisted1 = new IpAddress(Const.IPADDRESS_1);
+		ipAddressRegisted2 = new IpAddress(Const.IPADDRESS_2);
 
 		initializeRepository();
 	}
@@ -59,11 +59,11 @@ abstract public class RepositoryTest {
 
 		Pc pc1 = getPc(pcList,ipAddressRegisted1);
 		assertTrue(pc1.getIpAddress().equals(ipAddressRegisted1));
-		assertEquals(pc1.getHostName(),Cnst.HOSTNAME_1);
+		assertEquals(pc1.getHostName(),Const.HOSTNAME_1);
 
 		Pc pc2 = getPc(pcList,ipAddressRegisted2);
 		assertTrue(pc2.getIpAddress().equals(ipAddressRegisted2));
-		assertEquals(pc2.getHostName(),Cnst.HOSTNAME_2);
+		assertEquals(pc2.getHostName(),Const.HOSTNAME_2);
 	}
 
 	protected Pc getPc(List<Pc> pcList,IpAddress ipAddress) {

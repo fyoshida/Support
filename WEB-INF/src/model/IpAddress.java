@@ -27,33 +27,21 @@ public class IpAddress {
 		return "" + addresses[0] + "." + addresses[1] + "." + addresses[2] + "." + addresses[3];
 	}
 
-//	public boolean equals(IpAddress ipAddress) {
-//		if (ipAddress.addresses.length != 4) {
-//			return false;
-//		}
-//		for (int i = 0; i < 4; i++) {
-//			if (addresses[i] != ipAddress.addresses[i]) {
-//				return false;
-//			}
-//		}
-//		return true;
-//	}
-
 	@Override
 	public int hashCode() {
-        return Objects.hash(addresses[0],addresses[1],addresses[2],addresses[3]);
-    }
+		return Objects.hash(addresses[0], addresses[1], addresses[2], addresses[3]);
+	}
 
 	@Override
 	public boolean equals(Object object) {
-		if(this==object) {
+		if (this == object) {
 			return true;
 		}
 		if (!(object instanceof IpAddress)) {
 			return false;
 		}
 
-		IpAddress ipAddress=(IpAddress)object;
+		IpAddress ipAddress = (IpAddress) object;
 		if (ipAddress.addresses.length != 4) {
 			return false;
 		}

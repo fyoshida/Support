@@ -7,7 +7,7 @@ import java.time.LocalDateTime;
 import org.junit.Before;
 import org.junit.Test;
 
-import _test_data.Cnst;
+import _data.Const;
 
 public class StudentTest {
 
@@ -18,7 +18,7 @@ public class StudentTest {
 
 	@Before
 	public void setUp() {
-		ipAddress = new IpAddress(Cnst.IPADDRESS_GATEWAY);
+		ipAddress = new IpAddress(Const.IPADDRESS_GATEWAY);
 		hostName ="icsGateWay";
 		Pc pc = new Pc(ipAddress,hostName);
 

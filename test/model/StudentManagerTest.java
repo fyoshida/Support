@@ -21,12 +21,6 @@ public class StudentManagerTest {
 	private IpAddress ipAddress1_otherInstance;
 	private IpAddress ipAddress2_otherInstance;
 	private IpAddress ipAddress3_otherInstance;
-	
-	private Pc pcGateway;
-	private Pc pcTeacher;
-	private Pc pc1;
-	private Pc pc2;
-	private Pc pc3;
 
 	private StudentManager studentManager;
 
@@ -46,12 +40,12 @@ public class StudentManagerTest {
 	}
 
 	private StudentManager createStudentManager_forTest() {
-		pcGateway = new Pc(ipAddressGateWay,Const.HOSTNAME_GATEWAY,false);
-		pcTeacher = new Pc(ipAddressTeacher,Const.HOSTNAME_TEACHER,false);
+		Pc pcGateway = new Pc(ipAddressGateWay,Const.HOSTNAME_GATEWAY,false);
+		Pc pcTeacher = new Pc(ipAddressTeacher,Const.HOSTNAME_TEACHER,false);
 
-		pc1 = new Pc(ipAddress1,Const.HOSTNAME_1,Const.ISSTUDENT_PC_1);
-		pc2 = new Pc(ipAddress2,Const.HOSTNAME_2,Const.ISSTUDENT_PC_2);
-		pc3 = new Pc(ipAddress3,Const.HOSTNAME_3,Const.ISSTUDENT_PC_3);
+		Pc pc1 = new Pc(ipAddress1,Const.HOSTNAME_1,Const.ISSTUDENT_PC_1);
+		Pc pc2 = new Pc(ipAddress2,Const.HOSTNAME_2,Const.ISSTUDENT_PC_2);
+		Pc pc3 = new Pc(ipAddress3,Const.HOSTNAME_3,Const.ISSTUDENT_PC_3);
 
 		List<Pc> pcList = new LinkedList<Pc>();
 		pcList.add(pcGateway);

@@ -1,16 +1,10 @@
 package helper;
 
-import static org.junit.Assert.*;
-
 import java.util.List;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
-
-import model.HelpStatus;
-import model.IpAddress;
-import network.NetworkFactory;
 
 
 public class JsonConverter {

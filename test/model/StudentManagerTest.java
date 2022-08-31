@@ -26,7 +26,9 @@ public class StudentManagerTest {
 	private IpAddress ipAddress1;
 	private IpAddress ipAddress2;
 	private IpAddress ipAddress3;
-
+	private IpAddress ipAddress1_another;
+	private IpAddress ipAddress2_another;
+	private IpAddress ipAddress3_another;
 	private Pc pcGateway;
 	private Pc pc1;
 	private Pc pc2;
@@ -40,6 +42,10 @@ public class StudentManagerTest {
 		ipAddress1 = new IpAddress(IPADDRESS_1);
 		ipAddress2 = new IpAddress(IPADDRESS_2);
 		ipAddress3 = new IpAddress(IPADDRESS_3);
+
+		ipAddress1_another = new IpAddress(IPADDRESS_1);
+		ipAddress2_another = new IpAddress(IPADDRESS_2);
+		ipAddress3_another = new IpAddress(IPADDRESS_3);
 
 		pcGateway = new Pc(ipAddressGateWay,HOSTNAME_GATEWAY);
 		pcGateway.setStudent(false);
@@ -65,9 +71,9 @@ public class StudentManagerTest {
 	@Test
 	public void IPアドレスでPCが登録されているか調べられる() {
 		assertFalse(studentManager.existStudent(ipAddressGateWay));
-		assertTrue(studentManager.existStudent(ipAddress1));
-		assertTrue(studentManager.existStudent(ipAddress2));
-		assertTrue(studentManager.existStudent(ipAddress3));
+		assertTrue(studentManager.existStudent(ipAddress1_another));
+		assertTrue(studentManager.existStudent(ipAddress2_another));
+		assertTrue(studentManager.existStudent(ipAddress3_another));
 	}
 
 	@Test
@@ -83,13 +89,13 @@ public class StudentManagerTest {
 		assertNull(studentManager.getStudent(ipAddressGateWay));
 
 		Student student1 = studentManager.getStudent(ipAddress1);
-		assertEquals(student1.getPc().getIpAddress(), ipAddress1);
+		assertEquals(student1.getPc().getIpAddress(), ipAddress1_another);
 
 		Student student2 = studentManager.getStudent(ipAddress2);
-		assertEquals(student2.getPc().getIpAddress(), ipAddress2);
+		assertEquals(student2.getPc().getIpAddress(), ipAddress2_another);
 
 		Student student3 = studentManager.getStudent(ipAddress3);
-		assertEquals(student3.getPc().getIpAddress(), ipAddress3);
+		assertEquals(student3.getPc().getIpAddress(), ipAddress3_another);
 	}
 
 	@Test
@@ -104,6 +110,21 @@ public class StudentManagerTest {
 
 		Student student3 = studentManager.getStudent(HOSTNAME_3);
 		assertEquals(student3.getPc().getHostName(), HOSTNAME_3);
+	}
+
+	@Test
+	public void getListで等されている学生が取得できる() {
+		List<Student> studentList=studentManager.getStudentList();
+
+		Student student1=studentList.get(0);
+		assertEquals(student1.getPc().getIpAddress(), ipAddress1_another);
+
+		Student student2=studentList.get(1);
+		assertEquals(student2.getPc().getIpAddress(), ipAddress2_another);
+
+		Student student3=studentList.get(2);
+		assertEquals(student3.getPc().getIpAddress(), ipAddress3_another);
+
 	}
 
 }

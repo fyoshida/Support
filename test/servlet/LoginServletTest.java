@@ -2,8 +2,6 @@ package servlet;
 
 import static org.junit.Assert.*;
 
-import java.util.List;
-
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
@@ -11,8 +9,6 @@ import org.junit.Test;
 import common.TestServletBase;
 import helper.JsonConverter;
 import helper.PcJson;
-import helper.PcJsonHelper;
-import model.HelpStatus;
 import network.NetworkFactory;
 import network.NetworkType;
 import repository.RepositoryFactory;
@@ -51,7 +47,7 @@ public class LoginServletTest extends TestServletBase {
 		assertNotNull(pcJson);
 		assertEquals(pcJson.getIpAdress(),targetPcIpAddress);
 		assertEquals(pcJson.getPcId(),targetPcHostName);
-		assertTrue(pcJson.getIsLogin());
+		assertFalse(pcJson.getIsLogin());
 
 
 	}

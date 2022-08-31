@@ -1,15 +1,9 @@
 package helper;
 
-import static org.junit.Assert.*;
-
 import java.util.LinkedList;
 import java.util.List;
 
-import model.HelpStatus;
-import model.IpAddress;
-import model.Pc;
 import model.Student;
-import model.WaitingManager;
 import network.NetworkFactory;
 
 public class PcJsonHelper {
@@ -22,7 +16,7 @@ public class PcJsonHelper {
 		pcJson.setIsStudent(student.getPc().isStudent());
 		pcJson.setHelpStatus(student.getHelpStatus().toString());
 		pcJson.setHandPriority(student.getPriority());
-		pcJson.setIsLogin(false);
+		pcJson.setIsLogin(student.isLogin());
 
 		return pcJson;
 	}

@@ -20,7 +20,7 @@ public class GetAllPcServletTest extends TestServletBase {
 
 	@BeforeClass
 	public static void リポジトリとネットワークを設定() {
-		RepositoryFactory.repositoryType = RepositoryType.File;
+		RepositoryFactory.repositoryType = RepositoryType.Dummy;
 		NetworkFactory.networkType = NetworkType.Dummy;
 	}
 

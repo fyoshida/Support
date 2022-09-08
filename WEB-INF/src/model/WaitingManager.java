@@ -4,43 +4,43 @@ import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.Map;
 
-public class WaitingManager {
+public class WaitingManager<T> {
 	public static final int NOT_REGISTED = 999;
 
-	private LinkedList<IpAddress> waitingList = new LinkedList<IpAddress>();
-	private Map<IpAddress, Integer> rankMap = new HashMap<IpAddress, Integer>();
+	private LinkedList<T> waitingList = new LinkedList<T>();
+	private Map<T, Integer> rankMap = new HashMap<T, Integer>();
 
-	public void regist(IpAddress ipAddress) {
+	public void regist(T target) {
 		int rank = waitingList.size();
-		waitingList.addLast(ipAddress);
-		rankMap.put(ipAddress, rank);
+		waitingList.addLast(target);
+		rankMap.put(target, rank);
 	}
 
-	public void unregist(IpAddress ipAddress) {
-		if (!waitingList.contains(ipAddress)) {
+	public void unregist(T target) {
+		if (!waitingList.contains(target)) {
 			return;
 		}
-		int rank = rankMap.get(ipAddress);
+		int rank = rankMap.get(target);
 		waitingList.remove(rank);
-		rankMap.remove(ipAddress);
+		rankMap.remove(target);
 
 		updateRankMap(rank);
 	}
 
 	public void updateRankMap(int unregistRank) {
-		for (IpAddress ipAddress : rankMap.keySet()) {
-			int rank = rankMap.get(ipAddress);
+		for (T target : rankMap.keySet()) {
+			int rank = rankMap.get(target);
 			if (rank > unregistRank) {
-				rankMap.put(ipAddress, rank - 1);
+				rankMap.put(target, rank - 1);
 			}
 		}
 	}
 
-	public int getPriority(IpAddress ipAddress) {
-		if (!rankMap.containsKey(ipAddress)) {
+	public int getPriority(T target) {
+		if (!rankMap.containsKey(target)) {
 			return NOT_REGISTED;
 		} else {
-			return rankMap.get(ipAddress) + 1;
+			return rankMap.get(target) + 1;
 		}
 	}
 

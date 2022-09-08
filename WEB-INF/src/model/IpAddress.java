@@ -27,6 +27,8 @@ public class IpAddress {
 		return "" + addresses[0] + "." + addresses[1] + "." + addresses[2] + "." + addresses[3];
 	}
 
+	//--------比較用基本関数--------------
+
 	@Override
 	public int hashCode() {
 		return Objects.hash(addresses[0], addresses[1], addresses[2], addresses[3]);

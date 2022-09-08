@@ -39,7 +39,7 @@ public class HandUpServlet extends HttpServlet {
 		String hostName = network.getClientHostName();
 
 		// 学生を取得
-		Student student = studentManager.getStudent(hostName);
+		Student student = studentManager.findStudent(hostName);
 		if (student == null) {
 			req.getRequestDispatcher("/error.html").forward(req,resp);
 			return;

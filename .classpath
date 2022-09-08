@@ -51,5 +51,6 @@
 	<classpathentry kind="lib" path="WEB-INF/lib/commons-lang3-3.12.0-tests.jar"/>
 	<classpathentry kind="lib" path="WEB-INF/lib/commons-lang3-3.12.0-test-sources.jar"/>
 	<classpathentry kind="lib" path="WEB-INF/lib/assertj-core-3.23.1.jar"/>
+	<classpathentry kind="lib" path="lib/selenium-server-4.4.0.jar"/>
 	<classpathentry kind="output" path="WEB-INF/classes"/>
 </classpath>

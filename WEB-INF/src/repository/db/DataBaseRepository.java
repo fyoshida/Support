@@ -24,10 +24,7 @@ public class DataBaseRepository extends DataBaseManager implements IRepository{
 		IpAddress ipAddress =new IpAddress(ipAddressString);
 
 		// ------PCオブジェクトに代入------
-		Pc pc= new Pc(ipAddress,hostName);
-		pc.setStudent(isStudent);
-
-		return pc;
+		return new Pc(ipAddress,hostName,isStudent);
 	}
 
 	@Override

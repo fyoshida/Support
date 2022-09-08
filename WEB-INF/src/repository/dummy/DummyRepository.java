@@ -91,9 +91,7 @@ public class DummyRepository implements IRepository{
 			IpAddress ipAddress =new IpAddress(pcDataArray[i][1]);
 			boolean student=Boolean.parseBoolean(pcDataArray[i][2]);
 
-			Pc pc = new Pc(ipAddress,hostName);
-			pc.setStudent(student);
-
+			Pc pc = new Pc(ipAddress,hostName,student);
 			pcList.add(pc);
 		}
 

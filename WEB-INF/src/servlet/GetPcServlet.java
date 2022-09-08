@@ -44,7 +44,7 @@ public class GetPcServlet extends HttpServlet {
 		IpAddress ipAddress = new IpAddress(ipAddressString);
 
 		// 学生を取得
-		Student student = studentManager.getStudent(ipAddress);
+		Student student = studentManager.findStudent(ipAddress);
 		if (student == null) {
 			req.getRequestDispatcher("/error.html").forward(req, resp);
 			return;

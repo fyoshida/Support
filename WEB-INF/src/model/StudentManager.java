@@ -9,14 +9,15 @@ import java.util.Map;
 
 public class StudentManager {
 
+	private final WaitingManager<Pc> waitingManager; 
 	private final Map<IpAddress, Student> pcIpAddressMap = new LinkedHashMap<IpAddress, Student>();
 	private final Map<String, Student> pcHostNameMap = new LinkedHashMap<String, Student>();
-	private final WaitingManager waitingManager = new WaitingManager();
 
 	public StudentManager(List<Pc> pcList) {
+		waitingManager = new WaitingManager<Pc>();
 		notNull(pcList);
 		for (Pc pc : pcList) {
-			Student student = new Student(pc, waitingManager);
+			Student student = new Student(pc,waitingManager);
 			if (pc.isStudent()) {
 				pcIpAddressMap.put(pc.getIpAddress(), student);
 				pcHostNameMap.put(pc.getHostName(), student);
@@ -49,11 +50,11 @@ public class StudentManager {
 		return pcList;
 	}
 
-	public Student getStudent(IpAddress ipAddress) {
+	public Student findStudent(IpAddress ipAddress) {
 		return pcIpAddressMap.get(ipAddress);
 	}
 
-	public Student getStudent(String hostName) {
+	public Student findStudent(String hostName) {
 		return pcHostNameMap.get(hostName);
 	}
 

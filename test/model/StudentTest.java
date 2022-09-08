@@ -11,19 +11,17 @@ import _data.Const;
 
 public class StudentTest {
 
+	private WaitingManager<Pc> waitingManager;
 	private IpAddress ipAddress;
 	private String hostName;
-	private WaitingManager waitingManager;
 	private Student student;
 
 	@Before
 	public void setUp() {
+		waitingManager = new WaitingManager<Pc>();
 		ipAddress = new IpAddress(Const.IPADDRESS_GATEWAY);
-		hostName ="icsGateWay";
-		Pc pc = new Pc(ipAddress,hostName);
-
-		waitingManager = new WaitingManager();
-
+		hostName = "icsGateWay";
+		Pc pc = new Pc(ipAddress, hostName, false);
 		student = new Student(pc, waitingManager);
 	}
 
@@ -109,36 +107,36 @@ public class StudentTest {
 
 	@Test
 	public void 手の上げ下げやサポートによってHelpStatusが変わる() {
-		assertEquals(student.getHelpStatus(),HelpStatus.None);
+		assertEquals(student.getHelpStatus(), HelpStatus.None);
 
 		student.handUp();
 
-		assertEquals(student.getHelpStatus(),HelpStatus.Troubled);
+		assertEquals(student.getHelpStatus(), HelpStatus.Troubled);
 
 		student.supported();
 
-		assertEquals(student.getHelpStatus(),HelpStatus.Supporting);
+		assertEquals(student.getHelpStatus(), HelpStatus.Supporting);
 
 		student.handDown();
 
-		assertEquals(student.getHelpStatus(),HelpStatus.None);
+		assertEquals(student.getHelpStatus(), HelpStatus.None);
 	}
 
 	@Test
 	public void 手の上げ下げやサポートによって順位が変わる() {
-		assertEquals(student.getPriority(),WaitingManager.NOT_REGISTED);
+		assertEquals(student.getPriority(), WaitingManager.NOT_REGISTED);
 
 		student.handUp();
 
-		assertEquals(student.getPriority(),1);
+		assertEquals(student.getPriority(), 1);
 
 		student.supported();
 
-		assertEquals(student.getPriority(),WaitingManager.NOT_REGISTED);
+		assertEquals(student.getPriority(), WaitingManager.NOT_REGISTED);
 
 		student.handDown();
 
-		assertEquals(student.getPriority(),WaitingManager.NOT_REGISTED);
+		assertEquals(student.getPriority(), WaitingManager.NOT_REGISTED);
 	}
 
 	@Test
@@ -152,7 +150,7 @@ public class StudentTest {
 		student.supported();
 
 		assertNull(student.getHandUpTime());
-		
+
 		student.handDown();
 
 		assertNull(student.getHandUpTime());

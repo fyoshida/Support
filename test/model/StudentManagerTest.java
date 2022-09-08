@@ -56,7 +56,7 @@ public class StudentManagerTest {
 
 		return new StudentManager(pcList);
 	}
-	
+
 	@Test
 	public void IPアドレスでPCが登録されているか調べられる() {
 		assertFalse(studentManager.existStudent(ipAddressGateWay));
@@ -76,29 +76,29 @@ public class StudentManagerTest {
 
 	@Test
 	public void IPアドレスでPCを取得できる() {
-		assertNull(studentManager.getStudent(ipAddressGateWay));
+		assertNull(studentManager.findStudent(ipAddressGateWay));
 
-		Student student1 = studentManager.getStudent(ipAddress1);
+		Student student1 = studentManager.findStudent(ipAddress1);
 		assertEquals(student1.getPc().getIpAddress(), ipAddress1_otherInstance);
 
-		Student student2 = studentManager.getStudent(ipAddress2);
+		Student student2 = studentManager.findStudent(ipAddress2);
 		assertEquals(student2.getPc().getIpAddress(), ipAddress2_otherInstance);
 
-		Student student3 = studentManager.getStudent(ipAddress3);
+		Student student3 = studentManager.findStudent(ipAddress3);
 		assertEquals(student3.getPc().getIpAddress(), ipAddress3_otherInstance);
 	}
 
 	@Test
 	public void ホスト名でPCを取得できる() {
-		assertNull(studentManager.getStudent(Const.HOSTNAME_GATEWAY));
+		assertNull(studentManager.findStudent(Const.HOSTNAME_GATEWAY));
 
-		Student student1 = studentManager.getStudent(Const.HOSTNAME_1);
+		Student student1 = studentManager.findStudent(Const.HOSTNAME_1);
 		assertEquals(student1.getPc().getHostName(), Const.HOSTNAME_1);
 
-		Student student2 = studentManager.getStudent(Const.HOSTNAME_2);
+		Student student2 = studentManager.findStudent(Const.HOSTNAME_2);
 		assertEquals(student2.getPc().getHostName(), Const.HOSTNAME_2);
 
-		Student student3 = studentManager.getStudent(Const.HOSTNAME_3);
+		Student student3 = studentManager.findStudent(Const.HOSTNAME_3);
 		assertEquals(student3.getPc().getHostName(), Const.HOSTNAME_3);
 	}
 

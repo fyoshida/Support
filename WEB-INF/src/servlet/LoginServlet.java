@@ -39,7 +39,7 @@ public class LoginServlet extends HttpServlet {
 			String userName = req.getParameter("UserName");
 
 			// 学生を取得
-			Student student = studentManager.getStudent(ipAddress);
+			Student student = studentManager.findStudent(ipAddress);
 
 			// ログイン
 			student.login(userName);

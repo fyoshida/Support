@@ -57,8 +57,6 @@ public class FileReader {
 		boolean isStudent = Boolean.valueOf(lineData[2]);
 
 		//読み込んだ行をPcクラスに格納
-		Pc pc = new Pc(ipAddress, hostName);
-		pc.setStudent(isStudent);
-		return pc;
+		return new Pc(ipAddress, hostName,isStudent);
 	}
 }

@@ -1,10 +1,11 @@
-package uiTest;
+
 
 import static org.junit.Assert.*;
 
 import java.util.List;
 
 import org.junit.Before;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
@@ -15,6 +16,7 @@ import _data.Const;
 import model.IpAddress;
 import model.Pc;
 
+@Ignore
 public class SampleTest {
 
 

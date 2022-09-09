@@ -17,11 +17,8 @@ public class DataBaseRepository extends DataBaseManager implements IRepository{
 
 		// ------PC 情報------
 		String hostName = rs.getString("HostName");
-		String ipAddressString = rs.getString("IpAddress");
+		String ipAddress = rs.getString("IpAddress");
 		boolean isStudent = rs.getBoolean("IsStudent");
-
-		// ------IpAddress------
-		IpAddress ipAddress =new IpAddress(ipAddressString);
 
 		// ------PCオブジェクトに代入------
 		return new Pc(ipAddress,hostName,isStudent);

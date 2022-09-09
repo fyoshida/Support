@@ -12,16 +12,12 @@ import _data.Const;
 public class StudentTest {
 
 	private WaitingManager<Pc> waitingManager;
-	private IpAddress ipAddress;
-	private String hostName;
 	private Student student;
 
 	@Before
 	public void setUp() {
 		waitingManager = new WaitingManager<Pc>();
-		ipAddress = new IpAddress(Const.IPADDRESS_GATEWAY);
-		hostName = "icsGateWay";
-		Pc pc = new Pc(ipAddress, hostName, false);
+		Pc pc = new Pc(Const.IPADDRESS_GATEWAY, Const.HOSTNAME_GATEWAY, false);
 		student = new Student(pc, waitingManager);
 	}
 
@@ -34,7 +30,7 @@ public class StudentTest {
 
 	@Test
 	public void ログインしていない場合はgetUserNameでホスト名が得られる() {
-		assertEquals(student.getUserName(), student.getPc().getHostName());
+		assertEquals(student.getUserName(), student.getPc().getHostName().toString());
 	}
 
 	@Test
@@ -49,7 +45,7 @@ public class StudentTest {
 		assertEquals(student.getUserName(), "abc");
 
 		student.logout();
-		assertEquals(student.getUserName(), student.getPc().getHostName());
+		assertEquals(student.getUserName(), student.getPc().getHostName().toString());
 	}
 
 	@Test

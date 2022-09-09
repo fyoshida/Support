@@ -6,19 +6,13 @@ import java.util.Objects;
 
 public class Pc {
 	protected final IpAddress ipAddress;
-	protected final String hostName;
+	protected final HostName hostName;
 	protected boolean isStudent = false;
 
 	//--------コンストラクタ--------------
-	public Pc(IpAddress ipAddress, String hostName, boolean isStudent) {
-		notNull(ipAddress);
-		this.ipAddress = ipAddress;
-
-		notNull(hostName);
-		inclusiveBetween(0,12,hostName.length());
-		isTrue(hostName.matches("[0-9a-zA-Z]*"));
-		this.hostName = hostName;
-
+	public Pc(String ipAddress, String hostName, boolean isStudent) {
+		this.ipAddress = new IpAddress(ipAddress);
+		this.hostName = new HostName(hostName);
 		this.isStudent = isStudent;
 	}
 
@@ -28,7 +22,7 @@ public class Pc {
 		return ipAddress;
 	}
 
-	public String getHostName() {
+	public HostName getHostName() {
 		return hostName;
 	}
 
@@ -62,6 +56,5 @@ public class Pc {
 		return true;
 
 	}
-
 
 }

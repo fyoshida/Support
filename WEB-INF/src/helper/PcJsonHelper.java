@@ -11,7 +11,7 @@ public class PcJsonHelper {
 	public static PcJson getPcJson(Student student) {
 		PcJson pcJson = new PcJson();
 
-		pcJson.setPcId(student.getPc().getHostName());
+		pcJson.setPcId(student.getPc().getHostName().get());
 		pcJson.setIpAdress(student.getPc().getIpAddress().get());
 		pcJson.setIsStudent(student.getPc().isStudent());
 		pcJson.setHelpStatus(student.getHelpStatus().toString());

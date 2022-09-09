@@ -39,7 +39,7 @@ public class HandDownServlet extends HttpServlet {
 		String hostName = network.getClientHostName();
 
 		// 学生を取得
-		Student student = studentManager.findStudent(hostName);
+		Student student = studentManager.findStudentByHostName(hostName);
 		if (student == null) {
 			req.getRequestDispatcher("/error.html").forward(req,resp);
 			return;

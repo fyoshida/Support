@@ -1,6 +1,4 @@
-package servlet;
 
-import common.TestServlet;
 
 public class MessagesServletTest extends TestServlet {
 

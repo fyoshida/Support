@@ -31,15 +31,14 @@ public class LoginServlet extends HttpServlet {
 
 		// クライアントIPアドレスの取得
 		INetwork network = NetworkFactory.getNetwork(req);
-		String ipAddressString = network.getClientIpAddress();
-		IpAddress ipAddress = new IpAddress(ipAddressString);
+		String ipAddress = network.getClientIpAddress();
 
-		if (studentManager.existStudent(ipAddress)) {
+		if (studentManager.existStudentByIpAddress(ipAddress)) {
 			// ログイン名を取得
 			String userName = req.getParameter("UserName");
 
 			// 学生を取得
-			Student student = studentManager.findStudent(ipAddress);
+			Student student = studentManager.findStudentByIpAddress(ipAddress);
 
 			// ログイン
 			student.login(userName);

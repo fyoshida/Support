@@ -40,11 +40,10 @@ public class GetPcServlet extends HttpServlet {
 //		NetworkInterface network = new ServletNetwork(req);
 
 		INetwork network = NetworkFactory.getNetwork(req);
-		String ipAddressString = network.getClientIpAddress();
-		IpAddress ipAddress = new IpAddress(ipAddressString);
+		String ipAddress = network.getClientIpAddress();
 
 		// 学生を取得
-		Student student = studentManager.findStudent(ipAddress);
+		Student student = studentManager.findStudentByIpAddress(ipAddress);
 		if (student == null) {
 			req.getRequestDispatcher("/error.html").forward(req, resp);
 			return;

@@ -1,4 +1,4 @@
-package common;
+package repository;
 
 public class TestDataBase {
 

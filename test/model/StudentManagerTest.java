@@ -12,40 +12,30 @@ import _data.Const;
 
 public class StudentManagerTest {
 
-	private IpAddress ipAddressGateWay;
-	private IpAddress ipAddressTeacher;
-	private IpAddress ipAddress1;
-	private IpAddress ipAddress2;
-	private IpAddress ipAddress3;
-
-	private IpAddress ipAddress1_otherInstance;
-	private IpAddress ipAddress2_otherInstance;
-	private IpAddress ipAddress3_otherInstance;
-
 	private StudentManager studentManager;
 
 	@Before
 	public void setUp() {
-		ipAddressGateWay = new IpAddress(Const.IPADDRESS_GATEWAY);
-		ipAddressTeacher = new IpAddress(Const.IPADDRESS_TEACHER);
-		ipAddress1 = new IpAddress(Const.IPADDRESS_1);
-		ipAddress2 = new IpAddress(Const.IPADDRESS_2);
-		ipAddress3 = new IpAddress(Const.IPADDRESS_3);
-
-		ipAddress1_otherInstance = new IpAddress(Const.IPADDRESS_1);
-		ipAddress2_otherInstance = new IpAddress(Const.IPADDRESS_2);
-		ipAddress3_otherInstance = new IpAddress(Const.IPADDRESS_3);
+		//		ipAddressGateWay = new IpAddress(Const.IPADDRESS_GATEWAY);
+		//		ipAddressTeacher = new IpAddress(Const.IPADDRESS_TEACHER);
+		//		ipAddress1 = new IpAddress(Const.IPADDRESS_1);
+		//		ipAddress2 = new IpAddress(Const.IPADDRESS_2);
+		//		ipAddress3 = new IpAddress(Const.IPADDRESS_3);
+		//
+		//		ipAddress1_otherInstance = new IpAddress(Const.IPADDRESS_1);
+		//		ipAddress2_otherInstance = new IpAddress(Const.IPADDRESS_2);
+		//		ipAddress3_otherInstance = new IpAddress(Const.IPADDRESS_3);
 
 		studentManager = createStudentManager_forTest();
 	}
 
 	private StudentManager createStudentManager_forTest() {
-		Pc pcGateway = new Pc(ipAddressGateWay,Const.HOSTNAME_GATEWAY,false);
-		Pc pcTeacher = new Pc(ipAddressTeacher,Const.HOSTNAME_TEACHER,false);
+		Pc pcGateway = new Pc(Const.IPADDRESS_GATEWAY, Const.HOSTNAME_GATEWAY, false);
+		Pc pcTeacher = new Pc(Const.IPADDRESS_TEACHER, Const.HOSTNAME_TEACHER, false);
 
-		Pc pc1 = new Pc(ipAddress1,Const.HOSTNAME_1,Const.ISSTUDENT_PC_1);
-		Pc pc2 = new Pc(ipAddress2,Const.HOSTNAME_2,Const.ISSTUDENT_PC_2);
-		Pc pc3 = new Pc(ipAddress3,Const.HOSTNAME_3,Const.ISSTUDENT_PC_3);
+		Pc pc1 = new Pc(Const.IPADDRESS_1, Const.HOSTNAME_1, Const.ISSTUDENT_PC_1);
+		Pc pc2 = new Pc(Const.IPADDRESS_2, Const.HOSTNAME_2, Const.ISSTUDENT_PC_2);
+		Pc pc3 = new Pc(Const.IPADDRESS_3, Const.HOSTNAME_3, Const.ISSTUDENT_PC_3);
 
 		List<Pc> pcList = new LinkedList<Pc>();
 		pcList.add(pcGateway);
@@ -59,61 +49,61 @@ public class StudentManagerTest {
 
 	@Test
 	public void IPアドレスでPCが登録されているか調べられる() {
-		assertFalse(studentManager.existStudent(ipAddressGateWay));
-		assertTrue(studentManager.existStudent(ipAddress1_otherInstance));
-		assertTrue(studentManager.existStudent(ipAddress2_otherInstance));
-		assertTrue(studentManager.existStudent(ipAddress3_otherInstance));
+		assertFalse(studentManager.existStudentByIpAddress(Const.IPADDRESS_GATEWAY));
+		assertTrue(studentManager.existStudentByIpAddress(Const.IPADDRESS_1));
+		assertTrue(studentManager.existStudentByIpAddress(Const.IPADDRESS_2));
+		assertTrue(studentManager.existStudentByIpAddress(Const.IPADDRESS_3));
 	}
 
 	@Test
 	public void ホスト名でPCが登録されているか調べられる() {
-		assertFalse(studentManager.existStudent(Const.HOSTNAME_GATEWAY));
-		assertFalse(studentManager.existStudent(Const.HOSTNAME_TEACHER));
-		assertTrue(studentManager.existStudent(Const.HOSTNAME_1));
-		assertTrue(studentManager.existStudent(Const.HOSTNAME_2));
-		assertTrue(studentManager.existStudent(Const.HOSTNAME_3));
+		assertFalse(studentManager.existStudentByHostName(Const.HOSTNAME_GATEWAY));
+		assertFalse(studentManager.existStudentByHostName(Const.HOSTNAME_TEACHER));
+		assertTrue(studentManager.existStudentByHostName(Const.HOSTNAME_1));
+		assertTrue(studentManager.existStudentByHostName(Const.HOSTNAME_2));
+		assertTrue(studentManager.existStudentByHostName(Const.HOSTNAME_3));
 	}
 
 	@Test
 	public void IPアドレスでPCを取得できる() {
-		assertNull(studentManager.findStudent(ipAddressGateWay));
+		assertNull(studentManager.findStudentByIpAddress(Const.IPADDRESS_GATEWAY));
 
-		Student student1 = studentManager.findStudent(ipAddress1);
-		assertEquals(student1.getPc().getIpAddress(), ipAddress1_otherInstance);
+		Student student1 = studentManager.findStudentByIpAddress(Const.IPADDRESS_1);
+		assertEquals(student1.getPc().getIpAddress(), Const.IPADDRESS_1);
 
-		Student student2 = studentManager.findStudent(ipAddress2);
-		assertEquals(student2.getPc().getIpAddress(), ipAddress2_otherInstance);
+		Student student2 = studentManager.findStudentByIpAddress(Const.IPADDRESS_2);
+		assertEquals(student2.getPc().getIpAddress(), Const.IPADDRESS_2);
 
-		Student student3 = studentManager.findStudent(ipAddress3);
-		assertEquals(student3.getPc().getIpAddress(), ipAddress3_otherInstance);
+		Student student3 = studentManager.findStudentByIpAddress(Const.IPADDRESS_3);
+		assertEquals(student3.getPc().getIpAddress(), Const.IPADDRESS_3);
 	}
 
 	@Test
 	public void ホスト名でPCを取得できる() {
-		assertNull(studentManager.findStudent(Const.HOSTNAME_GATEWAY));
+		assertNull(studentManager.findStudentByHostName(Const.HOSTNAME_GATEWAY));
 
-		Student student1 = studentManager.findStudent(Const.HOSTNAME_1);
+		Student student1 = studentManager.findStudentByHostName(Const.HOSTNAME_1);
 		assertEquals(student1.getPc().getHostName(), Const.HOSTNAME_1);
 
-		Student student2 = studentManager.findStudent(Const.HOSTNAME_2);
+		Student student2 = studentManager.findStudentByHostName(Const.HOSTNAME_2);
 		assertEquals(student2.getPc().getHostName(), Const.HOSTNAME_2);
 
-		Student student3 = studentManager.findStudent(Const.HOSTNAME_3);
+		Student student3 = studentManager.findStudentByHostName(Const.HOSTNAME_3);
 		assertEquals(student3.getPc().getHostName(), Const.HOSTNAME_3);
 	}
 
 	@Test
 	public void getListで等されている学生が取得できる() {
-		List<Student> studentList=studentManager.getStudentList();
+		List<Student> studentList = studentManager.getStudentList();
 
-		Student student1=studentList.get(0);
-		assertEquals(student1.getPc().getIpAddress(), ipAddress1_otherInstance);
+		Student student1 = studentList.get(0);
+		assertEquals(student1.getPc().getIpAddress(), Const.IPADDRESS_1);
 
-		Student student2=studentList.get(1);
-		assertEquals(student2.getPc().getIpAddress(), ipAddress2_otherInstance);
+		Student student2 = studentList.get(1);
+		assertEquals(student2.getPc().getIpAddress(), Const.IPADDRESS_2);
 
-		Student student3=studentList.get(2);
-		assertEquals(student3.getPc().getIpAddress(), ipAddress3_otherInstance);
+		Student student3 = studentList.get(2);
+		assertEquals(student3.getPc().getIpAddress(), Const.IPADDRESS_3);
 
 	}
 

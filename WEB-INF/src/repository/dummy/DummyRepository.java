@@ -88,7 +88,7 @@ public class DummyRepository implements IRepository{
 
 		for(int i=0;i<pcDataArray.length;i++) {
 			String hostName =pcDataArray[i][0];
-			IpAddress ipAddress =new IpAddress(pcDataArray[i][1]);
+			String ipAddress =pcDataArray[i][1];
 			boolean student=Boolean.parseBoolean(pcDataArray[i][2]);
 
 			Pc pc = new Pc(ipAddress,hostName,student);

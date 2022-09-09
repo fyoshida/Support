@@ -53,7 +53,7 @@ public class FileReader {
 		//カンマで分割した内容を配列に格納する
 		String[] lineData = line.split(",");
 		String hostName = lineData[0];
-		IpAddress ipAddress = new IpAddress(lineData[1]);
+		String ipAddress = lineData[1];
 		boolean isStudent = Boolean.valueOf(lineData[2]);
 
 		//読み込んだ行をPcクラスに格納

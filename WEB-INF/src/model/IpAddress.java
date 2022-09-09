@@ -39,17 +39,22 @@ public class IpAddress {
 		if (this == object) {
 			return true;
 		}
-		if (!(object instanceof IpAddress)) {
+
+		IpAddress targetIpAddress;
+		if (object instanceof String) {
+			targetIpAddress=new IpAddress((String)object);
+		}else if ((object instanceof IpAddress)) {
+			targetIpAddress = (IpAddress) object;
+		}else {
 			return false;
 		}
 
-		IpAddress ipAddress = (IpAddress) object;
-		if (ipAddress.addresses.length != 4) {
+		if (targetIpAddress.addresses.length != 4) {
 			return false;
 		}
 
 		for (int i = 0; i < 4; i++) {
-			if (addresses[i] != ipAddress.addresses[i]) {
+			if (addresses[i] != targetIpAddress.addresses[i]) {
 				return false;
 			}
 		}

@@ -9,9 +9,9 @@ import java.util.Map;
 
 public class StudentManager {
 
-	private final WaitingManager<Pc> waitingManager; 
+	private final WaitingManager<Pc> waitingManager;
 	private final Map<IpAddress, Student> pcIpAddressMap = new LinkedHashMap<IpAddress, Student>();
-	private final Map<String, Student> pcHostNameMap = new LinkedHashMap<String, Student>();
+	private final Map<HostName, Student> pcHostNameMap = new LinkedHashMap<HostName, Student>();
 
 	public StudentManager(List<Pc> pcList) {
 		waitingManager = new WaitingManager<Pc>();
@@ -50,20 +50,20 @@ public class StudentManager {
 		return pcList;
 	}
 
-	public Student findStudent(IpAddress ipAddress) {
-		return pcIpAddressMap.get(ipAddress);
+	public Student findStudentByIpAddress(String ipAddress) {
+		return pcIpAddressMap.get(new IpAddress(ipAddress));
 	}
 
-	public Student findStudent(String hostName) {
-		return pcHostNameMap.get(hostName);
+	public Student findStudentByHostName(String hostName) {
+		return pcHostNameMap.get(new HostName(hostName));
 	}
 
-	public boolean existStudent(IpAddress ipAddress) {
-		return pcIpAddressMap.containsKey(ipAddress);
+	public boolean existStudentByIpAddress(String ipAddress) {
+		return pcIpAddressMap.containsKey(new IpAddress(ipAddress));
 	}
 
-	public boolean existStudent(String hostName) {
-		return pcHostNameMap.containsKey(hostName);
+	public boolean existStudentByHostName(String hostName) {
+		return pcHostNameMap.containsKey(new HostName(hostName));
 	}
 
 

@@ -44,7 +44,7 @@ public class Student {
 		if (userName != null) {
 			return userName;
 		} else {
-			return pc.getHostName();
+			return pc.getHostName().toString();
 		}
 	}
 

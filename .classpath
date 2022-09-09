@@ -3,6 +3,9 @@
 	<classpathentry kind="src" path="WEB-INF/src"/>
 	<classpathentry kind="src" output="work" path="work"/>
 	<classpathentry kind="src" path="test"/>
+	<classpathentry kind="src" path="test_service"/>
+	<classpathentry kind="src" path="test_unit"/>
+	<classpathentry kind="src" path="test_ui"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER">
 		<attributes>
 			<attribute name="module" value="true"/>

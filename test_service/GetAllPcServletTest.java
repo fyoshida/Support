@@ -1,4 +1,4 @@
-package servlet;
+
 
 import static org.junit.Assert.*;
 
@@ -8,7 +8,6 @@ import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
-import common.TestServletBase;
 import helper.JsonConverter;
 import helper.PcJson;
 import network.NetworkFactory;

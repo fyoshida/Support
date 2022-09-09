@@ -1,4 +1,4 @@
-package servlet;
+
 
 import static org.junit.Assert.*;
 
@@ -6,7 +6,6 @@ import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
-import common.TestServletBase;
 import helper.JsonConverter;
 import helper.PcJson;
 import network.NetworkFactory;
@@ -36,9 +35,11 @@ public class GetPcServletTest extends TestServletBase {
 
 		String response = webResponse.getText();
 		PcJson pcJson =JsonConverter.getPcJson(response);
+
 		assertNotNull(pcJson);
 		assertEquals(pcJson.getIpAdress(),NetworkFactory.ipAddress);
-		assertEquals(pcJson.getPcId(),NetworkFactory.hostName);
-		
+		assertTrue(pcJson.getPcId().equals(NetworkFactory.hostName));
+
+
 	}
 }

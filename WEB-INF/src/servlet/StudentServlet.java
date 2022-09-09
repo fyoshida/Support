@@ -23,6 +23,21 @@ import network.NetworkFactory;
 //call-teacher/XXXの応答関数
 public class StudentServlet extends HttpServlet {
 
+	public void doPut(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException{
+		// 設定（文字コード、Session）
+		req.setCharacterEncoding("UTF-8");
+		resp.setContentType("text/html;charset=UTF-8");
+
+		// StudentManagerを取得
+		ServletContext sc = getServletContext();
+		StudentManager studentManager=(StudentManager)sc.getAttribute("StudentManager");
+		
+		// クライアントのHostNameを取得
+		INetwork network = NetworkFactory.getNetwork(req);
+		String hostName = network.getClientHostName();
+		
+	}
+	
 	public void doGet(HttpServletRequest req, HttpServletResponse resp)
 			throws ServletException, IOException {
 

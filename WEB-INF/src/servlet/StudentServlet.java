@@ -21,7 +21,7 @@ import network.NetworkFactory;
 
 @WebServlet(urlPatterns = { "/v1/call/*" })
 //call-teacher/XXXの応答関数
-public class HandDownServlet extends HttpServlet {
+public class StudentServlet extends HttpServlet {
 
 	public void doGet(HttpServletRequest req, HttpServletResponse resp)
 			throws ServletException, IOException {

@@ -25,7 +25,7 @@ import com.meterware.servletunit.InvocationContext;
 import com.meterware.servletunit.ServletRunner;
 import com.meterware.servletunit.ServletUnitClient;
 
-public class TestServlet {
+public class _TestServlet {
 	public enum MethodType {
 		GET, POST, PUT, DELETE
 	}

@@ -13,7 +13,7 @@ import network.NetworkType;
 import repository.RepositoryFactory;
 import repository.RepositoryType;
 
-public class LoginServletTest extends TestServletBase {
+public class LoginServletTest extends _TestServletBase {
 
 	@BeforeClass
 	public static void リポジトリとネットワークを設定() {
@@ -35,12 +35,13 @@ public class LoginServletTest extends TestServletBase {
 		String targetPcHostName = NetworkFactory.hostName;
 		String targetUserName="Test";
 
-		getMessages("InitializeServlet");
+		callHttp(MethodType.GET,"InitializeServlet");
 
 		webRequest.setParameter("UserName", targetUserName);
-		getMessages("LoginServlet");
+		callHttp(MethodType.GET,"LoginServlet");
 
-		getMessages("GetPcServlet");
+		callHttp(MethodType.GET,"GetPcServlet");
+
 		String response = webResponse.getText();
 		PcJson pcJson =JsonConverter.getPcJson(response);
 		assertNotNull(pcJson);

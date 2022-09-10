@@ -9,6 +9,7 @@ public class PcJson{
 	protected String helpStatus = null; // 手を挙げていない: None
 											//	手を挙げている: Troubled
 											// TA教員対応中: Supporting
+	protected String userName=null;
 	protected int handPriority = -1;
 
 	//--------アクセッサ---------
@@ -46,6 +47,14 @@ public class PcJson{
 		this.helpStatus = helpStatus;
 	}
 
+	public String getUserName() {
+		return userName;
+	}
+	
+	public void setUserName(String username) {
+		this.userName = username;
+	}
+	
 	public Boolean getIsLogin() {
 		return isLogin;
 	}

@@ -9,7 +9,6 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import model.IpAddress;
 import model.Student;
 import model.StudentManager;
 import network.INetwork;
@@ -41,7 +40,7 @@ public class LoginServlet extends HttpServlet {
 			Student student = studentManager.findStudentByIpAddress(ipAddress);
 
 			// ログイン
-			student.login(userName);
+			student.setUserName(userName);
 
 			//studentManagerを保存.
 			sc.setAttribute("StudentManager", studentManager);

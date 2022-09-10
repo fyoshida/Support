@@ -17,7 +17,7 @@ import network.NetworkType;
 import repository.RepositoryFactory;
 import repository.RepositoryType;
 
-public class HandUpServletTest extends TestServletBase {
+public class HandUpServletTest extends _TestServletBase {
 
 	@BeforeClass
 	public static void リポジトリとネットワークを設定() {
@@ -37,10 +37,10 @@ public class HandUpServletTest extends TestServletBase {
 		String targetPcIpAddress = NetworkFactory.ipAddress;
 		String targetPcHostName = NetworkFactory.hostName;
 		
-		getMessages("InitializeServlet");
+		callHttp(MethodType.GET,"InitializeServlet");
 
 		webRequest.setParameter("HostName", ""+targetPcHostName);
-		getMessages("HandUpServlet");
+		callHttp(MethodType.GET,"HandUpServlet");
 
 		List<PcJson> pcJsonList =JsonConverter.getPcJsonList(webResponse.getText());
 		assertNotNull(pcJsonList);

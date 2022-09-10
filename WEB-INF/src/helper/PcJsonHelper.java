@@ -14,6 +14,7 @@ public class PcJsonHelper {
 		pcJson.setPcId(student.getPc().getHostName().get());
 		pcJson.setIpAdress(student.getPc().getIpAddress().get());
 		pcJson.setIsStudent(student.getPc().isStudent());
+		pcJson.setUserName(student.getUserName());
 		pcJson.setHelpStatus(student.getHelpStatus().toString());
 		pcJson.setHandPriority(student.getPriority());
 		pcJson.setIsLogin(student.isLogin());

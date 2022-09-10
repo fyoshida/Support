@@ -13,7 +13,7 @@ import network.NetworkType;
 import repository.RepositoryFactory;
 import repository.RepositoryType;
 
-public class GetPcServletTest extends TestServletBase {
+public class GetPcServletTest extends _TestServletBase {
 
 	@BeforeClass
 	public static void リポジトリとネットワークを設定() {
@@ -30,8 +30,8 @@ public class GetPcServletTest extends TestServletBase {
 
 	@Test
 	public void GetメソッドでアクセスするとアクセスしたPCの情報を取得できる() throws Exception {
-		getMessages("InitializeServlet");
-		getMessages("GetPcServlet");
+		callHttp(MethodType.GET,"InitializeServlet");
+		callHttp(MethodType.GET,"GetPcServlet");
 
 		String response = webResponse.getText();
 		PcJson pcJson =JsonConverter.getPcJson(response);

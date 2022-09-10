@@ -9,12 +9,12 @@ import java.util.Map;
 
 public class StudentManager {
 
-	private final WaitingManager<Pc> waitingManager;
+	private final WaitingManager<Student> waitingManager;
 	private final Map<IpAddress, Student> pcIpAddressMap = new LinkedHashMap<IpAddress, Student>();
 	private final Map<HostName, Student> pcHostNameMap = new LinkedHashMap<HostName, Student>();
 
 	public StudentManager(List<Pc> pcList) {
-		waitingManager = new WaitingManager<Pc>();
+		waitingManager = new WaitingManager<Student>();
 		notNull(pcList);
 		for (Pc pc : pcList) {
 			Student student = new Student(pc,waitingManager);

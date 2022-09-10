@@ -1,6 +1,6 @@
 
 
-public class MessagesServletTest extends TestServlet {
+public class MessagesServletTest extends _TestServlet {
 
 //	private static final String SERVLET_NAME = "MessagesServlet";
 //

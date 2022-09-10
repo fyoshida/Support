@@ -11,12 +11,12 @@ import _data.Const;
 
 public class StudentTest {
 
-	private WaitingManager<Pc> waitingManager;
+	private WaitingManager<Student> waitingManager;
 	private Student student;
 
 	@Before
 	public void setUp() {
-		waitingManager = new WaitingManager<Pc>();
+		waitingManager = new WaitingManager<Student>();
 		Pc pc = new Pc(Const.IPADDRESS_GATEWAY, Const.HOSTNAME_GATEWAY, false);
 		student = new Student(pc, waitingManager);
 	}
@@ -29,32 +29,9 @@ public class StudentTest {
 	}
 
 	@Test
-	public void ログインしていない場合はgetUserNameでホスト名が得られる() {
-		assertEquals(student.getUserName(), student.getPc().getHostName().toString());
-	}
-
-	@Test
-	public void ログインするとgetUserNameでユーザ名が得られる() {
-		student.login("abc");
+	public void アクセッサでユーザ名を読み書きできる() {
+		student.setUserName("abc");
 		assertEquals(student.getUserName(), "abc");
-	}
-
-	@Test
-	public void ログアウトするとgetUserNameでホスト名が得られる() {
-		student.login("abc");
-		assertEquals(student.getUserName(), "abc");
-
-		student.logout();
-		assertEquals(student.getUserName(), student.getPc().getHostName().toString());
-	}
-
-	@Test
-	public void ログアウトしなくても再ログインできる() {
-		student.login("abc");
-		assertEquals(student.getUserName(), "abc");
-
-		student.login("def");
-		assertEquals(student.getUserName(), "def");
 	}
 
 	@Test

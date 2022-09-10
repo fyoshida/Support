@@ -12,7 +12,7 @@ import network.NetworkType;
 import repository.RepositoryFactory;
 import repository.RepositoryType;
 
-public class InitializeServletTest extends TestServletBase {
+public class InitializeServletTest extends _TestServletBase {
 
 	@BeforeClass
 	public static void リポジトリとネットワークを設定() {
@@ -30,13 +30,13 @@ public class InitializeServletTest extends TestServletBase {
 
 	@Test
 	public void servletにGetメソッドでアクセスできる() throws Exception {
-		getMessages("InitializeServlet");
+		callHttp(MethodType.GET,"InitializeServlet");
 		assertNotNull(webResponse);
 	}
 
 	@Test
 	public void GetメソッドでアクセスするとServletContextにStudentManagerが取得できる() throws Exception {
-		getMessages("InitializeServlet");
+		callHttp(MethodType.GET,"InitializeServlet");
 		assertNotNull(webResponse);
 
 		StudentManager studentManager =(StudentManager)servletContext.getAttribute("StudentManager");

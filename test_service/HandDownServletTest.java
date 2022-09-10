@@ -17,7 +17,7 @@ import network.NetworkType;
 import repository.RepositoryFactory;
 import repository.RepositoryType;
 
-public class HandDownServletTest extends TestServletBase {
+public class HandDownServletTest extends _TestServletBase {
 
 	@BeforeClass
 	public static void リポジトリとネットワークを設定() {
@@ -39,10 +39,10 @@ public class HandDownServletTest extends TestServletBase {
 		String targetPcIpAddress = NetworkFactory.ipAddress;
 		String targetPcHostName = NetworkFactory.hostName;
 
-		getMessages("InitializeServlet");
+		callHttp(MethodType.GET,"InitializeServlet");
 
 		webRequest.setParameter("HostName", ""+targetPcHostName);
-		getMessages("HandDownServlet");
+		callHttp(MethodType.GET,"HandDownServlet");
 
 		String response = webResponse.getText();
 		List<PcJson> pcJsonList =JsonConverter.getPcJsonList(response);
@@ -60,13 +60,13 @@ public class HandDownServletTest extends TestServletBase {
 		String targetPcIpAddress = NetworkFactory.ipAddress;
 		String targetPcHostName = NetworkFactory.hostName;
 
-		getMessages("InitializeServlet");
+		callHttp(MethodType.GET,"InitializeServlet");
 
 		webRequest.setParameter("HostName", ""+targetPcHostName);
-		getMessages("HandUpServlet");
+		callHttp(MethodType.GET,"HandUpServlet");
 
 		webRequest.setParameter("HostName", ""+targetPcHostName);
-		getMessages("HandDownServlet");
+		callHttp(MethodType.GET,"HandDownServlet");
 
 		String response = webResponse.getText();
 		List<PcJson> pcJsonList =JsonConverter.getPcJsonList(response);
@@ -84,16 +84,16 @@ public class HandDownServletTest extends TestServletBase {
 		String targetPcIpAddress = NetworkFactory.ipAddress;
 		String targetPcHostName = NetworkFactory.hostName;
 
-		getMessages("InitializeServlet");
+		callHttp(MethodType.GET,"InitializeServlet");
 
 		webRequest.setParameter("HostName", ""+targetPcHostName);
-		getMessages("HandUpServlet");
+		callHttp(MethodType.GET,"HandUpServlet");
 
 		webRequest.setParameter("HostName", ""+targetPcHostName);
-		getMessages("SupportServlet");
-
+		callHttp(MethodType.GET,"SupportServlet");
+	
 		webRequest.setParameter("HostName", ""+targetPcHostName);
-		getMessages("HandDownServlet");
+		callHttp(MethodType.GET,"HandDownServlet");
 
 		String response = webResponse.getText();
 		List<PcJson> pcJsonList =JsonConverter.getPcJsonList(response);

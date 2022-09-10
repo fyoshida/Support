@@ -15,7 +15,7 @@ import network.NetworkType;
 import repository.RepositoryFactory;
 import repository.RepositoryType;
 
-public class GetAllPcServletTest extends TestServletBase {
+public class GetAllPcServletTest extends _TestServletBase {
 
 	@BeforeClass
 	public static void リポジトリとネットワークを設定() {
@@ -32,15 +32,15 @@ public class GetAllPcServletTest extends TestServletBase {
 
 	@Test
 	public void servletにGetメソッドでアクセスできる() throws Exception {
-		getMessages("InitializeServlet");
-		getMessages("GetAllPcServlet");
+		callHttp(MethodType.GET,"InitializeServlet");
+		callHttp(MethodType.GET,"GetAllPcServlet");
 		assertNotNull(webResponse);
 	}
 
 	@Test
 	public void Getメソッドでアクセスすると全学生の情報を取得できる() throws Exception {
-		getMessages("InitializeServlet");
-		getMessages("GetAllPcServlet");
+		callHttp(MethodType.GET,"InitializeServlet");
+		callHttp(MethodType.GET,"GetAllPcServlet");
 
 		String response = webResponse.getText();
 		List<PcJson> pcJsonList =JsonConverter.getPcJsonList(response);

@@ -6,8 +6,6 @@ import static org.mockito.Mockito.*;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-import _data.Const;
-
 
 public class MockStudent {
 
@@ -15,30 +13,40 @@ public class MockStudent {
 	private Pc pc;
 	
 //	@Mock
-//	private WaitingManager<Student> waitingManager;
+	private WaitingManager<Student> waitingManager;
 //
 //	@InjectMocks
-//	private Student student;
+	private Student student;
 
 //	private ArrayList testList;
 //	private Pc pc1;
 //	private WaitingManager<Student> waitingManager1;
-//	private Student student1;
+	private Student student1;
 
 	@BeforeEach
 	public void setUp() {
-//		testList=mock(ArrayList.class);
-//		waitingManager=mock(WaitingManager.class);
-		pc = mock(Pc.class,withSettings().useConstructor(Const.IPADDRESS_1,Const.HOSTNAME_1,true));
-//		MockitoAnnotations.openMocks(this);
-		
 //		pc1 = new Pc(Const.IPADDRESS_1,Const.HOSTNAME_1,true);
 //		waitingManager1 = new WaitingManager<Student>();
 //		student1 = new Student(pc1,waitingManager1);
+
+		//		testList=mock(ArrayList.class);
+//		waitingManager=mock(WaitingManager.class);
+//		pc = mock(Pc.class,withSettings().useConstructor(Const.IPADDRESS_1,Const.HOSTNAME_1,true));
+		student=mock(Student.class);
+		
+		pc = mock(Pc.class);
+		doReturn(new HostName("string")).when(pc).getHostName();
+		
+		waitingManager=mock(WaitingManager.class);
+		doReturn(5).when(waitingManager).getPriority(student);
+		//		MockitoAnnotations.openMocks(this);
+		
 	}
 	@Test
 	public void MockTest() {
-		assertThat(pc.getHostName()).isNull();
+		assertThat(pc.getHostName().get()).isEqualTo("string");
+
+		assertThat(waitingManager.getPriority(student)).isEqualTo(5);
 
 		//	    List mockList = mock(ArrayList.class);
 //

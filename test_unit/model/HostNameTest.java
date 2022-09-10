@@ -2,13 +2,9 @@ package model;
 
 import static org.junit.Assert.*;
 
-import org.junit.Before;
 import org.junit.Test;
 
-import _data.Const;
-
 public class HostNameTest {
-
 
 	@Test
 	public void ホスト名がNullではPCを生成できない() {

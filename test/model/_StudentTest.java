@@ -9,7 +9,7 @@ import org.junit.Test;
 
 import _data.Const;
 
-public class StudentTest {
+public class _StudentTest {
 
 	private WaitingManager<Student> waitingManager;
 	private Student student;
@@ -19,28 +19,6 @@ public class StudentTest {
 		waitingManager = new WaitingManager<Student>();
 		Pc pc = new Pc(Const.IPADDRESS_GATEWAY, Const.HOSTNAME_GATEWAY, false);
 		student = new Student(pc, waitingManager);
-	}
-
-	@Test
-	public void 生成直後の状態を確認() {
-		assertNotNull(student.getPc());
-		assertEquals(student.getHelpStatus(), HelpStatus.None);
-		assertNull(student.getHandUpTime());
-	}
-
-	@Test
-	public void アクセッサでユーザ名を読み書きできる() {
-		student.setUserName("abc");
-		assertEquals(student.getUserName(), "abc");
-	}
-
-	@Test
-	public void 生成直後は手を上げていない() {
-		assertEquals(student.getHelpStatus(), HelpStatus.None);
-		assertEquals(student.getPriority(), WaitingManager.NOT_REGISTED);
-
-		assertNull(student.getHandUpTime());
-		assertNull(student.getWaitingTime(LocalDateTime.now()));
 	}
 
 	@Test

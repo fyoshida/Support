@@ -10,7 +10,6 @@ import _data.Const;
 
 public class IpAddressTest {
 
-
 	@Test
 	public void Nullや空の文字列ではIPアドレスを生成できない() {
 		assertThrows(NullPointerException.class, () -> new IpAddress(null));

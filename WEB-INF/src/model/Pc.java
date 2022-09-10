@@ -1,7 +1,5 @@
 package model;
 
-import static org.apache.commons.lang3.Validate.*;
-
 import java.util.Objects;
 
 public class Pc {
@@ -50,11 +48,7 @@ public class Pc {
 		}
 
 		Pc pc = (Pc) object;
-		if (pc.getIpAddress().equals(this.getIpAddress())) {
-			return false;
-		}
-		return true;
-
+		return pc.getIpAddress().equals(this.getIpAddress());
 	}
 
 }

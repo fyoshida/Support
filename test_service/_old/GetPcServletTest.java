@@ -1,4 +1,4 @@
-
+package _old;
 
 import static org.junit.Assert.*;
 
@@ -12,8 +12,10 @@ import network.NetworkFactory;
 import network.NetworkType;
 import repository.RepositoryFactory;
 import repository.RepositoryType;
+import service._TestServletBase;
 
-public class LoginServletTest extends _TestServletBase {
+
+public class GetPcServletTest extends _TestServletBase {
 
 	@BeforeClass
 	public static void リポジトリとネットワークを設定() {
@@ -25,29 +27,21 @@ public class LoginServletTest extends _TestServletBase {
 	public void setUp() throws Exception {
 		super.setUp();
 		registServlet("InitializeServlet");
-		registServlet("LoginServlet");
 		registServlet("GetPcServlet");
 	}
 
 	@Test
-	public void GETメソッドでアクセスするとログインできる() throws Exception {
-		String targetPcIpAddress = NetworkFactory.ipAddress;
-		String targetPcHostName = NetworkFactory.hostName;
-		String targetUserName="Test";
-
+	public void GetメソッドでアクセスするとアクセスしたPCの情報を取得できる() throws Exception {
 		callHttp(MethodType.GET,"InitializeServlet");
-
-		webRequest.setParameter("UserName", targetUserName);
-		callHttp(MethodType.GET,"LoginServlet");
-
 		callHttp(MethodType.GET,"GetPcServlet");
 
 		String response = webResponse.getText();
 		PcJson pcJson =JsonConverter.getPcJson(response);
+
 		assertNotNull(pcJson);
-		assertEquals(pcJson.getIpAdress(),targetPcIpAddress);
-		assertEquals(pcJson.getPcId(),targetPcHostName);
-		assertFalse(pcJson.getIsLogin());
+		assertEquals(pcJson.getIpAdress(),NetworkFactory.ipAddress);
+		assertTrue(pcJson.getPcId().equals(NetworkFactory.hostName));
+
 
 	}
 }

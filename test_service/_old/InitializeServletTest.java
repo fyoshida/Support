@@ -1,3 +1,4 @@
+package _old;
 
 
 import static org.junit.Assert.*;
@@ -11,6 +12,8 @@ import network.NetworkFactory;
 import network.NetworkType;
 import repository.RepositoryFactory;
 import repository.RepositoryType;
+import service._TestServletBase;
+import service._TestServlet.MethodType;
 
 public class InitializeServletTest extends _TestServletBase {
 

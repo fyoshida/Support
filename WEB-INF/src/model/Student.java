@@ -4,6 +4,7 @@ import static org.apache.commons.lang3.Validate.*;
 
 import java.time.Duration;
 import java.time.LocalDateTime;
+import java.util.Objects;
 
 public class Student {
 
@@ -12,6 +13,7 @@ public class Student {
 	private String userName = null;
 
 	private HelpStatus helpStatus = HelpStatus.None;
+	
 	private LocalDateTime handUpTime = null;
 
 	private WaitingManager<Student> waitingManager = null;
@@ -79,6 +81,29 @@ public class Student {
 		} else {
 			return Duration.between(currentTime, handUpTime);
 		}
+	}
+	
+	//--------比較用基本関数--------------
+	@Override
+	public int hashCode() {
+		return Objects.hash(pc);
+	}
+
+	@Override
+	public boolean equals(Object object) {
+		if (this == object) {
+			return true;
+		}
+		if (!(object instanceof Student)) {
+			return false;
+		}
+
+		Student student = (Student) object;
+		if (student.getPc().getIpAddress().equals(this.getPc().getIpAddress())) {
+			return true;
+		}
+		return false;
+
 	}
 
 }

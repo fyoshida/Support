@@ -16,16 +16,6 @@ public class StudentManagerTest {
 
 	@Before
 	public void setUp() {
-		//		ipAddressGateWay = new IpAddress(Const.IPADDRESS_GATEWAY);
-		//		ipAddressTeacher = new IpAddress(Const.IPADDRESS_TEACHER);
-		//		ipAddress1 = new IpAddress(Const.IPADDRESS_1);
-		//		ipAddress2 = new IpAddress(Const.IPADDRESS_2);
-		//		ipAddress3 = new IpAddress(Const.IPADDRESS_3);
-		//
-		//		ipAddress1_otherInstance = new IpAddress(Const.IPADDRESS_1);
-		//		ipAddress2_otherInstance = new IpAddress(Const.IPADDRESS_2);
-		//		ipAddress3_otherInstance = new IpAddress(Const.IPADDRESS_3);
-
 		studentManager = createStudentManager_forTest();
 	}
 

@@ -1,4 +1,5 @@
-
+package _old;
+import service._TestServlet;
 
 public class MessagesServletTest extends _TestServlet {
 

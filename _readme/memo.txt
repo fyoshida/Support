@@ -6,7 +6,7 @@
 ・統合テスト
 ・UIテスト（シナリオテスト）
 
-・ServletContextをファイルorDataBaseへ
+・ServletContextをファイルorDataBaseへ(ロードも可能に)
 
 ・assertJへの変更？
 

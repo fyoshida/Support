@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <classpath>
 	<classpathentry kind="src" path="WEB-INF/src"/>
+	<classpathentry kind="src" path="test_unit"/>
+	<classpathentry kind="src" path="test_service"/>
+	<classpathentry kind="src" path="test_ui"/>
 	<classpathentry kind="src" output="work" path="work"/>
 	<classpathentry kind="src" path="test"/>
-	<classpathentry kind="src" path="test_service"/>
-	<classpathentry kind="src" path="test_unit"/>
-	<classpathentry kind="src" path="test_ui"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER">
 		<attributes>
 			<attribute name="module" value="true"/>
@@ -13,7 +13,6 @@
 	</classpathentry>
 	<classpathentry kind="con" path="org.eclipse.jdt.junit.JUNIT_CONTAINER/5"/>
 	<classpathentry kind="lib" path="WEB-INF/lib/activation-1.1.jar"/>
-	<classpathentry kind="lib" path="WEB-INF/lib/byte-buddy-1.7.5.jar"/>
 	<classpathentry kind="lib" path="WEB-INF/lib/client-combined-3.6.0.jar"/>
 	<classpathentry kind="lib" path="WEB-INF/lib/client-combined-3.6.0-sources.jar"/>
 	<classpathentry kind="lib" path="WEB-INF/lib/commons-codec-1.10.jar"/>
@@ -26,7 +25,6 @@
 	<classpathentry kind="lib" path="WEB-INF/lib/httpclient-4.5.3.jar"/>
 	<classpathentry kind="lib" path="WEB-INF/lib/httpcore-4.4.6.jar"/>
 	<classpathentry kind="lib" path="WEB-INF/lib/httpunit.jar"/>
-	<classpathentry kind="lib" path="WEB-INF/lib/jna-4.1.0.jar"/>
 	<classpathentry kind="lib" path="WEB-INF/lib/jna-platform-4.1.0.jar"/>
 	<classpathentry kind="lib" path="WEB-INF/lib/js-1.6R5.jar"/>
 	<classpathentry kind="lib" path="WEB-INF/lib/jtidy-4aug2000r7-dev.jar"/>
@@ -56,5 +54,9 @@
 	<classpathentry kind="lib" path="WEB-INF/lib/assertj-core-3.23.1.jar"/>
 	<classpathentry kind="lib" path="lib/selenium-server-4.4.0.jar"/>
 	<classpathentry kind="lib" path="WEB-INF/lib/mockito-core-4.8.0.jar"/>
+	<classpathentry kind="lib" path="WEB-INF/lib/byte-buddy-1.12.16.jar"/>
+	<classpathentry kind="lib" path="WEB-INF/lib/byte-buddy-agent-1.12.16.jar"/>
+	<classpathentry kind="lib" path="WEB-INF/lib/jna-5.12.1.jar"/>
+	<classpathentry kind="lib" path="WEB-INF/lib/objenesis-3.2.jar"/>
 	<classpathentry kind="output" path="WEB-INF/classes"/>
 </classpath>

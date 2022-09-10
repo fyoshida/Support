@@ -1,9 +1,14 @@
+・NetworkInterface（Dummy）の修正？
+
 ・クライアントの動作確認、および修正
-・テスト用のPC情報をまとめたファイルを作成
 
 ・ユニットテスト（モックの利用）
 ・統合テスト
 ・UIテスト（シナリオテスト）
 
+・ServletContextをファイルorDataBaseへ
+
 ・assertJへの変更？
+
+・テスト用のPC情報をまとめたファイルを作成
 

@@ -1,27 +1,36 @@
 ・方針
   ・手をあげる、おろす、サポートはStudentで行う
   ・IP、HostNameはチェックしてから使用
-  ・リポジトリ（基本的の状態は全てリポジトリへ）
-    ・DB
-      ・PCとStudentに分ける
-      ・常に保存
-      ・常に読み込み
-    ・ファイル
-      ・PC、Student、Orderに分ける。
-      ・Save：手をあげたとき、下げたとき、サポート時のみ
-      ・Load；常に
-    ・InMemory
-      ・Singletonで初期化できる？
-      ・Save,Load不要？
+  ・Session
+    ・最終Load日時
+    ・StudentManager
+    ・OrderManager
+  ・ServletContext（最終更新日時）
+  ・リポジトリ
+    ・更新時
+      ・順位更新後、Sessionに保存し、Repositoryにも保存
+    ・参照時
+      ・SessionになければリポジトリからLoad
+      ・最終Load時＜最終更新日ならリポジトリからLoad
+      ・最終Load時＞最終更新日ならSessionからLoad
+    ・Load、Save時に渡す物
+      ・StudentList
+      ・OrderList
+    ・保存テーブル
+      ・PcList(IP,HostName,isStudent)
+      ・StudentList(IP,HostName,UserName,HelpStatus,handUpTime)
+      ・OrderList(Order、IP)
+    ・種類
+      ・DataBase
+      ・File
+      ・InMemory（ServletContext）
   ・読み込み後
     ・StudentManager：学生検索用
     ・OrderManager：順位更新用
-      ・Treeを使用
-      ・Load時にMap<IP,Order＞を生成（注：主にInMemory用のキャッシュ）
-      ・保存はMap（Order,Ip）
-    、順位キャッシュを使用
+      ・ListとMapを使用（MapはLoad時に設定）
   ・NetworkInterface
     ・Network版、Dummy版
+    
   ・テスト
     ・Unit：自分以外は全てMock
     ・統合テスト：複数クラス
@@ -29,23 +38,6 @@
     ・UIテスト：Selenium
  
 ・クライアントの動作確認、および修正
-
-※参考
-・ServletContextをファイルorDataBaseへ(ロードも可能に)
-  ・Pc(IP,HostName,isStudent)
-  ・Student(IP,HostName,UserName,HelpStatus,handUpTime,waitingOrder)
-  ・Order(order,IP)※読み込み時に、Map<IP,order>も自動生成
-   ・DB（orderはなくても良い）
-     ・Init時：Student,Orderをクリア
-     ・Save時：helpStatus、handUpTime,waitingOrderを変えるだけ
-     ・Load時：handUpTimeがnullでないものを時間でソート
-   ・Listやファイル（毎回ソートをするか、ファイルに保存するか）
-     ・Init時：Student,Orderをクリア
-     ・Save時：order,IPを全て上書き
-     ・Load時：order,IPを全て読み込み
-   ・Onメモリ（Singletonを使用）
-     ・Init時：Student,Orderを生成
-  ・OrderをTreeにして、Load時に、逆Mapを生成
 
 ・assertJへの変更？
 

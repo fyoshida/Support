@@ -1,11 +1,36 @@
-・NetworkInterface（Dummy）の修正？
-
+・方針
+  ・手をあげる、おろす、サポートはStudentで行う
+  ・IP、HostNameはチェックしてから使用
+  ・リポジトリ（基本的の状態は全てリポジトリへ）
+    ・DB
+      ・PCとStudentに分ける
+      ・常に保存
+      ・常に読み込み
+    ・ファイル
+      ・PC、Student、Orderに分ける。
+      ・Save：手をあげたとき、下げたとき、サポート時のみ
+      ・Load；常に
+    ・InMemory
+      ・Singletonで初期化できる？
+      ・Save,Load不要？
+  ・読み込み後
+    ・StudentManager：学生検索用
+    ・OrderManager：順位更新用
+      ・Treeを使用
+      ・Load時にMap<IP,Order＞を生成（注：主にInMemory用のキャッシュ）
+      ・保存はMap（Order,Ip）
+    、順位キャッシュを使用
+  ・NetworkInterface
+    ・Network版、Dummy版
+  ・テスト
+    ・Unit：自分以外は全てMock
+    ・統合テスト：複数クラス
+    ・ServiceTest：Servlet
+    ・UIテスト：Selenium
+ 
 ・クライアントの動作確認、および修正
 
-・ユニットテスト（モックの利用）
-・統合テスト
-・UIテスト（シナリオテスト）
-
+※参考
 ・ServletContextをファイルorDataBaseへ(ロードも可能に)
   ・Pc(IP,HostName,isStudent)
   ・Student(IP,HostName,UserName,HelpStatus,handUpTime,waitingOrder)

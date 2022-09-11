@@ -66,7 +66,4 @@ public class StudentManager {
 		return pcHostNameMap.containsKey(new HostName(hostName));
 	}
 
-
-
-
 }

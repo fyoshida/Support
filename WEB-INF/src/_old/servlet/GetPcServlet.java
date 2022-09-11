@@ -1,8 +1,7 @@
-package servlet;
+package _old.servlet;
 
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.util.List;
 
 import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
@@ -11,17 +10,20 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import _old.model.IpAddress;
 import helper.JsonConverter;
 import helper.PcJson;
 import helper.PcJsonHelper;
 import model.Student;
 import model.StudentManager;
+import network.DummyNetwork;
 import network.INetwork;
 import network.NetworkFactory;
+import network.ServletNetwork;
 
-@WebServlet(urlPatterns = { "/v1/support/*" })
-//support/XXXの応答関数
-public class SupportServlet extends HttpServlet {
+@WebServlet(urlPatterns = { "/v1/whoami" })
+//whoamiの応答関数
+public class GetPcServlet extends HttpServlet {
 
 	public void doGet(HttpServletRequest req, HttpServletResponse resp)
 			throws ServletException, IOException {
@@ -34,32 +36,26 @@ public class SupportServlet extends HttpServlet {
 		ServletContext sc = getServletContext();
 		StudentManager studentManager = (StudentManager) sc.getAttribute("StudentManager");
 
-		// クライアントのHostNameを取得
+		// クライアントIPアドレスの取得
+//		NetworkInterface network = new ServletNetwork(req);
+
 		INetwork network = NetworkFactory.getNetwork(req);
-		String hostName = network.getClientHostName();
+		String ipAddress = network.getClientIpAddress();
 
 		// 学生を取得
-		Student student = studentManager.findStudentByHostName(hostName);
-
+		Student student = studentManager.findStudentByIpAddress(ipAddress);
 		if (student == null) {
 			req.getRequestDispatcher("/error.html").forward(req, resp);
 			return;
 		}
 
-		// サポート
-		student.supported();
-
-		// 全学生を取得
-		List<Student> studentList = studentManager.getStudentList();
-
 		// Student --> PcJson
-		List<PcJson> pcJsonList=PcJsonHelper.getPcJson(studentList);
+		PcJson pcJson = PcJsonHelper.getPcJson(student);
 
 		// JSON形式で出力
 		PrintWriter out = resp.getWriter();
-		String jsonText = JsonConverter.getJsonText(pcJsonList);
+		String jsonText = JsonConverter.getJsonText(pcJson);
 		out.println(jsonText);
-
 	}
 
 }

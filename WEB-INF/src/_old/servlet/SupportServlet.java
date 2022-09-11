@@ -1,7 +1,8 @@
-package servlet;
+package _old.servlet;
 
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.util.List;
 
 import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
@@ -13,17 +14,14 @@ import javax.servlet.http.HttpServletResponse;
 import helper.JsonConverter;
 import helper.PcJson;
 import helper.PcJsonHelper;
-import model.IpAddress;
 import model.Student;
 import model.StudentManager;
-import network.DummyNetwork;
 import network.INetwork;
 import network.NetworkFactory;
-import network.ServletNetwork;
 
-@WebServlet(urlPatterns = { "/v1/whoami" })
-//whoamiの応答関数
-public class GetPcServlet extends HttpServlet {
+@WebServlet(urlPatterns = { "/v1/support/*" })
+//support/XXXの応答関数
+public class SupportServlet extends HttpServlet {
 
 	public void doGet(HttpServletRequest req, HttpServletResponse resp)
 			throws ServletException, IOException {
@@ -36,26 +34,32 @@ public class GetPcServlet extends HttpServlet {
 		ServletContext sc = getServletContext();
 		StudentManager studentManager = (StudentManager) sc.getAttribute("StudentManager");
 
-		// クライアントIPアドレスの取得
-//		NetworkInterface network = new ServletNetwork(req);
-
+		// クライアントのHostNameを取得
 		INetwork network = NetworkFactory.getNetwork(req);
-		String ipAddress = network.getClientIpAddress();
+		String hostName = network.getClientHostName();
 
 		// 学生を取得
-		Student student = studentManager.findStudentByIpAddress(ipAddress);
+		Student student = studentManager.findStudentByHostName(hostName);
+
 		if (student == null) {
 			req.getRequestDispatcher("/error.html").forward(req, resp);
 			return;
 		}
 
+		// サポート
+		student.supported();
+
+		// 全学生を取得
+		List<Student> studentList = studentManager.getStudentList();
+
 		// Student --> PcJson
-		PcJson pcJson = PcJsonHelper.getPcJson(student);
+		List<PcJson> pcJsonList=PcJsonHelper.getPcJson(studentList);
 
 		// JSON形式で出力
 		PrintWriter out = resp.getWriter();
-		String jsonText = JsonConverter.getJsonText(pcJson);
+		String jsonText = JsonConverter.getJsonText(pcJsonList);
 		out.println(jsonText);
+
 	}
 
 }

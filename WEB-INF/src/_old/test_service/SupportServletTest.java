@@ -1,4 +1,4 @@
-package _old;
+package _old.test_service;
 
 
 import static org.junit.Assert.*;

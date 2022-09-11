@@ -1,4 +1,4 @@
-package _old;
+package _old.test_service;
 import service._TestServlet;
 
 public class MessagesServletTest extends _TestServlet {

@@ -7,6 +7,7 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 import org.junit.Test;
 
 import _data.Const;
+import _old.model.IpAddress;
 
 public class IpAddressTest {
 

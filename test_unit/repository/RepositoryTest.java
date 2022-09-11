@@ -8,7 +8,7 @@ import org.junit.Before;
 import org.junit.Test;
 
 import _data.Const;
-import model.IpAddress;
+import _old.model.IpAddress;
 import model.Pc;
 
 abstract public class RepositoryTest {

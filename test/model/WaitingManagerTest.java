@@ -6,6 +6,7 @@ import org.junit.Before;
 import org.junit.Test;
 
 import _data.Const;
+import _old.model.IpAddress;
 
 public class WaitingManagerTest {
 	private IpAddress ipAddress1;

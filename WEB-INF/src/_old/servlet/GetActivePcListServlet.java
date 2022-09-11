@@ -1,4 +1,4 @@
-package servlet;
+package _old.servlet;
 
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -16,14 +16,12 @@ import helper.PcJson;
 import helper.PcJsonHelper;
 import model.Student;
 import model.StudentManager;
-import network.INetwork;
-import network.NetworkFactory;
 
-@WebServlet(urlPatterns = { "/v1/call/*" })
-//call-teacher/XXXの応答関数
-public class HandUpServlet extends HttpServlet {
+@WebServlet(urlPatterns = { "/v1/active-seats" })
+//active-seatsの応答関数
+public class GetActivePcListServlet extends HttpServlet {
 
-	public void doGet(HttpServletRequest req, HttpServletResponse resp)
+	protected void doGet(HttpServletRequest req, HttpServletResponse resp)
 			throws ServletException, IOException {
 
 		// 設定（文字コード、Session）
@@ -34,25 +32,8 @@ public class HandUpServlet extends HttpServlet {
 		ServletContext sc = getServletContext();
 		StudentManager studentManager=(StudentManager)sc.getAttribute("StudentManager");
 
-		// クライアントのHostNameを取得
-		INetwork network = NetworkFactory.getNetwork(req);
-		String hostName = network.getClientHostName();
-
-		// 学生を取得
-		Student student = studentManager.findStudentByHostName(hostName);
-		if (student == null) {
-			req.getRequestDispatcher("/error.html").forward(req,resp);
-			return;
-		}
-
-		// 手をあげる
-		student.handUp();
-
-		//pcManagerを保存.
-		sc.setAttribute("StudentManager", studentManager);
-
-		// 全学生を取得
-		List<Student> studentList = studentManager.getStudentList();
+		// アクティブな学生を取得
+		List<Student> studentList = studentManager.getHandUpStudent();
 
 		// Student --> PcJson
 		List<PcJson> pcJsonList=PcJsonHelper.getPcJson(studentList);
@@ -61,8 +42,6 @@ public class HandUpServlet extends HttpServlet {
 		PrintWriter out = resp.getWriter();
 		String jsonText = JsonConverter.getJsonText(pcJsonList);
 		out.println(jsonText);
-
-//		// 全学生情報出力用Servletへ移動
-//		req.getRequestDispatcher("GetAllPcServlet").forward(req, resp);
 	}
+
 }

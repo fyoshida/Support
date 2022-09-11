@@ -1,4 +1,4 @@
-package servlet.schedule;
+package _old.schedule;
 
 import java.io.BufferedReader;
 import java.io.FileInputStream;

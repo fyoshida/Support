@@ -3,7 +3,7 @@ package repository.db;
 import java.sql.ResultSet;
 import java.util.List;
 
-import model.IpAddress;
+import _old.model.IpAddress;
 import model.Pc;
 import repository.IRepository;
 

@@ -1,42 +1,60 @@
 package model;
 
-import static org.apache.commons.lang3.Validate.*;
-
-import java.time.Duration;
 import java.time.LocalDateTime;
 import java.util.Objects;
 
 public class Student {
 
-	private Pc pc = null;
+	private String ipAddress;
+	private String hostName;
+	private boolean isStudent = false;
 
 	private String userName = null;
-
 	private HelpStatus helpStatus = HelpStatus.None;
-	
 	private LocalDateTime handUpTime = null;
-
-	private WaitingManager<Student> waitingManager = null;
+	private int waitingOrder = 999;
 
 	//--------コンストラクタ--------------
-	public Student(Pc pc, WaitingManager<Student> waitingManager) {
-		notNull(pc);
-		this.pc = pc;
-		notNull(waitingManager);
-		this.waitingManager = waitingManager;
+	public Student(String ipAddress, String hostName, boolean isStudent) {
+		this.ipAddress = ipAddress;
+		this.hostName = hostName;
+		this.isStudent = isStudent;
 	}
+
+//	public Student(String ipAddress, String hostName, boolean isStudent,
+//			String userName, HelpStatus helpStatus, LocalDateTime handUpTime, int waitingOrder) {
+//		this.ipAddress = ipAddress;
+//		this.hostName = hostName;
+//		this.isStudent = isStudent;
+//		this.userName = userName;
+//		this.helpStatus = helpStatus;
+//		this.handUpTime = handUpTime;
+//		this.waitingOrder = waitingOrder;
+//	}
 
 	//--------アクセッサ--------------
-	public Pc getPc() {
-		return pc;
+	public void setIpAddress(String ipAddress) {
+		this.ipAddress = ipAddress;
 	}
 
-	public HelpStatus getHelpStatus() {
-		return helpStatus;
+	public String getIpAddress() {
+		return ipAddress;
 	}
 
-	public LocalDateTime getHandUpTime() {
-		return handUpTime;
+	public void setHostName(String hostName) {
+		this.hostName = hostName;
+	}
+
+	public String getHostName() {
+		return hostName;
+	}
+
+	public boolean isStudent() {
+		return isStudent;
+	}
+
+	public void setStudent(boolean isStudent) {
+		this.isStudent = isStudent;
 	}
 
 	public void setUserName(String userName) {
@@ -47,46 +65,66 @@ public class Student {
 		return userName;
 	}
 
-	public boolean isLogin() {
-		return (userName != null);
+	public void setHelpStatus(HelpStatus helpStatus) {
+		this.helpStatus = helpStatus;
 	}
 
-	//--------hand処理--------------
-	public void handUp() {
-		helpStatus = HelpStatus.Troubled;
-		handUpTime = LocalDateTime.now();
-		waitingManager.regist(this);
+	public HelpStatus getHelpStatus() {
+		return helpStatus;
 	}
 
-	public void supported() {
-		helpStatus = HelpStatus.Supporting;
-		handUpTime = null;
-		waitingManager.unregist(this);
+	public void setHandUpTime(LocalDateTime handUpTime) {
+		this.handUpTime = handUpTime;
 	}
 
-	public void handDown() {
-		helpStatus = HelpStatus.None;
-		handUpTime = null;
-		waitingManager.unregist(this);
+	public LocalDateTime getHandUpTime() {
+		return handUpTime;
 	}
 
-	//--------待ち行列処理--------------
-	public int getPriority() {
-		return waitingManager.getPriority(this);
+	public void setWaitingOrder(int waitingOrder) {
+		this.waitingOrder = waitingOrder;
 	}
 
-	public Duration getWaitingTime(LocalDateTime currentTime) {
-		if (handUpTime == null) {
-			return null;
-		} else {
-			return Duration.between(currentTime, handUpTime);
+	public int getWaitingOrder() {
+		return waitingOrder;
+	}
+
+		//--------hand処理--------------
+		public void handUp() {
+			helpStatus = HelpStatus.Troubled;
+			handUpTime = LocalDateTime.now();
+			waitingManager.regist(this);
 		}
-	}
 	
+		public void supported() {
+			helpStatus = HelpStatus.Supporting;
+			handUpTime = null;
+			waitingManager.unregist(this);
+		}
+	
+		public void handDown() {
+			helpStatus = HelpStatus.None;
+			handUpTime = null;
+			waitingManager.unregist(this);
+		}
+	//
+	//	//--------待ち行列処理--------------
+	//	public int getPriority() {
+	//		return waitingManager.getPriority(this);
+	//	}
+	//
+	//	public Duration getWaitingTime(LocalDateTime currentTime) {
+	//		if (handUpTime == null) {
+	//			return null;
+	//		} else {
+	//			return Duration.between(currentTime, handUpTime);
+	//		}
+	//	}
+
 	//--------比較用基本関数--------------
 	@Override
 	public int hashCode() {
-		return Objects.hash(pc);
+		return Objects.hash(ipAddress);
 	}
 
 	@Override
@@ -99,7 +137,7 @@ public class Student {
 		}
 
 		Student student = (Student) object;
-		if (student.getPc().getIpAddress().equals(this.getPc().getIpAddress())) {
+		if (student.getIpAddress().equals(this.getIpAddress())) {
 			return true;
 		}
 		return false;

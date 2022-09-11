@@ -1,4 +1,4 @@
-package servlet;
+package _old.servlet;
 
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -21,7 +21,7 @@ import network.NetworkFactory;
 
 @WebServlet(urlPatterns = { "/v1/call/*" })
 //call-teacher/XXXの応答関数
-public class HandDownServlet extends HttpServlet {
+public class HandUpServlet extends HttpServlet {
 
 	public void doGet(HttpServletRequest req, HttpServletResponse resp)
 			throws ServletException, IOException {
@@ -45,8 +45,8 @@ public class HandDownServlet extends HttpServlet {
 			return;
 		}
 
-		// 手を下げる
-		student.handDown();
+		// 手をあげる
+		student.handUp();
 
 		//pcManagerを保存.
 		sc.setAttribute("StudentManager", studentManager);
@@ -63,8 +63,6 @@ public class HandDownServlet extends HttpServlet {
 		out.println(jsonText);
 
 //		// 全学生情報出力用Servletへ移動
-//		req.getRequestDispatcher("./GetAllPcServlet").forward(req, resp);
+//		req.getRequestDispatcher("GetAllPcServlet").forward(req, resp);
 	}
-
-
 }

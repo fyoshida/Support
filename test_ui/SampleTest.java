@@ -13,7 +13,7 @@ import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
 
 import _data.Const;
-import model.IpAddress;
+import _old.model.IpAddress;
 import model.Pc;
 
 @Ignore

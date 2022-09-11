@@ -7,6 +7,20 @@
 ・UIテスト（シナリオテスト）
 
 ・ServletContextをファイルorDataBaseへ(ロードも可能に)
+  ・Pc(IP,HostName,isStudent)
+  ・Student(IP,HostName,UserName,HelpStatus,handUpTime,waitingOrder)
+  ・Order(order,IP)※読み込み時に、Map<IP,order>も自動生成
+   ・DB（orderはなくても良い）
+     ・Init時：Student,Orderをクリア
+     ・Save時：helpStatus、handUpTime,waitingOrderを変えるだけ
+     ・Load時：handUpTimeがnullでないものを時間でソート
+   ・Listやファイル（毎回ソートをするか、ファイルに保存するか）
+     ・Init時：Student,Orderをクリア
+     ・Save時：order,IPを全て上書き
+     ・Load時：order,IPを全て読み込み
+   ・Onメモリ（Singletonを使用）
+     ・Init時：Student,Orderを生成
+  ・OrderをTreeにして、Load時に、逆Mapを生成
 
 ・assertJへの変更？
 

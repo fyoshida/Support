@@ -6,7 +6,6 @@ import java.util.List;
 
 import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
-import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -17,7 +16,7 @@ import helper.PcJsonHelper;
 import model.Student;
 import model.StudentManager;
 
-@WebServlet(urlPatterns = { "/v1/active-seats" })
+@jakarta.servlet.annotation.WebServlet(urlPatterns = { "/v1/active-seats" })
 //active-seatsの応答関数
 public class GetActivePcListServlet extends HttpServlet {
 

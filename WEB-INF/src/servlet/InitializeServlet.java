@@ -5,21 +5,16 @@ import java.util.List;
 
 import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
-import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import model.Pc;
 import model.StudentManager;
-import network.DummyNetwork;
-import network.INetwork;
-import network.NetworkFactory;
 import repository.IRepository;
 import repository.RepositoryFactory;
-import repository.dummy.DummyRepository;
 
-@WebServlet(urlPatterns = { "/v1/initialize" })
+@jakarta.servlet.annotation.WebServlet(urlPatterns = { "/v1/initialize" })
 //active-seatsの応答関数
 public class InitializeServlet extends HttpServlet {
 

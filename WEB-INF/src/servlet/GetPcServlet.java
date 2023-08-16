@@ -5,7 +5,6 @@ import java.io.PrintWriter;
 
 import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
-import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -13,15 +12,12 @@ import javax.servlet.http.HttpServletResponse;
 import helper.JsonConverter;
 import helper.PcJson;
 import helper.PcJsonHelper;
-import model.IpAddress;
 import model.Student;
 import model.StudentManager;
-import network.DummyNetwork;
 import network.INetwork;
 import network.NetworkFactory;
-import network.ServletNetwork;
 
-@WebServlet(urlPatterns = { "/v1/whoami" })
+@jakarta.servlet.annotation.WebServlet(urlPatterns = { "/v1/whoami" })
 //whoamiの応答関数
 public class GetPcServlet extends HttpServlet {
 

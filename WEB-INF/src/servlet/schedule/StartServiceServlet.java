@@ -1,30 +1,12 @@
 package servlet.schedule;
 
-import java.io.BufferedReader;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.IOException;
-import java.io.InputStreamReader;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
-import java.sql.Timestamp;
-import java.util.Date;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.stream.Collectors;
-import java.util.stream.Stream;
-
 import javax.servlet.ServletContextEvent;
 import javax.servlet.ServletContextListener;
-import javax.servlet.annotation.WebListener;
 
-import model.HelpStatus;
-import model.Student;
 import model.StudentManager;
 
 
-@WebListener
+@jakarta.servlet.annotation.WebListener
 public class StartServiceServlet implements ServletContextListener {
 	private static StudentManager pcListManager;
 

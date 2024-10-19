@@ -5,6 +5,7 @@ import java.util.LinkedList;
 import java.util.List;
 
 import domain.entities.Student;
+import httpclient.HttpClientFactory;
 
 public class PcJsonHelper {
 
@@ -31,12 +32,12 @@ public class PcJsonHelper {
 		return pcJsonList;
 	}
 
-//	public static PcJson findPcJson(List<PcJson> pcJsonList,String ipAddress) {
-//		for(PcJson pcJson : pcJsonList) {
-//			if(pcJson.getIpAdress().equals(NetworkFactory.ipAddress)) {
-//				return pcJson;
-//			}
-//		}
-//		return null;
-//	}
+	public static PcJson findPcJson(List<PcJson> pcJsonList, String ipAddress) {
+		for (PcJson pcJson : pcJsonList) {
+			if (pcJson.getIpAdress().equals(HttpClientFactory.ipAddress)) {
+				return pcJson;
+			}
+		}
+		return null;
+	}
 }

@@ -3,6 +3,7 @@ package servlet;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.List;
+import java.util.Optional;
 
 import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
@@ -11,11 +12,11 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import domain.aggregate.StudentManager;
+import domain.entities.Student;
 import helper.JsonConverter;
 import helper.PcJson;
 import helper.PcJsonHelper;
-import model.Student;
-import model.StudentManager;
 import network.INetwork;
 import network.NetworkFactory;
 
@@ -39,15 +40,15 @@ public class SupportServlet extends HttpServlet {
 		String hostName = network.getClientHostName();
 
 		// 学生を取得
-		Student student = studentManager.getStudent(hostName);
-
-		if (student == null) {
-			req.getRequestDispatcher("/error.html").forward(req, resp);
+		Optional<Student> optStudent = studentManager.getStudent(hostName);
+		if (optStudent.isEmpty()) {
+			req.getRequestDispatcher("/error.html").forward(req,resp);
 			return;
 		}
+		Student student = optStudent.get();
 
 		// サポート
-		student.supported();
+		student.supporting();
 
 		// 全学生を取得
 		List<Student> studentList = studentManager.getStudentList();

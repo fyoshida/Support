@@ -1,12 +1,13 @@
-package model;
+package domain.entities;
 import static org.apache.commons.lang3.Validate.*;
+
+import java.net.InetAddress;
 public class Pc {
-	protected final IpAddress ipAddress;
+	protected final InetAddress  ipAddress;
 	protected final String hostName;
-	protected boolean isStudent = false;
 
 	//--------コンストラクタ--------------
-	public Pc(IpAddress ipAddress,String hostName) {
+	public Pc(InetAddress  ipAddress,String hostName) {
 		notNull(ipAddress);
 		notNull(hostName);
 		this.ipAddress=ipAddress;
@@ -15,7 +16,7 @@ public class Pc {
 
 	//--------アクセッサ--------------
 
-	public IpAddress getIpAddress() {
+	public InetAddress getIpAddress() {
 		return ipAddress;
 	}
 
@@ -23,11 +24,4 @@ public class Pc {
 		return hostName;
 	}
 
-	public boolean isStudent() {
-		return isStudent;
-	}
-
-	public void setStudent(boolean isStudent) {
-		this.isStudent = isStudent;
-	}
 }

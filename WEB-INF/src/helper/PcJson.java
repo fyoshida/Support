@@ -4,11 +4,10 @@ public class PcJson{
 
 	protected String pcId = null; //icsXXX
 	protected String ipAdress = null; //ドメインは133.44.118.158-228の間
-	protected Boolean isStudent = null; // true:学生が利用するPC, false:TA,教員が利用するPC
-	protected Boolean isLogin = null; // true:ログイン中, false:未ログイン
 	protected String helpStatus = null; // 手を挙げていない: None
 											//	手を挙げている: Troubled
 											// TA教員対応中: Supporting
+	protected long waitingTimeBySecond =0;
 	protected int handPriority = -1;
 
 	//--------アクセッサ---------
@@ -26,13 +25,6 @@ public class PcJson{
 		this.ipAdress = ipAdress;
 	}
 
-	public Boolean getIsStudent() {
-		return isStudent;
-	}
-	public void setIsStudent(Boolean isStudent) {
-		this.isStudent = isStudent;
-	}
-
 	public int getHandPriority() {
 		return handPriority;
 	}
@@ -45,13 +37,12 @@ public class PcJson{
 	public void setHelpStatus(String helpStatus) {
 		this.helpStatus = helpStatus;
 	}
-
-	public Boolean getIsLogin() {
-		return isLogin;
+	public long getWaitingTimeBySecond() {
+		return waitingTimeBySecond;
 	}
-	public void setIsLogin(Boolean isLogin) {
-		this.isLogin = isLogin;
+	public void setWaitingTimeBySecond(long waitingTime) {
+		this.waitingTimeBySecond = waitingTime;
 	}
-
+	
 
 }

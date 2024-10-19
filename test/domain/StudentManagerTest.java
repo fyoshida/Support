@@ -1,12 +1,19 @@
-package model;
+package domain;
 
 import static org.junit.Assert.*;
 
+import java.net.InetAddress;
+import java.net.UnknownHostException;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Optional;
 
 import org.junit.Before;
 import org.junit.Test;
+
+import domain.aggregate.StudentManager;
+import domain.entities.Pc;
+import domain.entities.Student;
 
 public class StudentManagerTest {
 
@@ -22,13 +29,13 @@ public class StudentManagerTest {
 	public static final String IPADDRESS_3 = "133.44.118.228";
 	public static final String HOSTNAME_3 = "ics871";
 
-	private IpAddress ipAddressGateWay;
-	private IpAddress ipAddress1;
-	private IpAddress ipAddress2;
-	private IpAddress ipAddress3;
-	private IpAddress ipAddress1_another;
-	private IpAddress ipAddress2_another;
-	private IpAddress ipAddress3_another;
+	private InetAddress ipAddressGateWay;
+	private InetAddress ipAddress1;
+	private InetAddress ipAddress2;
+	private InetAddress ipAddress3;
+	private InetAddress ipAddress1_another;
+	private InetAddress ipAddress2_another;
+	private InetAddress ipAddress3_another;
 	private Pc pcGateway;
 	private Pc pc1;
 	private Pc pc2;
@@ -38,34 +45,28 @@ public class StudentManagerTest {
 
 	@Before
 	public void setUp() {
-		ipAddressGateWay = new IpAddress(IPADDRESS_GATEWAY);
-		ipAddress1 = new IpAddress(IPADDRESS_1);
-		ipAddress2 = new IpAddress(IPADDRESS_2);
-		ipAddress3 = new IpAddress(IPADDRESS_3);
+		try {
+			ipAddressGateWay =InetAddress.getByName(IPADDRESS_GATEWAY);
+			ipAddress1 = InetAddress.getByName(IPADDRESS_1);
+			ipAddress2 = InetAddress.getByName(IPADDRESS_2);
+			ipAddress3 = InetAddress.getByName(IPADDRESS_3);
 
-		ipAddress1_another = new IpAddress(IPADDRESS_1);
-		ipAddress2_another = new IpAddress(IPADDRESS_2);
-		ipAddress3_another = new IpAddress(IPADDRESS_3);
+			ipAddress1_another = InetAddress.getByName(IPADDRESS_1);
+			ipAddress2_another = InetAddress.getByName(IPADDRESS_2);
+			ipAddress3_another =InetAddress.getByName(IPADDRESS_3);
 
-		pcGateway = new Pc(ipAddressGateWay,HOSTNAME_GATEWAY);
-		pcGateway.setStudent(false);
+			List<Pc> pcList = new LinkedList<Pc>();
+			pcList.add(pcGateway);
+			pcList.add(pc1);
+			pcList.add(pc2);
+			pcList.add(pc3);
 
-		pc1 = new Pc(ipAddress1,HOSTNAME_1);
-		pc1.setStudent(true);
+			studentManager = new StudentManager(pcList);
+		} catch (UnknownHostException e) {
+			// TODO 自動生成された catch ブロック
+			e.printStackTrace();
+		}
 
-		pc2 = new Pc(ipAddress2,HOSTNAME_2);
-		pc2.setStudent(true);
-
-		pc3 = new Pc(ipAddress3,HOSTNAME_3);
-		pc3.setStudent(true);
-
-		List<Pc> pcList = new LinkedList<Pc>();
-		pcList.add(pcGateway);
-		pcList.add(pc1);
-		pcList.add(pc2);
-		pcList.add(pc3);
-
-		studentManager = new StudentManager(pcList);
 	}
 
 	@Test
@@ -88,28 +89,28 @@ public class StudentManagerTest {
 	public void IPアドレスでPCを取得できる() {
 		assertNull(studentManager.getStudent(ipAddressGateWay));
 
-		Student student1 = studentManager.getStudent(ipAddress1);
-		assertEquals(student1.getPc().getIpAddress(), ipAddress1_another);
+		Optional<Student> student1 = studentManager.getStudent(ipAddress1);
+		assertEquals(student1.get().getPc().getIpAddress(), ipAddress1_another);
 
-		Student student2 = studentManager.getStudent(ipAddress2);
-		assertEquals(student2.getPc().getIpAddress(), ipAddress2_another);
+		Optional<Student> student2 = studentManager.getStudent(ipAddress2);
+		assertEquals(student2.get().getPc().getIpAddress(), ipAddress2_another);
 
-		Student student3 = studentManager.getStudent(ipAddress3);
-		assertEquals(student3.getPc().getIpAddress(), ipAddress3_another);
+		Optional<Student> student3 = studentManager.getStudent(ipAddress3);
+		assertEquals(student3.get().getPc().getIpAddress(), ipAddress3_another);
 	}
 
 	@Test
 	public void ホスト名でPCを取得できる() {
 		assertNull(studentManager.getStudent(HOSTNAME_GATEWAY));
 
-		Student student1 = studentManager.getStudent(HOSTNAME_1);
-		assertEquals(student1.getPc().getHostName(), HOSTNAME_1);
+		Optional<Student> student1 = studentManager.getStudent(HOSTNAME_1);
+		assertEquals(student1.get().getPc().getHostName(), HOSTNAME_1);
 
-		Student student2 = studentManager.getStudent(HOSTNAME_2);
-		assertEquals(student2.getPc().getHostName(), HOSTNAME_2);
+		Optional<Student> student2 = studentManager.getStudent(HOSTNAME_2);
+		assertEquals(student2.get().getPc().getHostName(), HOSTNAME_2);
 
-		Student student3 = studentManager.getStudent(HOSTNAME_3);
-		assertEquals(student3.getPc().getHostName(), HOSTNAME_3);
+		Optional<Student> student3 = studentManager.getStudent(HOSTNAME_3);
+		assertEquals(student3.get().getPc().getHostName(), HOSTNAME_3);
 	}
 
 	@Test

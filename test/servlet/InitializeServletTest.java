@@ -7,7 +7,7 @@ import org.junit.BeforeClass;
 import org.junit.Test;
 
 import common.TestServletBase;
-import model.StudentManager;
+import domain.aggregate.StudentManager;
 import network.NetworkFactory;
 import network.NetworkType;
 import repository.RepositoryFactory;
@@ -17,7 +17,7 @@ public class InitializeServletTest extends TestServletBase {
 
 	@BeforeClass
 	public static void リポジトリとネットワークを設定() {
-		RepositoryFactory.repositoryType = RepositoryType.Dummy;
+		RepositoryFactory.repositoryType = RepositoryType.Memory;
 		NetworkFactory.networkType = NetworkType.Dummy;
 	}
 

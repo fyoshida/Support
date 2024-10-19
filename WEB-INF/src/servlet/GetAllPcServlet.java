@@ -10,11 +10,11 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import domain.aggregate.StudentManager;
+import domain.entities.Student;
 import helper.JsonConverter;
 import helper.PcJson;
 import helper.PcJsonHelper;
-import model.Student;
-import model.StudentManager;
 
 //@WebServlet(urlPatterns = { "/v1/" })
 //whoamiの応答関数

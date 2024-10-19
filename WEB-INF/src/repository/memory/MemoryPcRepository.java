@@ -1,13 +1,14 @@
-package repository.dummy;
+package repository.memory;
 
-import java.util.LinkedList;
+import java.net.InetAddress;
+import java.net.UnknownHostException;
+import java.util.ArrayList;
 import java.util.List;
 
-import model.IpAddress;
-import model.Pc;
-import repository.IRepository;
+import domain.entities.Pc;
+import repository.IPcRepository;
 
-public class DummyRepository implements IRepository{
+public class MemoryPcRepository implements IPcRepository{
 	private static String[][] pcDataArray = {
 			{"ics801","133.44.118.158","true" },
 			{"ics802","133.44.118.159","true" },
@@ -83,18 +84,19 @@ public class DummyRepository implements IRepository{
 		};
 
 	@Override
-	public List<Pc> getPcList() {
-		List<Pc> pcList = new LinkedList<Pc>();
+	public List<Pc> getPcList()  {
+		List<Pc> pcList = new ArrayList<Pc>();
 
 		for(int i=0;i<pcDataArray.length;i++) {
 			String hostName =pcDataArray[i][0];
-			IpAddress ipAddress =new IpAddress(pcDataArray[i][1]);
-			boolean student=Boolean.parseBoolean(pcDataArray[i][2]);
-
-			Pc pc = new Pc(ipAddress,hostName);
-			pc.setStudent(student);
-
-			pcList.add(pc);
+			InetAddress ipAddress;
+			try {
+				ipAddress = InetAddress.getByName(pcDataArray[i][1]);
+				Pc pc = new Pc(ipAddress,hostName);
+				pcList.add(pc);
+			} catch (UnknownHostException e) {
+				e.printStackTrace();
+			}
 		}
 
 		return pcList;

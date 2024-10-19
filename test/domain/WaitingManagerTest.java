@@ -1,24 +1,35 @@
-package model;
+package domain;
 
 import static org.junit.Assert.*;
 
+import java.net.InetAddress;
+import java.net.UnknownHostException;
+
 import org.junit.Before;
 import org.junit.Test;
+
+import domain.aggregate.WaitingManager;
 
 public class WaitingManagerTest {
 	public static final String IPADDRESS_GATEWAY = "133.44.118.254";
 	public static final String IPADDRESS_1 = "133.44.118.158";
 	public static final String IPADDRESS_2 = "133.44.118.228";
 
-	private IpAddress ipAddress1;
-	private IpAddress ipAddress2;
-	private IpAddress ipAddress3;
+	private InetAddress ipAddress1;
+	private InetAddress ipAddress2;
+	private InetAddress ipAddress3;
 
 	@Before
 	public void setUp() {
-		ipAddress1 = new IpAddress(IpAddressTest.IPADDRESS_1);
-		ipAddress2 = new IpAddress(IpAddressTest.IPADDRESS_2);
-		ipAddress3 = new IpAddress(IpAddressTest.IPADDRESS_GATEWAY);
+		try {
+			ipAddress1 = InetAddress.getByName(IPADDRESS_1);
+			ipAddress2 = InetAddress.getByName(IPADDRESS_2);
+			ipAddress3 = InetAddress.getByName(IPADDRESS_GATEWAY);
+		} catch (UnknownHostException e) {
+			// TODO 自動生成された catch ブロック
+			e.printStackTrace();
+		}
+
 	}
 
 	@Test

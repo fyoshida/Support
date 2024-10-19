@@ -9,10 +9,10 @@ import org.junit.BeforeClass;
 import org.junit.Test;
 
 import common.TestServletBase;
+import domain.valueobjects.HelpStatus;
 import helper.JsonConverter;
 import helper.PcJson;
 import helper.PcJsonHelper;
-import model.HelpStatus;
 import network.NetworkFactory;
 import network.NetworkType;
 import repository.RepositoryFactory;
@@ -22,7 +22,7 @@ public class SupportServletTest extends TestServletBase {
 
 	@BeforeClass
 	public static void リポジトリとネットワークを設定() {
-		RepositoryFactory.repositoryType = RepositoryType.Dummy;
+		RepositoryFactory.repositoryType = RepositoryType.Memory;
 		NetworkFactory.networkType = NetworkType.Dummy;
 	}
 
@@ -56,7 +56,7 @@ public class SupportServletTest extends TestServletBase {
 		PcJson pcJson = PcJsonHelper.findPcJson(pcJsonList, targetPcIpAddress);
 		assertNotNull(pcJson);
 		assertEquals(pcJson.getPcId(), targetPcHostName);
-		assertEquals(pcJson.getHelpStatus(), HelpStatus.Supporting.toString());
+		assertEquals(pcJson.getHelpStatus(), HelpStatus.Supporting.getDisplayName());
 
 	}
 }

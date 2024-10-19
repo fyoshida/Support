@@ -2,10 +2,10 @@ package repository;
 
 import org.junit.Ignore;
 
-import repository.db.DataBaseRepository;
+import repository.db.DataBasePcRepository;
 
 @Ignore
-public class DataBaseRepositotyTest extends RepositoryTest{
+public class DataBasePcRepositotyTest extends RepositoryTest{
 
 	@Override
 	public void initializeRepository() {

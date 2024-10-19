@@ -1,31 +1,31 @@
 package helper;
 
+import java.time.LocalDateTime;
 import java.util.LinkedList;
 import java.util.List;
 
-import model.Student;
+import domain.entities.Student;
 import network.NetworkFactory;
 
 public class PcJsonHelper {
 
-	public static PcJson getPcJson(Student student) {
+	public static PcJson fromStudent(Student student) {
 		PcJson pcJson = new PcJson();
 
 		pcJson.setPcId(student.getPc().getHostName());
-		pcJson.setIpAdress(student.getPc().getIpAddress().get());
-		pcJson.setIsStudent(student.getPc().isStudent());
-		pcJson.setHelpStatus(student.getHelpStatus().toString());
+		pcJson.setIpAdress(student.getPc().getIpAddress().toString());
+		pcJson.setHelpStatus(student.getHelpStatus().getDisplayName());
+		pcJson.setWaitingTimeBySecond(student.getWaitingTime(LocalDateTime.now()).toSeconds());
 		pcJson.setHandPriority(student.getPriority());
-		pcJson.setIsLogin(student.isLogin());
 
 		return pcJson;
 	}
 
-	public static List<PcJson> getPcJson(List<Student> pcList) {
+	public static List<PcJson> getPcJson(List<Student> studentList) {
 		List<PcJson> pcJsonList = new LinkedList<PcJson>();
 
-		for (Student pc : pcList) {
-			PcJson pcJson = getPcJson(pc);
+		for (Student student : studentList) {
+			PcJson pcJson = fromStudent(student);
 			pcJsonList.add(pcJson);
 		}
 

@@ -1,29 +1,40 @@
-package model;
+package domain;
 
 import static org.junit.Assert.*;
 
+import java.net.InetAddress;
+import java.net.UnknownHostException;
 import java.time.LocalDateTime;
 
 import org.junit.Before;
 import org.junit.Test;
 
+import domain.aggregate.WaitingManager;
+import domain.entities.Pc;
+import domain.entities.Student;
+import domain.valueobjects.HelpStatus;
+
 public class StudentTest {
 
 	public static final String IPADDRESS_GATEWAY = "133.44.118.254";
-	private IpAddress ipAddress;
+	private InetAddress ipAddress;
 	private String hostName;
 	private WaitingManager waitingManager;
 	private Student student;
 
 	@Before
 	public void setUp() {
-		ipAddress = new IpAddress(IPADDRESS_GATEWAY);
-		hostName ="icsGateWay";
-		Pc pc = new Pc(ipAddress,hostName);
+		try {
+			ipAddress = InetAddress.getByName(IPADDRESS_GATEWAY);
+			hostName ="icsGateWay";
+			Pc pc = new Pc(ipAddress,hostName);
 
-		waitingManager = new WaitingManager();
+			student = new Student(pc);
+		} catch (UnknownHostException e) {
+			// TODO 自動生成された catch ブロック
+			e.printStackTrace();
+		}
 
-		student = new Student(pc, waitingManager);
 	}
 
 	@Test
@@ -33,34 +44,6 @@ public class StudentTest {
 		assertNull(student.getHandUpTime());
 	}
 
-	@Test
-	public void ログインしていない場合はgetUserNameでホスト名が得られる() {
-		assertEquals(student.getUserName(), student.getPc().getHostName());
-	}
-
-	@Test
-	public void ログインするとgetUserNameでユーザ名が得られる() {
-		student.login("abc");
-		assertEquals(student.getUserName(), "abc");
-	}
-
-	@Test
-	public void ログアウトするとgetUserNameでホスト名が得られる() {
-		student.login("abc");
-		assertEquals(student.getUserName(), "abc");
-
-		student.logout();
-		assertEquals(student.getUserName(), student.getPc().getHostName());
-	}
-
-	@Test
-	public void ログアウトしなくても再ログインできる() {
-		student.login("abc");
-		assertEquals(student.getUserName(), "abc");
-
-		student.login("def");
-		assertEquals(student.getUserName(), "def");
-	}
 
 	@Test
 	public void 生成直後は手を上げていない() {
@@ -97,7 +80,7 @@ public class StudentTest {
 	@Test
 	public void 手を上げてからサポートするとHelpStatusが変わりPriorityが最初の状態にもどる() {
 		student.handUp();
-		student.supported();
+		student.supporting();
 
 		assertEquals(student.getHelpStatus(), HelpStatus.Supporting);
 		assertEquals(student.getPriority(), WaitingManager.NOT_REGISTED);
@@ -114,7 +97,7 @@ public class StudentTest {
 
 		assertEquals(student.getHelpStatus(),HelpStatus.Troubled);
 
-		student.supported();
+		student.supporting();
 
 		assertEquals(student.getHelpStatus(),HelpStatus.Supporting);
 
@@ -131,7 +114,7 @@ public class StudentTest {
 
 		assertEquals(student.getPriority(),1);
 
-		student.supported();
+		student.supporting();
 
 		assertEquals(student.getPriority(),WaitingManager.NOT_REGISTED);
 
@@ -148,7 +131,7 @@ public class StudentTest {
 
 		assertNotNull(student.getHandUpTime());
 
-		student.supported();
+		student.supporting();
 
 		assertNull(student.getHandUpTime());
 		
@@ -165,7 +148,7 @@ public class StudentTest {
 
 		assertNotNull(student.getWaitingTime(LocalDateTime.now()));
 
-		student.supported();
+		student.supporting();
 
 		assertNull(student.getWaitingTime(LocalDateTime.now()));
 

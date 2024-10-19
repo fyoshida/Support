@@ -5,8 +5,6 @@ import static org.junit.Assert.*;
 import org.junit.Before;
 import org.junit.Test;
 
-import helper.PcJson;
-
 public class PcJsonTest {
 
 	public static final String IPADDRESS_GATEWAY = "133.44.118.254";
@@ -28,24 +26,6 @@ public class PcJsonTest {
 		pcJson.setPcId("ics800");
 
 		assertEquals(pcJson.getPcId(),"ics800");
-	}
-
-	@Test
-	public void 属性IsStudentをアクセッサで読み書きできる() {
-		pcJson.setIsStudent(true);
-		assertTrue(pcJson.getIsStudent());
-
-		pcJson.setIsStudent(false);
-		assertFalse(pcJson.getIsStudent());
-	}
-
-	@Test
-	public void 属性IsLoginをアクセッサで読み書きできる() {
-		pcJson.setIsLogin(true);
-		assertTrue(pcJson.getIsLogin());
-
-		pcJson.setIsLogin(false);
-		assertFalse(pcJson.getIsLogin());
 	}
 
 	@Test

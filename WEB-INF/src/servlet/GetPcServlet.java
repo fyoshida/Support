@@ -2,6 +2,8 @@ package servlet;
 
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.net.InetAddress;
+import java.util.Optional;
 
 import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
@@ -10,16 +12,13 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import domain.aggregate.StudentManager;
+import domain.entities.Student;
 import helper.JsonConverter;
 import helper.PcJson;
 import helper.PcJsonHelper;
-import model.IpAddress;
-import model.Student;
-import model.StudentManager;
-import network.DummyNetwork;
 import network.INetwork;
 import network.NetworkFactory;
-import network.ServletNetwork;
 
 @WebServlet(urlPatterns = { "/v1/whoami" })
 //whoamiの応答関数
@@ -41,17 +40,18 @@ public class GetPcServlet extends HttpServlet {
 
 		INetwork network = NetworkFactory.getNetwork(req);
 		String ipAddressString = network.getClientIpAddress();
-		IpAddress ipAddress = new IpAddress(ipAddressString);
+		InetAddress ipAddress = InetAddress.getByName(ipAddressString);
 
 		// 学生を取得
-		Student student = studentManager.getStudent(ipAddress);
-		if (student == null) {
+		Optional<Student> optStudent = studentManager.getStudent(ipAddress);
+		if (optStudent.isPresent()) {
 			req.getRequestDispatcher("/error.html").forward(req, resp);
 			return;
 		}
-
+		Student student=optStudent.get();
+		
 		// Student --> PcJson
-		PcJson pcJson = PcJsonHelper.getPcJson(student);
+		PcJson pcJson = PcJsonHelper.fromStudent(student);
 
 		// JSON形式で出力
 		PrintWriter out = resp.getWriter();

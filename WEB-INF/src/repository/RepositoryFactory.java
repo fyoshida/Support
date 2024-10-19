@@ -1,8 +1,8 @@
 package repository;
 
-import repository.db.DataBaseRepository;
-import repository.dummy.DummyRepository;
-import repository.file.FileRepository;
+import repository.db.DataBasePcRepository;
+import repository.file.FilePcRepository;
+import repository.memory.MemoryPcRepository;
 
 public class RepositoryFactory {
 	public static String fileName = "./WEB-INF/data/pcIdTable.csv";
@@ -11,16 +11,16 @@ public class RepositoryFactory {
 	public static String userName = "000000";
 	public static String passWord = "00000000";
 
-	public static RepositoryType repositoryType = RepositoryType.Dummy;
+	public static RepositoryType repositoryType = RepositoryType.Memory;
 
-	public static IRepository getRepository() {
+	public static IPcRepository getRepository() {
 		switch (repositoryType) {
 		case DataBase:
-			return new DataBaseRepository(dataBaseName, userName, passWord);
+			return new DataBasePcRepository(dataBaseName, userName, passWord);
 		case File:
-			return new FileRepository(fileName);
+			return new FilePcRepository(fileName);
 		default:
-			return new DummyRepository();
+			return new MemoryPcRepository();
 		}
 	}
 }

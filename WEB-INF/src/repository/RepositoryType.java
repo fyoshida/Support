@@ -1,5 +1,5 @@
 package repository;
 
 public enum RepositoryType {
-	DataBase,File,Dummy;
+	DataBase,File,Memory;
 }

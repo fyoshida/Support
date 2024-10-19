@@ -10,14 +10,14 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import model.Pc;
-import model.StudentManager;
+import domain.aggregate.StudentManager;
+import domain.entities.Pc;
 import network.DummyNetwork;
 import network.INetwork;
 import network.NetworkFactory;
-import repository.IRepository;
+import repository.IPcRepository;
 import repository.RepositoryFactory;
-import repository.dummy.DummyRepository;
+import repository.memory.MemoryPcRepository;
 
 @WebServlet(urlPatterns = { "/v1/initialize" })
 //active-seatsの応答関数
@@ -31,7 +31,7 @@ public class InitializeServlet extends HttpServlet {
 		resp.setContentType("text/html;charset=UTF-8");
 
 		// リポジトリを取得
-		IRepository repository=RepositoryFactory.getRepository();
+		IPcRepository repository=RepositoryFactory.getRepository();
 
 		try {
 			// Pcの取得

@@ -1,15 +1,15 @@
 package repository.db;
 
+import java.net.InetAddress;
 import java.sql.ResultSet;
 import java.util.List;
 
-import model.IpAddress;
-import model.Pc;
-import repository.IRepository;
+import domain.entities.Pc;
+import repository.IPcRepository;
 
-public class DataBaseRepository extends DataBaseManager implements IRepository{
+public class DataBasePcRepository extends DataBaseManager implements IPcRepository{
 
-	public DataBaseRepository(String dataBaseName,String userName,String passWord) {
+	public DataBasePcRepository(String dataBaseName,String userName,String passWord) {
 		super(dataBaseName,userName,passWord);
 	}
 
@@ -17,15 +17,13 @@ public class DataBaseRepository extends DataBaseManager implements IRepository{
 
 		// ------PC 情報------
 		String hostName = rs.getString("HostName");
-		String ipAddressString = rs.getString("IpAddress");
-		boolean isStudent = rs.getBoolean("IsStudent");
+		String strIpAddress = rs.getString("IpAddress");
 
 		// ------IpAddress------
-		IpAddress ipAddress =new IpAddress(ipAddressString);
+		InetAddress ipAddress = InetAddress.getByName(strIpAddress);
 
 		// ------PCオブジェクトに代入------
 		Pc pc= new Pc(ipAddress,hostName);
-		pc.setStudent(isStudent);
 
 		return pc;
 	}

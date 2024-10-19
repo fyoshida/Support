@@ -1,14 +1,14 @@
 package repository.file;
 
 import java.io.IOException;
+import java.net.InetAddress;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.LinkedList;
 import java.util.List;
 
-import model.IpAddress;
-import model.Pc;
+import domain.entities.Pc;
 
 public class FileReader {
 
@@ -53,12 +53,10 @@ public class FileReader {
 		//カンマで分割した内容を配列に格納する
 		String[] lineData = line.split(",");
 		String hostName = lineData[0];
-		IpAddress ipAddress = new IpAddress(lineData[1]);
+		InetAddress ipAddress = InetAddress.getByName(lineData[1]);
 		boolean isStudent = Boolean.valueOf(lineData[2]);
 
 		//読み込んだ行をPcクラスに格納
-		Pc pc = new Pc(ipAddress, hostName);
-		pc.setStudent(isStudent);
-		return pc;
+		return new Pc(ipAddress, hostName);
 	}
 }

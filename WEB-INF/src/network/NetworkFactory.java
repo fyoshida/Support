@@ -2,9 +2,9 @@ package network;
 
 import javax.servlet.http.HttpServletRequest;
 
-import repository.db.DataBaseRepository;
-import repository.dummy.DummyRepository;
-import repository.file.FileRepository;
+import repository.db.DataBasePcRepository;
+import repository.file.FilePcRepository;
+import repository.memory.MemoryPcRepository;
 
 public class NetworkFactory {
 	public static String ipAddress = "133.44.118.158";

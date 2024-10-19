@@ -1,6 +1,6 @@
 package repository;
 
-import repository.file.FileRepository;
+import repository.file.FilePcRepository;
 
 public class FileRepositotyTest extends RepositoryTest {
 

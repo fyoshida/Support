@@ -3,7 +3,6 @@ package domain.aggregate;
 import static org.apache.commons.lang3.Validate.*;
 
 import java.net.InetAddress;
-import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
@@ -13,8 +12,7 @@ import domain.entities.Student;
 
 public class StudentManager {
 
-	private List<Student> studentList = new ArrayList<Student>();
-	private WaitingManager waitingManager = new WaitingManager();
+	private List<Student> studentList;
 
 	public StudentManager(List<Pc> pcList) {
 		notNull(pcList);
@@ -24,28 +22,12 @@ public class StudentManager {
 		}
 	}
 
-	public int getPriority(Student student) {
-		InetAddress ipAddress = student.getPc().getIpAddress();
-		return waitingManager.getPriority(ipAddress);
-	}
-	
 	public List<Student> getStudentList() {
-		List<Student> list = new ArrayList<Student>();
-		for (Student student : studentList) {
-			int priority = getPriority(student);
-			student.setPriority(priority);
-		}
-		return Collections.unmodifiableList(list);
+		return Collections.unmodifiableList(studentList);
 	}
 
-	public List<Student> getHandUpStudent() {
-		List<Student> list = new ArrayList<Student>();
-		for (Student student : studentList) {
-			if (student.isHandup()) {
-				int priority = getPriority(student);
-				student.setPriority(priority);
-			}
-		}
+	public List<Student> getHandUpStudentList() {
+		List<Student> list = studentList.stream().filter(s->s.isHandup()).toList();
 		return Collections.unmodifiableList(list);
 	}
 
@@ -72,7 +54,6 @@ public class StudentManager {
 		}
 		Student student = optStudent.get();
 		student.handUp();
-		waitingManager.regist(ipAddress);
 	}
 
 	public void handDown(InetAddress ipAddress) {
@@ -82,7 +63,6 @@ public class StudentManager {
 		}
 		Student student = optStudent.get();
 		student.handDown();
-		waitingManager.unregist(ipAddress);
 	}
 
 	public void supported(InetAddress ipAddress) {
@@ -92,7 +72,6 @@ public class StudentManager {
 		}
 		Student student = optStudent.get();
 		student.supporting();
-		waitingManager.unregist(ipAddress);
 	}
 
 }

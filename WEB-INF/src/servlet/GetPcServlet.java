@@ -2,7 +2,6 @@ package servlet;
 
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.net.InetAddress;
 import java.util.Optional;
 
 import javax.servlet.ServletContext;
@@ -12,13 +11,11 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import domain.aggregate.StudentManager;
 import domain.entities.Student;
+import domain.services.StudentService;
 import helper.JsonConverter;
 import helper.PcJson;
 import helper.PcJsonHelper;
-import network.INetwork;
-import network.NetworkFactory;
 
 @WebServlet(urlPatterns = { "/v1/whoami" })
 //whoamiの応答関数
@@ -33,22 +30,16 @@ public class GetPcServlet extends HttpServlet {
 
 		// StudentManagerを取得
 		ServletContext sc = getServletContext();
-		StudentManager studentManager = (StudentManager) sc.getAttribute("StudentManager");
-
+		StudentService studentService=(StudentService)sc.getAttribute("StudentService");
+		
 		// クライアントIPアドレスの取得
 //		NetworkInterface network = new ServletNetwork(req);
 
-		INetwork network = NetworkFactory.getNetwork(req);
-		String ipAddressString = network.getClientIpAddress();
-		InetAddress ipAddress = InetAddress.getByName(ipAddressString);
-
-		// 学生を取得
-		Optional<Student> optStudent = studentManager.getStudent(ipAddress);
-		if (optStudent.isPresent()) {
-			req.getRequestDispatcher("/error.html").forward(req, resp);
+		Optional<Student> optStudent = studentService.getClientStudent();
+		if( optStudent.isEmpty()) {
 			return;
 		}
-		Student student=optStudent.get();
+		Student student = optStudent.get();
 		
 		// Student --> PcJson
 		PcJson pcJson = PcJsonHelper.fromStudent(student);

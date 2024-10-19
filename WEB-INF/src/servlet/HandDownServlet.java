@@ -3,7 +3,6 @@ package servlet;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.List;
-import java.util.Optional;
 
 import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
@@ -12,13 +11,11 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import domain.aggregate.StudentManager;
 import domain.entities.Student;
+import domain.services.StudentService;
 import helper.JsonConverter;
 import helper.PcJson;
 import helper.PcJsonHelper;
-import network.INetwork;
-import network.NetworkFactory;
 
 @WebServlet(urlPatterns = { "/v1/call/*" })
 //call-teacher/XXXの応答関数
@@ -33,28 +30,13 @@ public class HandDownServlet extends HttpServlet {
 
 		// StudentManagerを取得
 		ServletContext sc = getServletContext();
-		StudentManager studentManager=(StudentManager)sc.getAttribute("StudentManager");
-
-		// クライアントのHostNameを取得
-		INetwork network = NetworkFactory.getNetwork(req);
-		String hostName = network.getClientHostName();
-
-		// 学生を取得
-		Optional<Student> optStudent = studentManager.getStudent(hostName);
-		if (optStudent.isEmpty()) {
-			req.getRequestDispatcher("/error.html").forward(req,resp);
-			return;
-		}
-		Student student = optStudent.get();
+		StudentService studentService=(StudentService)sc.getAttribute("StudentService");
 
 		// 手を下げる
-		student.handDown();
-
-		//pcManagerを保存.
-		sc.setAttribute("StudentManager", studentManager);
+		studentService.clientHandDown();
 
 		// 全学生を取得
-		List<Student> studentList = studentManager.getStudentList();
+		List<Student> studentList = studentService.getStudentList();
 
 		// Student --> PcJson
 		List<PcJson> pcJsonList=PcJsonHelper.getPcJson(studentList);

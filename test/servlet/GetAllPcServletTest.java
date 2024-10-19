@@ -11,8 +11,8 @@ import org.junit.Test;
 import common.TestServletBase;
 import helper.JsonConverter;
 import helper.PcJson;
-import network.NetworkFactory;
-import network.NetworkType;
+import httpclient.HttpClientFactory;
+import httpclient.NetworkType;
 import repository.RepositoryFactory;
 import repository.RepositoryType;
 
@@ -21,7 +21,7 @@ public class GetAllPcServletTest extends TestServletBase {
 	@BeforeClass
 	public static void リポジトリとネットワークを設定() {
 		RepositoryFactory.repositoryType = RepositoryType.Memory;
-		NetworkFactory.networkType = NetworkType.Dummy;
+		HttpClientFactory.networkType = NetworkType.Dummy;
 	}
 
 	@Before

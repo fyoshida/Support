@@ -1,7 +1,6 @@
 package servlet;
 
 import java.io.IOException;
-import java.util.List;
 
 import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
@@ -10,14 +9,11 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import domain.aggregate.StudentManager;
-import domain.entities.Pc;
-import network.DummyNetwork;
-import network.INetwork;
-import network.NetworkFactory;
+import domain.services.StudentService;
+import httpclient.HttpClientFactory;
+import httpclient.IHttpClient;
 import repository.IPcRepository;
 import repository.RepositoryFactory;
-import repository.memory.MemoryPcRepository;
 
 @WebServlet(urlPatterns = { "/v1/initialize" })
 //active-seatsの応答関数
@@ -32,21 +28,14 @@ public class InitializeServlet extends HttpServlet {
 
 		// リポジトリを取得
 		IPcRepository repository=RepositoryFactory.getRepository();
+		IHttpClient httpClient = HttpClientFactory.getNetwork(req);
 
-		try {
-			// Pcの取得
-			List<Pc> pcList = repository.getPcList();
+		// StudentManagerを生成
+		StudentService studentService=new StudentService(repository,httpClient);
 
-			// StudentManagerを生成
-			StudentManager studentManager=new StudentManager(pcList);
-
-			// StudentManagerをServletContextに保存
-			ServletContext sc = getServletContext();
-			sc.setAttribute("StudentManager", studentManager);
-
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
+		// StudentManagerをServletContextに保存
+		ServletContext sc = getServletContext();
+		sc.setAttribute("StudentService", studentService);
 
 		// 開始用Servletへ移動
 //		req.getRequestDispatcher("GetAllPcServlet").forward(req, resp);

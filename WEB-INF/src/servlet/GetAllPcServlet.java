@@ -10,8 +10,8 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import domain.aggregate.StudentManager;
 import domain.entities.Student;
+import domain.services.StudentService;
 import helper.JsonConverter;
 import helper.PcJson;
 import helper.PcJsonHelper;
@@ -29,10 +29,10 @@ public class GetAllPcServlet extends HttpServlet {
 
 		// StudentManagerを取得
 		ServletContext sc = getServletContext();
-		StudentManager studentManager=(StudentManager)sc.getAttribute("StudentManager");
-
+		StudentService studentService=(StudentService)sc.getAttribute("StudentService");
+		
 		// 全学生を取得
-		List<Student> studentList = studentManager.getStudentList();
+		List<Student> studentList = studentService.getStudentList();
 
 		// Student --> PcJson
 		List<PcJson> pcJsonList=PcJsonHelper.getPcJson(studentList);

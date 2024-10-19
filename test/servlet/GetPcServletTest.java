@@ -9,8 +9,8 @@ import org.junit.Test;
 import common.TestServletBase;
 import helper.JsonConverter;
 import helper.PcJson;
-import network.NetworkFactory;
-import network.NetworkType;
+import httpclient.HttpClientFactory;
+import httpclient.NetworkType;
 import repository.RepositoryFactory;
 import repository.RepositoryType;
 
@@ -19,7 +19,7 @@ public class GetPcServletTest extends TestServletBase {
 	@BeforeClass
 	public static void リポジトリとネットワークを設定() {
 		RepositoryFactory.repositoryType = RepositoryType.Memory;
-		NetworkFactory.networkType = NetworkType.Dummy;
+		HttpClientFactory.networkType = NetworkType.Dummy;
 	}
 
 	@Before
@@ -37,8 +37,8 @@ public class GetPcServletTest extends TestServletBase {
 		String response = webResponse.getText();
 		PcJson pcJson =JsonConverter.getPcJson(response);
 		assertNotNull(pcJson);
-		assertEquals(pcJson.getIpAdress(),NetworkFactory.ipAddress);
-		assertEquals(pcJson.getPcId(),NetworkFactory.hostName);
+		assertEquals(pcJson.getIpAdress(),HttpClientFactory.ipAddress);
+		assertEquals(pcJson.getPcId(),HttpClientFactory.hostName);
 		
 	}
 }

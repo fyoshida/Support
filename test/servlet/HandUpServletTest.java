@@ -13,8 +13,8 @@ import domain.valueobjects.HelpStatus;
 import helper.JsonConverter;
 import helper.PcJson;
 import helper.PcJsonHelper;
-import network.NetworkFactory;
-import network.NetworkType;
+import httpclient.HttpClientFactory;
+import httpclient.NetworkType;
 import repository.RepositoryFactory;
 import repository.RepositoryType;
 
@@ -23,7 +23,7 @@ public class HandUpServletTest extends TestServletBase {
 	@BeforeClass
 	public static void リポジトリとネットワークを設定() {
 		RepositoryFactory.repositoryType = RepositoryType.Memory;
-		NetworkFactory.networkType = NetworkType.Dummy;
+		HttpClientFactory.networkType = NetworkType.Dummy;
 	}
 
 	@Before
@@ -35,8 +35,8 @@ public class HandUpServletTest extends TestServletBase {
 
 	@Test
 	public void GETメソッドでアクセスすると手を上げられる() throws Exception {
-		String targetPcIpAddress = NetworkFactory.ipAddress;
-		String targetPcHostName = NetworkFactory.hostName;
+		String targetPcIpAddress = HttpClientFactory.ipAddress;
+		String targetPcHostName = HttpClientFactory.hostName;
 		
 		getMessages("InitializeServlet");
 

@@ -4,34 +4,34 @@ import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
 
-import domain.valueobjects.IpAddress;
+import domain.entities.Student;
 
 public class WaitingManager {
 	public static final int NOT_REGISTED = 999;
 
-	private LinkedList<IpAddress> waitingList = new LinkedList<IpAddress>();
+	private LinkedList<Student> waitingList = new LinkedList<Student>();
 
-	public boolean isRegisted(IpAddress ipAddress) {
-		return waitingList.contains(ipAddress);
+	public boolean isRegisted(Student student) {
+		return waitingList.contains(student);
 	}
 	
-	public void regist(IpAddress ipAddress) {
-		if (!isRegisted(ipAddress)) {
-			waitingList.addLast(ipAddress);
+	public void regist(Student student) {
+		if (!isRegisted(student)) {
+			waitingList.addLast(student);
 		}
 	}
 
-	public void unregist(IpAddress ipAddress) {
-		waitingList.removeIf(ip -> ip.equals(ipAddress));
+	public void unregist(Student student) {
+		waitingList.removeIf(s -> s.equals(student));
 	}
 
-	public List<IpAddress> getAll() {
-		List<IpAddress> pcList = waitingList.stream().toList();
+	public List<Student> getAll() {
+		List<Student> pcList = waitingList.stream().toList();
 		return Collections.unmodifiableList(pcList);
 	}
 
-	public int getPriority(IpAddress ipAddress) {
-		int pos = waitingList.indexOf(ipAddress);
+	public int getPriority(Student student) {
+		int pos = waitingList.indexOf(student);
 		if (pos < 0) {
 			return NOT_REGISTED;
 		}

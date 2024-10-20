@@ -11,8 +11,8 @@ import org.junit.Test;
 import common.TestServletBase;
 import domain.valueobjects.HelpStatus;
 import helper.JsonConverter;
-import helper.PcJson;
-import helper.PcJsonHelper;
+import helper.StudentJson;
+import helper.StudentJsonHelper;
 import httpclient.DummyHttpClient;
 import httpclient.HttpClientFactory;
 import httpclient.NetworkType;
@@ -46,11 +46,11 @@ public class HandDownServletTest extends TestServletBase {
 		getMessages("HandDownServlet");
 
 		String response = webResponse.getText();
-		List<PcJson> pcJsonList =JsonConverter.getPcJsonList(response);
+		List<StudentJson> pcJsonList =JsonConverter.getPcJsonList(response);
 		assertNotNull(pcJsonList);
 		assertEquals(pcJsonList.size(),71);
 
-		PcJson pcJson = PcJsonHelper.findPcJson(pcJsonList,targetPcIpAddress);
+		StudentJson pcJson = StudentJsonHelper.findPcJson(pcJsonList,targetPcIpAddress);
 		assertNotNull(pcJson);
 		assertEquals(pcJson.getPcId(),targetPcHostName);
 		assertEquals(pcJson.getHelpStatus(),HelpStatus.None.getDisplayName());
@@ -70,11 +70,11 @@ public class HandDownServletTest extends TestServletBase {
 		getMessages("HandDownServlet");
 
 		String response = webResponse.getText();
-		List<PcJson> pcJsonList =JsonConverter.getPcJsonList(response);
+		List<StudentJson> pcJsonList =JsonConverter.getPcJsonList(response);
 		assertNotNull(pcJsonList);
 		assertEquals(pcJsonList.size(),71);
 		
-		PcJson pcJson = PcJsonHelper.findPcJson(pcJsonList,targetPcIpAddress);
+		StudentJson pcJson = StudentJsonHelper.findPcJson(pcJsonList,targetPcIpAddress);
 		assertNotNull(pcJson);
 		assertEquals(pcJson.getPcId(),targetPcHostName);
 		assertEquals(pcJson.getHelpStatus(),HelpStatus.None.getDisplayName());
@@ -97,11 +97,11 @@ public class HandDownServletTest extends TestServletBase {
 		getMessages("HandDownServlet");
 
 		String response = webResponse.getText();
-		List<PcJson> pcJsonList =JsonConverter.getPcJsonList(response);
+		List<StudentJson> pcJsonList =JsonConverter.getPcJsonList(response);
 		assertNotNull(pcJsonList);
 		assertEquals(pcJsonList.size(),71);
 
-		PcJson pcJson = PcJsonHelper.findPcJson(pcJsonList,targetPcIpAddress);
+		StudentJson pcJson = StudentJsonHelper.findPcJson(pcJsonList,targetPcIpAddress);
 		assertNotNull(pcJson);
 		assertEquals(pcJson.getPcId(),targetPcHostName);
 		assertEquals(pcJson.getHelpStatus(),HelpStatus.None.getDisplayName());

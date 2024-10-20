@@ -13,8 +13,8 @@ import javax.servlet.http.HttpServletResponse;
 
 import domain.entities.Student;
 import helper.JsonConverter;
-import helper.PcJson;
-import helper.PcJsonHelper;
+import helper.StudentJson;
+import helper.StudentJsonHelper;
 import services.StudentService;
 
 @WebServlet(urlPatterns = { "/v1/whoami" })
@@ -32,9 +32,6 @@ public class GetPcServlet extends HttpServlet {
 		ServletContext sc = getServletContext();
 		StudentService studentService=(StudentService)sc.getAttribute("StudentService");
 		
-		// クライアントIPアドレスの取得
-//		NetworkInterface network = new ServletNetwork(req);
-
 		Optional<Student> optStudent = studentService.getClientStudent();
 		if( optStudent.isEmpty()) {
 			return;
@@ -42,7 +39,7 @@ public class GetPcServlet extends HttpServlet {
 		Student student = optStudent.get();
 		
 		// Student --> PcJson
-		PcJson pcJson = PcJsonHelper.fromStudent(student);
+		StudentJson pcJson = StudentJsonHelper.fromStudent(student);
 
 		// JSON形式で出力
 		PrintWriter out = resp.getWriter();

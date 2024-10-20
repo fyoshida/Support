@@ -23,5 +23,19 @@ public class Pc {
 	public String getHostName() {
 		return hostName;
 	}
+	
+	public boolean equals(Object other) {
+		if(!( other instanceof Pc)){
+			return false;
+		}
+		Pc pc = (Pc)other;
+		if(!ipAddress.equals(pc.ipAddress)) {
+			return false;
+		}
+		if(!hostName.equals(pc.hostName)) {
+			return false;
+		}
+		return true;
+	}
 
 }

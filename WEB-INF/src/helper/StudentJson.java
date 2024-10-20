@@ -1,6 +1,6 @@
 package helper;
 
-public class PcJson{
+public class StudentJson{
 
 	protected String pcId = null; //icsXXX
 	protected String ipAdress = null; //ドメインは133.44.118.158-228の間

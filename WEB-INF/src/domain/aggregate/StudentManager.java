@@ -27,7 +27,7 @@ public class StudentManager {
 
 	private Student addPriority(Student student) {
 		IpAddress ipAddress = student.getPc().getIpAddress();
-		int priority = waitingManager.getPriority(ipAddress);
+		int priority = waitingManager.getPriority(student);
 		student.setPriority(priority);
 		return student; 
 	}
@@ -41,10 +41,9 @@ public class StudentManager {
 	}
 
 	public List<Student> getHandUpStudentList() {
-		List<Student> list = studentList.stream().filter(s -> s.isHandup()).toList();
-		return Collections.unmodifiableList(addPriority(list));
+		return Collections.unmodifiableList(addPriority(waitingManager.getAll()));
 	}
-
+	
 	public Optional<Student> getStudent(IpAddress ipAddress) {
 		Optional<Student> optStudent =studentList.stream().filter(s -> s.getPc().getIpAddress().equals(ipAddress)).findFirst();
 		if(optStudent.isEmpty()) {
@@ -65,7 +64,7 @@ public class StudentManager {
 		}
 		Student student = optStudent.get();
 		student.handUp();
-		waitingManager.regist(ipAddress);
+		waitingManager.regist(student);
 	}
 
 	public void handDown(IpAddress ipAddress) {
@@ -75,7 +74,7 @@ public class StudentManager {
 		}
 		Student student = optStudent.get();
 		student.handDown();
-		waitingManager.unregist(ipAddress);
+		waitingManager.unregist(student);
 	}
 
 	public void supporting(IpAddress ipAddress) {
@@ -85,7 +84,7 @@ public class StudentManager {
 		}
 		Student student = optStudent.get();
 		student.supporting();
-		waitingManager.unregist(ipAddress);
+		waitingManager.unregist(student);
 	}
 
 }

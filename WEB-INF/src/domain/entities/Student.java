@@ -69,4 +69,11 @@ public class Student {
 		handUpTime = null;
 	}
 
+	public boolean equals(Object other) {
+		if(!( other instanceof Student)){
+			return false;
+		}
+		Student student = (Student)other;
+		return pc.equals(student.getPc());
+	}
 }

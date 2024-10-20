@@ -13,8 +13,8 @@ import javax.servlet.http.HttpServletResponse;
 
 import domain.entities.Student;
 import helper.JsonConverter;
-import helper.PcJson;
-import helper.PcJsonHelper;
+import helper.StudentJson;
+import helper.StudentJsonHelper;
 import services.StudentService;
 
 @WebServlet(urlPatterns = { "/v1/active-seats" })
@@ -36,7 +36,7 @@ public class GetActivePcListServlet extends HttpServlet {
 		List<Student> studentList = studentService.getHandUpStudent();
 
 		// Student --> PcJson
-		List<PcJson> pcJsonList=PcJsonHelper.getPcJson(studentList);
+		List<StudentJson> pcJsonList=StudentJsonHelper.getPcJson(studentList);
 
 		// JSON形式で出力
 		PrintWriter out = resp.getWriter();

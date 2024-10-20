@@ -10,7 +10,7 @@ import org.junit.Test;
 
 import common.TestServletBase;
 import helper.JsonConverter;
-import helper.PcJson;
+import helper.StudentJson;
 import httpclient.HttpClientFactory;
 import httpclient.NetworkType;
 import repository.RepositoryFactory;
@@ -44,15 +44,15 @@ public class GetAllPcServletTest extends TestServletBase {
 		getMessages("GetAllPcServlet");
 
 		String response = webResponse.getText();
-		List<PcJson> pcJsonList =JsonConverter.getPcJsonList(response);
+		List<StudentJson> pcJsonList =JsonConverter.getPcJsonList(response);
 		assertNotNull(pcJsonList);
 		assertEquals(71,pcJsonList.size());
 
-		PcJson pcJsonFirst = pcJsonList.get(0);
+		StudentJson pcJsonFirst = pcJsonList.get(0);
 		assertEquals("ics801",pcJsonFirst.getPcId());
 		assertEquals("133.44.118.158",pcJsonFirst.getIpAdress());
 
-		PcJson pcJsonLast = pcJsonList.get(70);
+		StudentJson pcJsonLast = pcJsonList.get(70);
 		assertEquals("ics871",pcJsonLast.getPcId());
 		assertEquals("133.44.118.228",pcJsonLast.getIpAdress());
 	}

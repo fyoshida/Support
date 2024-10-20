@@ -44,7 +44,7 @@ public class StudentService {
 	public List<Student> getHandUpStudent() {
 		return studentManager.getHandUpStudentList();
 	}
-	
+
 	public void clientHandUp() {
 		IpAddress ipAddress= httpClient.getClientIpAddress();
 		studentManager.handUp(ipAddress);

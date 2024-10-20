@@ -5,14 +5,14 @@ import static org.junit.Assert.*;
 import org.junit.Before;
 import org.junit.Test;
 
-public class PcJsonTest {
+public class StudentJsonTest {
 
 	public static final String IPADDRESS_GATEWAY = "133.44.118.254";
-	private PcJson pcJson;
+	private StudentJson pcJson;
 
 	@Before
 	public void setUp() {
-		pcJson = new PcJson();
+		pcJson = new StudentJson();
 	}
 
 	@Test

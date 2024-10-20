@@ -8,7 +8,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 
 
 public class JsonConverter {
-	public static String getJsonText(PcJson pcJson) throws JsonProcessingException{
+	public static String getJsonText(StudentJson pcJson) throws JsonProcessingException{
 		String jsonText = "";
 
 		if(pcJson == null ) {
@@ -25,7 +25,7 @@ public class JsonConverter {
 		return jsonText;
 	}
 
-	public static String getJsonText(List<PcJson> pcJsonList) throws JsonProcessingException{
+	public static String getJsonText(List<StudentJson> pcJsonList) throws JsonProcessingException{
 		String jsonText = "";
 
 		if(pcJsonList == null ) {
@@ -42,8 +42,8 @@ public class JsonConverter {
 		return jsonText;
 	}
 
-	public static PcJson getPcJson(String jsonText) throws JsonProcessingException{
-		PcJson pcJson=null;
+	public static StudentJson getPcJson(String jsonText) throws JsonProcessingException{
+		StudentJson pcJson=null;
 
 		if(jsonText == null ) {
 			return null;
@@ -51,7 +51,7 @@ public class JsonConverter {
 
 		ObjectMapper mapper = new ObjectMapper();
 		try {
-			pcJson = mapper.readValue(jsonText, PcJson.class);
+			pcJson = mapper.readValue(jsonText, StudentJson.class);
 		} catch (JsonProcessingException e) {
 			e.printStackTrace();
 		}
@@ -59,8 +59,8 @@ public class JsonConverter {
 		return pcJson;
 	}
 
-	public static List<PcJson> getPcJsonList(String jsonText) throws JsonProcessingException{
-		List<PcJson> pcJsonList=null;
+	public static List<StudentJson> getPcJsonList(String jsonText) throws JsonProcessingException{
+		List<StudentJson> pcJsonList=null;
 
 		if(jsonText == null ) {
 			return null;

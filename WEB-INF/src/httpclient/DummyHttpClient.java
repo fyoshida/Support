@@ -1,35 +1,31 @@
 package httpclient;
 
-import java.net.InetAddress;
-import java.net.UnknownHostException;
-import java.util.Optional;
+import domain.valueobjects.IpAddress;
 
 public class DummyHttpClient implements IHttpClient {
+	public static String IP_ADDRESS="133.44.118.158";
+	public static String HOST_NAME="ics801";
 
-	InetAddress default_ipAddress;
-
-	InetAddress ipAddress;
+	IpAddress default_ipAddress;
+	String default_hostName;
+	
+	IpAddress ipAddress;
 
 	public DummyHttpClient() {
-		try {
-			default_ipAddress = InetAddress.getByName("133.44.118.191");
-		} catch (UnknownHostException e) {
-			// TODO 自動生成された catch ブロック
-			e.printStackTrace();
-		}
-
+		default_ipAddress = new IpAddress(IP_ADDRESS);
+		default_hostName=HOST_NAME;
 	}
 
-	public DummyHttpClient(InetAddress ipAddress) {
-		this.ipAddress = ipAddress;
+	public void setIpAddress(IpAddress ipAddress) {
+		this.ipAddress=ipAddress;
 	}
 
 	@Override
-	public Optional<InetAddress> getClientIpAddress() {
+	public IpAddress getClientIpAddress() {
 		if (ipAddress != null) {
-			return Optional.of(ipAddress);
+			return ipAddress;
 		} else {
-			return Optional.of(default_ipAddress);
+			return default_ipAddress;
 		}
 	}
 

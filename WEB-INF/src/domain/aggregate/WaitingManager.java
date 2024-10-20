@@ -1,35 +1,36 @@
 package domain.aggregate;
 
-import java.net.InetAddress;
 import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
 
+import domain.valueobjects.IpAddress;
+
 public class WaitingManager {
 	public static final int NOT_REGISTED = 999;
 
-	private LinkedList<InetAddress> waitingList = new LinkedList<InetAddress>();
+	private LinkedList<IpAddress> waitingList = new LinkedList<IpAddress>();
 
-	public boolean isRegisted(InetAddress ipAddress) {
+	public boolean isRegisted(IpAddress ipAddress) {
 		return waitingList.contains(ipAddress);
 	}
 	
-	public void regist(InetAddress ipAddress) {
+	public void regist(IpAddress ipAddress) {
 		if (!isRegisted(ipAddress)) {
 			waitingList.addLast(ipAddress);
 		}
 	}
 
-	public void unregist(InetAddress ipAddress) {
+	public void unregist(IpAddress ipAddress) {
 		waitingList.removeIf(ip -> ip.equals(ipAddress));
 	}
 
-	public List<InetAddress> getAll() {
-		List<InetAddress> pcList = waitingList.stream().toList();
+	public List<IpAddress> getAll() {
+		List<IpAddress> pcList = waitingList.stream().toList();
 		return Collections.unmodifiableList(pcList);
 	}
 
-	public int getPriority(InetAddress ipAddress) {
+	public int getPriority(IpAddress ipAddress) {
 		int pos = waitingList.indexOf(ipAddress);
 		if (pos < 0) {
 			return NOT_REGISTED;

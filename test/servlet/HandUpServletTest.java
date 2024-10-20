@@ -13,6 +13,7 @@ import domain.valueobjects.HelpStatus;
 import helper.JsonConverter;
 import helper.PcJson;
 import helper.PcJsonHelper;
+import httpclient.DummyHttpClient;
 import httpclient.HttpClientFactory;
 import httpclient.NetworkType;
 import repository.RepositoryFactory;
@@ -35,21 +36,19 @@ public class HandUpServletTest extends TestServletBase {
 
 	@Test
 	public void GETメソッドでアクセスすると手を上げられる() throws Exception {
-		String targetPcIpAddress = HttpClientFactory.ipAddress;
-		String targetPcHostName = HttpClientFactory.hostName;
+		String targetPcIpAddress = DummyHttpClient.IP_ADDRESS;
+		String targetPcHostName = DummyHttpClient.HOST_NAME;
 		
 		getMessages("InitializeServlet");
-
-		webRequest.setParameter("HostName", ""+targetPcHostName);
 		getMessages("HandUpServlet");
 
 		List<PcJson> pcJsonList =JsonConverter.getPcJsonList(webResponse.getText());
 		assertNotNull(pcJsonList);
-		assertEquals(pcJsonList.size(),62);
+		assertEquals(pcJsonList.size(),71);
 
 		PcJson pcJson = PcJsonHelper.findPcJson(pcJsonList,targetPcIpAddress);
 		assertNotNull(pcJson);
 		assertEquals(pcJson.getPcId(),targetPcHostName);
-		assertEquals(pcJson.getHelpStatus(),HelpStatus.Troubled.toString());
+		assertEquals(pcJson.getHelpStatus(),HelpStatus.Troubled.getDisplayName());
 	}
 }

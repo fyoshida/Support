@@ -13,6 +13,7 @@ import domain.valueobjects.HelpStatus;
 import helper.JsonConverter;
 import helper.PcJson;
 import helper.PcJsonHelper;
+import httpclient.DummyHttpClient;
 import httpclient.HttpClientFactory;
 import httpclient.NetworkType;
 import repository.RepositoryFactory;
@@ -37,18 +38,17 @@ public class HandDownServletTest extends TestServletBase {
 
 	@Test
 	public void GETメソッドでアクセスすると手を下げられる() throws Exception {
-		String targetPcIpAddress = HttpClientFactory.ipAddress;
-		String targetPcHostName = HttpClientFactory.hostName;
+		String targetPcIpAddress = DummyHttpClient.IP_ADDRESS;
+		String targetPcHostName = DummyHttpClient.HOST_NAME;
 
 		getMessages("InitializeServlet");
 
-		webRequest.setParameter("HostName", ""+targetPcHostName);
 		getMessages("HandDownServlet");
 
 		String response = webResponse.getText();
 		List<PcJson> pcJsonList =JsonConverter.getPcJsonList(response);
 		assertNotNull(pcJsonList);
-		assertEquals(pcJsonList.size(),62);
+		assertEquals(pcJsonList.size(),71);
 
 		PcJson pcJson = PcJsonHelper.findPcJson(pcJsonList,targetPcIpAddress);
 		assertNotNull(pcJson);
@@ -58,8 +58,8 @@ public class HandDownServletTest extends TestServletBase {
 
 	@Test
 	public void 手をあげている状態でGETメソッドでアクセスすると手を下げられる() throws Exception {
-		String targetPcIpAddress = HttpClientFactory.ipAddress;
-		String targetPcHostName = HttpClientFactory.hostName;
+		String targetPcIpAddress = DummyHttpClient.IP_ADDRESS;
+		String targetPcHostName = DummyHttpClient.HOST_NAME;
 
 		getMessages("InitializeServlet");
 
@@ -72,8 +72,8 @@ public class HandDownServletTest extends TestServletBase {
 		String response = webResponse.getText();
 		List<PcJson> pcJsonList =JsonConverter.getPcJsonList(response);
 		assertNotNull(pcJsonList);
-		assertEquals(pcJsonList.size(),62);
-
+		assertEquals(pcJsonList.size(),71);
+		
 		PcJson pcJson = PcJsonHelper.findPcJson(pcJsonList,targetPcIpAddress);
 		assertNotNull(pcJson);
 		assertEquals(pcJson.getPcId(),targetPcHostName);
@@ -82,8 +82,8 @@ public class HandDownServletTest extends TestServletBase {
 
 	@Test
 	public void サポート状態でGETメソッドでアクセスすると手を下げられる() throws Exception {
-		String targetPcIpAddress = HttpClientFactory.ipAddress;
-		String targetPcHostName = HttpClientFactory.hostName;
+		String targetPcIpAddress = DummyHttpClient.IP_ADDRESS;
+		String targetPcHostName = DummyHttpClient.HOST_NAME;
 
 		getMessages("InitializeServlet");
 
@@ -99,7 +99,7 @@ public class HandDownServletTest extends TestServletBase {
 		String response = webResponse.getText();
 		List<PcJson> pcJsonList =JsonConverter.getPcJsonList(response);
 		assertNotNull(pcJsonList);
-		assertEquals(pcJsonList.size(),62);
+		assertEquals(pcJsonList.size(),71);
 
 		PcJson pcJson = PcJsonHelper.findPcJson(pcJsonList,targetPcIpAddress);
 		assertNotNull(pcJson);

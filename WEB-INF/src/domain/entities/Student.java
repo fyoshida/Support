@@ -38,8 +38,11 @@ public class Student {
 		return helpStatus.equals(HelpStatus.Troubled);
 	}
 	
-	public Duration getWaitingTime(LocalDateTime dateTime) {
-		return Duration.between(handUpTime,dateTime);
+	public long getWaitingTimeBySecond(LocalDateTime dateTime) {
+		if(handUpTime==null) {
+			return 0;
+		}
+		return Duration.between(handUpTime,dateTime).toSeconds();
 	}
 	
 	public int getPriority() {

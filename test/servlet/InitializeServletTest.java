@@ -7,11 +7,11 @@ import org.junit.BeforeClass;
 import org.junit.Test;
 
 import common.TestServletBase;
-import domain.aggregate.StudentManager;
 import httpclient.HttpClientFactory;
 import httpclient.NetworkType;
 import repository.RepositoryFactory;
 import repository.RepositoryType;
+import services.StudentService;
 
 public class InitializeServletTest extends TestServletBase {
 
@@ -36,11 +36,11 @@ public class InitializeServletTest extends TestServletBase {
 	}
 
 	@Test
-	public void GetメソッドでアクセスするとServletContextにStudentManagerが取得できる() throws Exception {
+	public void GetメソッドでアクセスするとServletContextにStudentServiceが取得できる() throws Exception {
 		getMessages("InitializeServlet");
 		assertNotNull(webResponse);
 
-		StudentManager studentManager =(StudentManager)servletContext.getAttribute("StudentManager");
-		assertEquals(studentManager.getStudentList().size(),62);
+		StudentService studentService =(StudentService)servletContext.getAttribute("StudentService");
+		assertEquals(71,studentService.getStudentList().size());
 	}
 }

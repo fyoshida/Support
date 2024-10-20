@@ -1,10 +1,9 @@
 package httpclient;
 
-import java.net.InetAddress;
-import java.util.Optional;
+import domain.valueobjects.IpAddress;
 
 public interface IHttpClient {
 			
-	public Optional<InetAddress> getClientIpAddress();
+	public IpAddress getClientIpAddress();
 
 }

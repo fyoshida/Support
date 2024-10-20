@@ -2,17 +2,19 @@ package domain.aggregate;
 
 import static org.apache.commons.lang3.Validate.*;
 
-import java.net.InetAddress;
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 
 import domain.entities.Pc;
 import domain.entities.Student;
+import domain.valueobjects.IpAddress;
 
 public class StudentManager {
 
-	private List<Student> studentList;
+	private List<Student> studentList = new ArrayList<Student>();
+	private WaitingManager waitingManager;
 
 	public StudentManager(List<Pc> pcList) {
 		notNull(pcList);
@@ -20,58 +22,70 @@ public class StudentManager {
 			Student student = new Student(pc);
 			studentList.add(student);
 		}
+		waitingManager = new WaitingManager();
+	}
+
+	private Student addPriority(Student student) {
+		IpAddress ipAddress = student.getPc().getIpAddress();
+		int priority = waitingManager.getPriority(ipAddress);
+		student.setPriority(priority);
+		return student; 
+	}
+
+	private List<Student> addPriority(List<Student> studentList) {
+		return studentList.stream().map(s->addPriority(s)).toList();
 	}
 
 	public List<Student> getStudentList() {
-		return Collections.unmodifiableList(studentList);
+		return Collections.unmodifiableList(addPriority(studentList));
 	}
 
 	public List<Student> getHandUpStudentList() {
-		List<Student> list = studentList.stream().filter(s->s.isHandup()).toList();
-		return Collections.unmodifiableList(list);
+		List<Student> list = studentList.stream().filter(s -> s.isHandup()).toList();
+		return Collections.unmodifiableList(addPriority(list));
 	}
 
-	public Optional<Student> getStudent(InetAddress ipAddress) {
-		return studentList.stream().filter(s -> s.getPc().getIpAddress().equals(ipAddress)).findFirst();
+	public Optional<Student> getStudent(IpAddress ipAddress) {
+		Optional<Student> optStudent =studentList.stream().filter(s -> s.getPc().getIpAddress().equals(ipAddress)).findFirst();
+		if(optStudent.isEmpty()) {
+			return Optional.empty();
+		}
+		Student student=addPriority(optStudent.get());
+		return Optional.of(student);
 	}
 
-	public Optional<Student> getStudent(String hostName) {
-		return studentList.stream().filter(s -> s.getPc().getHostName().equals(hostName)).findFirst();
-	}
-	
-	public boolean existStudent(InetAddress ipAddress) {
+	public boolean existStudent(IpAddress ipAddress) {
 		return getStudent(ipAddress).isPresent();
 	}
 
-	public boolean existStudent(String hostName) {
-		return getStudent(hostName).isPresent();
-	}
-
-	public void handUp(InetAddress ipAddress) {
+	public void handUp(IpAddress ipAddress) {
 		Optional<Student> optStudent = getStudent(ipAddress);
 		if (optStudent.isEmpty()) {
 			return;
 		}
 		Student student = optStudent.get();
 		student.handUp();
+		waitingManager.regist(ipAddress);
 	}
 
-	public void handDown(InetAddress ipAddress) {
+	public void handDown(IpAddress ipAddress) {
 		Optional<Student> optStudent = getStudent(ipAddress);
 		if (optStudent.isEmpty()) {
 			return;
 		}
 		Student student = optStudent.get();
 		student.handDown();
+		waitingManager.unregist(ipAddress);
 	}
 
-	public void supported(InetAddress ipAddress) {
+	public void supporting(IpAddress ipAddress) {
 		Optional<Student> optStudent = getStudent(ipAddress);
 		if (optStudent.isEmpty()) {
 			return;
 		}
 		Student student = optStudent.get();
 		student.supporting();
+		waitingManager.unregist(ipAddress);
 	}
 
 }

@@ -1,15 +1,15 @@
 package repository.memory;
 
-import java.net.InetAddress;
-import java.net.UnknownHostException;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import domain.entities.Pc;
+import domain.valueobjects.IpAddress;
 import repository.IPcRepository;
 
 public class MemoryPcRepository implements IPcRepository{
-	private static String[][] pcDataArray = {
+	private static final String[][] pcData = {
 			{"ics801","133.44.118.158","true" },
 			{"ics802","133.44.118.159","true" },
 			{"ics803","133.44.118.160","true" },
@@ -83,23 +83,22 @@ public class MemoryPcRepository implements IPcRepository{
 			{"ics871","133.44.118.228","false"}
 		};
 
-	@Override
-	public List<Pc> getPcList()  {
-		List<Pc> pcList = new ArrayList<Pc>();
+	private final List<Pc> pcList=new ArrayList<Pc>();
 
-		for(int i=0;i<pcDataArray.length;i++) {
-			String hostName =pcDataArray[i][0];
-			InetAddress ipAddress;
-			try {
-				ipAddress = InetAddress.getByName(pcDataArray[i][1]);
-				Pc pc = new Pc(ipAddress,hostName);
-				pcList.add(pc);
-			} catch (UnknownHostException e) {
-				e.printStackTrace();
-			}
+	public  MemoryPcRepository()  {
+	
+		for (int i = 0; i < pcData.length; i++) {
+			String hostName = pcData[i][0];
+			IpAddress ipAddress = new IpAddress( pcData[i][1]);
+
+			Pc pc = new Pc(ipAddress,hostName);
+			pcList.add(pc);
 		}
+	}
 
-		return pcList;
+	@Override
+	public List<Pc> getPcList() {
+		return Collections.unmodifiableList(pcList);
 	}
 
 }

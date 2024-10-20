@@ -9,6 +9,7 @@ import org.junit.Test;
 import common.TestServletBase;
 import helper.JsonConverter;
 import helper.PcJson;
+import httpclient.DummyHttpClient;
 import httpclient.HttpClientFactory;
 import httpclient.NetworkType;
 import repository.RepositoryFactory;
@@ -37,8 +38,8 @@ public class GetPcServletTest extends TestServletBase {
 		String response = webResponse.getText();
 		PcJson pcJson =JsonConverter.getPcJson(response);
 		assertNotNull(pcJson);
-		assertEquals(pcJson.getIpAdress(),HttpClientFactory.ipAddress);
-		assertEquals(pcJson.getPcId(),HttpClientFactory.hostName);
+		assertEquals(DummyHttpClient.IP_ADDRESS,pcJson.getIpAdress());
+		assertEquals(DummyHttpClient.HOST_NAME,pcJson.getPcId());
 		
 	}
 }

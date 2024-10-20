@@ -1,10 +1,10 @@
 package repository.db;
 
-import java.net.InetAddress;
 import java.sql.ResultSet;
 import java.util.List;
 
 import domain.entities.Pc;
+import domain.valueobjects.IpAddress;
 import repository.IPcRepository;
 
 public class DataBasePcRepository extends DataBaseManager implements IPcRepository{
@@ -20,7 +20,7 @@ public class DataBasePcRepository extends DataBaseManager implements IPcReposito
 		String strIpAddress = rs.getString("IpAddress");
 
 		// ------IpAddress------
-		InetAddress ipAddress = InetAddress.getByName(strIpAddress);
+		IpAddress ipAddress = new IpAddress(strIpAddress);
 
 		// ------PCオブジェクトに代入------
 		Pc pc= new Pc(ipAddress,hostName);

@@ -46,15 +46,15 @@ public class GetAllPcServletTest extends TestServletBase {
 		String response = webResponse.getText();
 		List<PcJson> pcJsonList =JsonConverter.getPcJsonList(response);
 		assertNotNull(pcJsonList);
-		assertEquals(pcJsonList.size(),62);
+		assertEquals(71,pcJsonList.size());
 
 		PcJson pcJsonFirst = pcJsonList.get(0);
-		assertEquals(pcJsonFirst.getIpAdress(),"133.44.118.158");
-		assertEquals(pcJsonFirst.getPcId(),"ics801");
+		assertEquals("ics801",pcJsonFirst.getPcId());
+		assertEquals("133.44.118.158",pcJsonFirst.getIpAdress());
 
-		PcJson pcJsonLast = pcJsonList.get(61);
-		assertEquals(pcJsonLast.getIpAdress(),"133.44.118.221");
-		assertEquals(pcJsonLast.getPcId(),"ics864");
+		PcJson pcJsonLast = pcJsonList.get(70);
+		assertEquals("ics871",pcJsonLast.getPcId());
+		assertEquals("133.44.118.228",pcJsonLast.getIpAdress());
 	}
 
 }

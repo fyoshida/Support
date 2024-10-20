@@ -2,8 +2,7 @@ package domain;
 
 import static org.junit.Assert.*;
 
-import java.net.InetAddress;
-import java.net.UnknownHostException;
+import java.time.LocalDateTime;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Optional;
@@ -12,8 +11,11 @@ import org.junit.Before;
 import org.junit.Test;
 
 import domain.aggregate.StudentManager;
+import domain.aggregate.WaitingManager;
 import domain.entities.Pc;
 import domain.entities.Student;
+import domain.valueobjects.HelpStatus;
+import domain.valueobjects.IpAddress;
 
 public class StudentManagerTest {
 
@@ -29,13 +31,13 @@ public class StudentManagerTest {
 	public static final String IPADDRESS_3 = "133.44.118.228";
 	public static final String HOSTNAME_3 = "ics871";
 
-	private InetAddress ipAddressGateWay;
-	private InetAddress ipAddress1;
-	private InetAddress ipAddress2;
-	private InetAddress ipAddress3;
-	private InetAddress ipAddress1_another;
-	private InetAddress ipAddress2_another;
-	private InetAddress ipAddress3_another;
+	private IpAddress ipAddressGateWay;
+	private IpAddress ipAddress1;
+	private IpAddress ipAddress2;
+	private IpAddress ipAddress3;
+	private IpAddress ipAddress1_another;
+	private IpAddress ipAddress2_another;
+	private IpAddress ipAddress3_another;
 	private Pc pcGateway;
 	private Pc pc1;
 	private Pc pc2;
@@ -45,28 +47,26 @@ public class StudentManagerTest {
 
 	@Before
 	public void setUp() {
-		try {
-			ipAddressGateWay =InetAddress.getByName(IPADDRESS_GATEWAY);
-			ipAddress1 = InetAddress.getByName(IPADDRESS_1);
-			ipAddress2 = InetAddress.getByName(IPADDRESS_2);
-			ipAddress3 = InetAddress.getByName(IPADDRESS_3);
+		ipAddressGateWay = new IpAddress(IPADDRESS_GATEWAY);
+		ipAddress1 = new IpAddress(IPADDRESS_1);
+		ipAddress2 = new IpAddress(IPADDRESS_2);
+		ipAddress3 = new IpAddress(IPADDRESS_3);
 
-			ipAddress1_another = InetAddress.getByName(IPADDRESS_1);
-			ipAddress2_another = InetAddress.getByName(IPADDRESS_2);
-			ipAddress3_another =InetAddress.getByName(IPADDRESS_3);
+		ipAddress1_another = new IpAddress(IPADDRESS_1);
+		ipAddress2_another = new IpAddress(IPADDRESS_2);
+		ipAddress3_another = new IpAddress(IPADDRESS_3);
 
-			List<Pc> pcList = new LinkedList<Pc>();
-			pcList.add(pcGateway);
-			pcList.add(pc1);
-			pcList.add(pc2);
-			pcList.add(pc3);
+		pcGateway = new Pc(ipAddressGateWay,HOSTNAME_GATEWAY);
+		pc1=new Pc(ipAddress1,HOSTNAME_1);
+		pc2=new Pc(ipAddress2,HOSTNAME_2);
+		pc3=new Pc(ipAddress3,HOSTNAME_3);
 
-			studentManager = new StudentManager(pcList);
-		} catch (UnknownHostException e) {
-			// TODO 自動生成された catch ブロック
-			e.printStackTrace();
-		}
+		List<Pc> pcList = new LinkedList<Pc>();
+		pcList.add(pc1);
+		pcList.add(pc2);
+		pcList.add(pc3);
 
+		studentManager = new StudentManager(pcList);
 	}
 
 	@Test
@@ -78,16 +78,8 @@ public class StudentManagerTest {
 	}
 
 	@Test
-	public void ホスト名でPCが登録されているか調べられる() {
-		assertFalse(studentManager.existStudent(HOSTNAME_GATEWAY));
-		assertTrue(studentManager.existStudent(HOSTNAME_1));
-		assertTrue(studentManager.existStudent(HOSTNAME_2));
-		assertTrue(studentManager.existStudent(HOSTNAME_3));
-	}
-
-	@Test
 	public void IPアドレスでPCを取得できる() {
-		assertNull(studentManager.getStudent(ipAddressGateWay));
+		assertTrue(studentManager.getStudent(ipAddressGateWay).isEmpty());
 
 		Optional<Student> student1 = studentManager.getStudent(ipAddress1);
 		assertEquals(student1.get().getPc().getIpAddress(), ipAddress1_another);
@@ -99,33 +91,78 @@ public class StudentManagerTest {
 		assertEquals(student3.get().getPc().getIpAddress(), ipAddress3_another);
 	}
 
-	@Test
-	public void ホスト名でPCを取得できる() {
-		assertNull(studentManager.getStudent(HOSTNAME_GATEWAY));
-
-		Optional<Student> student1 = studentManager.getStudent(HOSTNAME_1);
-		assertEquals(student1.get().getPc().getHostName(), HOSTNAME_1);
-
-		Optional<Student> student2 = studentManager.getStudent(HOSTNAME_2);
-		assertEquals(student2.get().getPc().getHostName(), HOSTNAME_2);
-
-		Optional<Student> student3 = studentManager.getStudent(HOSTNAME_3);
-		assertEquals(student3.get().getPc().getHostName(), HOSTNAME_3);
-	}
 
 	@Test
-	public void getListで等されている学生が取得できる() {
-		List<Student> studentList=studentManager.getStudentList();
+	public void getListで学生が取得できる() {
+		List<Student> studentList = studentManager.getStudentList();
 
-		Student student1=studentList.get(0);
+		Student student1 = studentList.get(0);
 		assertEquals(student1.getPc().getIpAddress(), ipAddress1_another);
 
-		Student student2=studentList.get(1);
+		Student student2 = studentList.get(1);
 		assertEquals(student2.getPc().getIpAddress(), ipAddress2_another);
 
-		Student student3=studentList.get(2);
+		Student student3 = studentList.get(2);
 		assertEquals(student3.getPc().getIpAddress(), ipAddress3_another);
 
+	}
+	
+	@Test
+	public void 手を上げている学生のListが取得できる() {
+		studentManager.handUp(ipAddress1);
+		studentManager.handUp(ipAddress3);
+		
+		List<Student> studentList = studentManager.getHandUpStudentList();
+		
+		assertEquals(2,studentList.size());
+
+		Student student1 = studentList.get(0);
+		assertEquals(student1.getPc().getIpAddress(), ipAddress1_another);
+
+		Student student2 = studentList.get(1);
+		assertEquals(student2.getPc().getIpAddress(), ipAddress3_another);
+	}
+	
+
+	@Test
+	public void 手を上げるとHelpStatusとHandUpTimeと順位が変わる() {
+		studentManager.handUp(ipAddress2);
+		
+		Student student = studentManager.getStudent(ipAddress2).get();
+
+		assertEquals(HelpStatus.Troubled,student.getHelpStatus() );
+
+		assertNotNull(student.getHandUpTime());
+		assertNotNull(student.getWaitingTimeBySecond(LocalDateTime.now()));
+		assertEquals(1,student.getPriority());
+	}
+	
+	@Test
+	public void 手を上げてからサポートするとHelpStatusと順位が変わる() {
+		studentManager.handUp(ipAddress2);
+		studentManager.supporting(ipAddress2);
+		
+		Student student = studentManager.getStudent(ipAddress2).get();
+
+		assertEquals(student.getHelpStatus(), HelpStatus.Supporting);
+
+		assertNull(student.getHandUpTime());
+		assertEquals(0,student.getWaitingTimeBySecond(LocalDateTime.now()));
+		assertEquals(WaitingManager.NOT_REGISTED,student.getPriority());
+	}
+	
+	@Test
+	public void 手を上げてから手を下ろすと最初の状態にもどる() {
+		studentManager.handUp(ipAddress2);
+		studentManager.handDown(ipAddress2);
+		
+		Student student = studentManager.getStudent(ipAddress2).get();
+
+		assertEquals(student.getHelpStatus(), HelpStatus.None);
+
+		assertNull(student.getHandUpTime());
+		assertEquals(0,student.getWaitingTimeBySecond(LocalDateTime.now()));
+		assertEquals(WaitingManager.NOT_REGISTED,student.getPriority());
 	}
 
 }

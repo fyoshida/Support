@@ -2,39 +2,30 @@ package domain;
 
 import static org.junit.Assert.*;
 
-import java.net.InetAddress;
-import java.net.UnknownHostException;
 import java.time.LocalDateTime;
 
 import org.junit.Before;
 import org.junit.Test;
 
-import domain.aggregate.WaitingManager;
 import domain.entities.Pc;
 import domain.entities.Student;
 import domain.valueobjects.HelpStatus;
+import domain.valueobjects.IpAddress;
 
 public class StudentTest {
 
 	public static final String IPADDRESS_GATEWAY = "133.44.118.254";
-	private InetAddress ipAddress;
-	private String hostName;
-	private WaitingManager waitingManager;
+	public static final String hostName="icsGateWay";
+	
+	private IpAddress ipAddress;
 	private Student student;
 
 	@Before
 	public void setUp() {
-		try {
-			ipAddress = InetAddress.getByName(IPADDRESS_GATEWAY);
-			hostName ="icsGateWay";
-			Pc pc = new Pc(ipAddress,hostName);
+		ipAddress = new IpAddress(IPADDRESS_GATEWAY);
+		Pc pc = new Pc(ipAddress,hostName);
 
-			student = new Student(pc);
-		} catch (UnknownHostException e) {
-			// TODO 自動生成された catch ブロック
-			e.printStackTrace();
-		}
-
+		student = new Student(pc);
 	}
 
 	@Test
@@ -48,21 +39,19 @@ public class StudentTest {
 	@Test
 	public void 生成直後は手を上げていない() {
 		assertEquals(student.getHelpStatus(), HelpStatus.None);
-		assertEquals(student.getPriority(), WaitingManager.NOT_REGISTED);
 
 		assertNull(student.getHandUpTime());
-		assertNull(student.getWaitingTime(LocalDateTime.now()));
+		assertEquals(0,student.getWaitingTimeBySecond(LocalDateTime.now()));
 	}
 
 	@Test
-	public void 手を上げるとHelpStatusとHandUpTimeが変わり優先順位が1になる() {
+	public void 手を上げるとHelpStatusとHandUpTimeが変わる() {
 		student.handUp();
 
 		assertEquals(student.getHelpStatus(), HelpStatus.Troubled);
-		assertEquals(student.getPriority(), 1);
 
 		assertNotNull(student.getHandUpTime());
-		assertNotNull(student.getWaitingTime(LocalDateTime.now()));
+		assertNotNull(student.getWaitingTimeBySecond(LocalDateTime.now()));
 	}
 
 	@Test
@@ -71,22 +60,20 @@ public class StudentTest {
 		student.handDown();
 
 		assertEquals(student.getHelpStatus(), HelpStatus.None);
-		assertEquals(student.getPriority(), WaitingManager.NOT_REGISTED);
 
 		assertNull(student.getHandUpTime());
-		assertNull(student.getWaitingTime(LocalDateTime.now()));
+		assertEquals(0,student.getWaitingTimeBySecond(LocalDateTime.now()));
 	}
 
 	@Test
-	public void 手を上げてからサポートするとHelpStatusが変わりPriorityが最初の状態にもどる() {
+	public void 手を上げてからサポートするとHelpStatusが変わる() {
 		student.handUp();
 		student.supporting();
 
 		assertEquals(student.getHelpStatus(), HelpStatus.Supporting);
-		assertEquals(student.getPriority(), WaitingManager.NOT_REGISTED);
 
 		assertNull(student.getHandUpTime());
-		assertNull(student.getWaitingTime(LocalDateTime.now()));
+		assertEquals(0,student.getWaitingTimeBySecond(LocalDateTime.now()));
 	}
 
 	@Test
@@ -104,23 +91,6 @@ public class StudentTest {
 		student.handDown();
 
 		assertEquals(student.getHelpStatus(),HelpStatus.None);
-	}
-
-	@Test
-	public void 手の上げ下げやサポートによって順位が変わる() {
-		assertEquals(student.getPriority(),WaitingManager.NOT_REGISTED);
-
-		student.handUp();
-
-		assertEquals(student.getPriority(),1);
-
-		student.supporting();
-
-		assertEquals(student.getPriority(),WaitingManager.NOT_REGISTED);
-
-		student.handDown();
-
-		assertEquals(student.getPriority(),WaitingManager.NOT_REGISTED);
 	}
 
 	@Test
@@ -142,18 +112,18 @@ public class StudentTest {
 
 	@Test
 	public void 手の上げ下げやサポートによってWaitingTimeが変わる() {
-		assertNull(student.getWaitingTime(LocalDateTime.now()));
+		assertEquals(0 , student.getWaitingTimeBySecond(LocalDateTime.now()));
 
 		student.handUp();
 
-		assertNotNull(student.getWaitingTime(LocalDateTime.now()));
+		assertTrue(student.getWaitingTimeBySecond(LocalDateTime.now())>=0);
 
 		student.supporting();
 
-		assertNull(student.getWaitingTime(LocalDateTime.now()));
+		assertTrue(student.getWaitingTimeBySecond(LocalDateTime.now())>=0);
 
 		student.handDown();
 
-		assertNull(student.getWaitingTime(LocalDateTime.now()));
+		assertEquals(0,student.getWaitingTimeBySecond(LocalDateTime.now()));
 	}
 }

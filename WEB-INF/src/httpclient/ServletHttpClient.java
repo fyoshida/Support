@@ -1,10 +1,8 @@
 package httpclient;
 
-import java.net.InetAddress;
-import java.net.UnknownHostException;
-import java.util.Optional;
-
 import javax.servlet.http.HttpServletRequest;
+
+import domain.valueobjects.IpAddress;
 
 public class ServletHttpClient implements IHttpClient {
 	private HttpServletRequest req;
@@ -13,25 +11,35 @@ public class ServletHttpClient implements IHttpClient {
 		this.req = req;
 	}
 
+	private String getIpAddressFromHeader() {
+		   String ipAddress = req.getHeader("X-Forwarded-For");
+		    if (ipAddress == null || ipAddress.isEmpty() || "unknown".equalsIgnoreCase(ipAddress)) {
+		        ipAddress = req.getHeader("Proxy-Client-IP");
+		    }
+		    if (ipAddress == null || ipAddress.isEmpty() || "unknown".equalsIgnoreCase(ipAddress)) {
+		        ipAddress = req.getHeader("WL-Proxy-Client-IP");
+		    }
+		    if (ipAddress == null || ipAddress.isEmpty() || "unknown".equalsIgnoreCase(ipAddress)) {
+		        ipAddress = req.getRemoteAddr();
+		    }
+
+		    // 複数のIPが「X-Forwarded-For」に含まれている場合は、最初のIPを取得
+		    if (ipAddress != null && ipAddress.contains(",")) {
+		        ipAddress = ipAddress.split(",")[0].trim();
+		    }
+
+		    return ipAddress;
+	}
 	@Override
-	public Optional<InetAddress> getClientIpAddress() {
+	public IpAddress getClientIpAddress() {
 		String clientIpAddress = req.getRemoteAddr();
 
 		if (clientIpAddress.equals("0:0:0:0:0:0:0:1")) {
-			try {
-				return Optional.of(InetAddress.getLocalHost());
-			} catch (UnknownHostException e) {
-				return Optional.empty();
-			}
-
-		} else {
-			try {
-				
-				return Optional.of(InetAddress.getByName(clientIpAddress));
-			} catch (UnknownHostException e) {
-				return Optional.empty();
-			}
+			String ipAddress = getIpAddressFromHeader();
+			return new IpAddress(ipAddress);
 		}
+		
+		return new IpAddress(clientIpAddress);
 	}
 
 }

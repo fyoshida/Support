@@ -33,7 +33,7 @@ public class SupportServlet extends HttpServlet {
 		StudentService studentService=(StudentService)sc.getAttribute("StudentService");
 
 		// サポート
-		studentService.clientSupported();
+		studentService.clientSupporting();
 
 		// 全学生を取得
 		List<Student> studentList = studentService.getStudentList();

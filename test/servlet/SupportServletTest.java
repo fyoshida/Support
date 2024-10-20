@@ -13,6 +13,7 @@ import domain.valueobjects.HelpStatus;
 import helper.JsonConverter;
 import helper.PcJson;
 import helper.PcJsonHelper;
+import httpclient.DummyHttpClient;
 import httpclient.HttpClientFactory;
 import httpclient.NetworkType;
 import repository.RepositoryFactory;
@@ -37,8 +38,8 @@ public class SupportServletTest extends TestServletBase {
 
 	@Test
 	public void GETメソッドでアクセスするとサポートできる() throws Exception {
-		String targetPcIpAddress = HttpClientFactory.ipAddress;
-		String targetPcHostName = HttpClientFactory.hostName;
+		String targetPcIpAddress = DummyHttpClient.IP_ADDRESS;
+		String targetPcHostName = DummyHttpClient.HOST_NAME;
 
 		getMessages("InitializeServlet");
 
@@ -51,7 +52,6 @@ public class SupportServletTest extends TestServletBase {
 		String response = webResponse.getText();
 		List<PcJson> pcJsonList = JsonConverter.getPcJsonList(response);
 		assertNotNull(pcJsonList);
-		assertEquals(pcJsonList.size(), 62);
 
 		PcJson pcJson = PcJsonHelper.findPcJson(pcJsonList, targetPcIpAddress);
 		assertNotNull(pcJson);

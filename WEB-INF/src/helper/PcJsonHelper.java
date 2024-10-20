@@ -13,9 +13,9 @@ public class PcJsonHelper {
 		PcJson pcJson = new PcJson();
 
 		pcJson.setPcId(student.getPc().getHostName());
-		pcJson.setIpAdress(student.getPc().getIpAddress().toString());
+		pcJson.setIpAdress(student.getPc().getIpAddress().getDisplayName());
 		pcJson.setHelpStatus(student.getHelpStatus().getDisplayName());
-		pcJson.setWaitingTimeBySecond(student.getWaitingTime(LocalDateTime.now()).toSeconds());
+		pcJson.setWaitingTimeBySecond(student.getWaitingTimeBySecond(LocalDateTime.now()));
 		pcJson.setHandPriority(student.getPriority());
 
 		return pcJson;

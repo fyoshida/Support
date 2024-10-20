@@ -2,18 +2,12 @@
 <html lang="ja">
   <head>
     <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>座席状態</title>
-    <script src="./vue-router@3.5.3.js"></script>
-    <script src="./vue@3.1.5.js"></script>
-    <script src="./axios.min@0.27.2.js"></script>
-    <!-- <script src="https://unpkg.com/vue@3"></script> -->
-    <link href="style.css" rel="stylesheet" />
   </head>
   <body>
     <div id="app"></div>
-    <script type="module" src="./script.js"></script>
     <script>
+		alert(111);
 		// WebSocketオブジェクトを作成して、サーバーに接続
 		const socket = new WebSocket('ws://localhost/websocket');
 

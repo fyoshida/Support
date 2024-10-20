@@ -6,7 +6,6 @@ import java.util.List;
 
 import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
-import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -17,7 +16,7 @@ import helper.StudentJson;
 import helper.StudentJsonHelper;
 import services.StudentService;
 
-@WebServlet(urlPatterns = { "/v1/call/*" })
+//@WebServlet(urlPatterns = { "/v1/call/*" })
 //call-teacher/XXXの応答関数
 public class HandUpServlet extends HttpServlet {
 

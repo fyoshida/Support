@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="ja">
+  <head>
+    <meta charset="UTF-8" />
+    <title>座席状態</title>
+  </head>
+  <body>
+    <div id="app"></div>
+    <script>
+		alert(111);
+		// WebSocketオブジェクトを作成して、サーバーに接続
+		const socket = new WebSocket('ws://localhost/RaiseHand/websocket');
+
+		// 接続が開いたときに呼び出される
+		socket.onopen = function(event) {
+	    	console.log('WebSocket connection opened');
+    		// サーバーにメッセージを送信
+    		socket.send('Hello from JavaScript client!');
+		};
+
+		// メッセージを受信したときに呼び出される
+		socket.onmessage = function(event) {
+    		console.log('Message received from server: ' + event.data);
+		};
+
+		// エラーが発生したときに呼び出される
+		socket.onerror = function(error) {
+    		console.error('WebSocket error: ' + error);
+		};
+
+		// 接続が閉じられたときに呼び出される
+		socket.onclose = function(event) {
+    		console.log('WebSocket connection closed');
+		};
+
+	</script>
+  </body>
+</html>

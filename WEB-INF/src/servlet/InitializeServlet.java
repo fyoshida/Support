@@ -5,7 +5,6 @@ import java.util.Optional;
 
 import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
-import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -18,7 +17,7 @@ import repository.IPcRepository;
 import repository.RepositoryFactory;
 import services.StudentService;
 
-@WebServlet(urlPatterns = { "/v1/initialize" })
+//@WebServlet(urlPatterns = { "/v1/initialize" })
 //active-seatsの応答関数
 public class InitializeServlet extends HttpServlet {
 

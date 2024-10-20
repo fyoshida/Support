@@ -7,7 +7,6 @@ import java.util.Optional;
 
 import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
-import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -20,7 +19,7 @@ import helper.StudentJson;
 import helper.StudentJsonHelper;
 import services.StudentService;
 
-@WebServlet(urlPatterns = { "/v1/active-seats" })
+//@WebServlet(urlPatterns = { "/v1/active-seats" })
 //active-seatsの応答関数
 public class GetHandUpPcServlet extends HttpServlet {
 

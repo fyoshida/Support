@@ -12,10 +12,10 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import domain.entities.Student;
-import domain.services.StudentService;
 import helper.JsonConverter;
 import helper.PcJson;
 import helper.PcJsonHelper;
+import services.StudentService;
 
 @WebServlet(urlPatterns = { "/v1/active-seats" })
 //active-seatsの応答関数

@@ -7,5 +7,4 @@ public interface IHttpClient {
 			
 	public Optional<InetAddress> getClientIpAddress();
 
-	public String getClientHostName();
 }

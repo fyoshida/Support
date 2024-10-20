@@ -7,10 +7,8 @@ import java.util.Optional;
 public class DummyHttpClient implements IHttpClient {
 
 	InetAddress default_ipAddress;
-	String default_hostName = "ics834";
 
 	InetAddress ipAddress;
-	String hostName;
 
 	public DummyHttpClient() {
 		try {
@@ -22,9 +20,8 @@ public class DummyHttpClient implements IHttpClient {
 
 	}
 
-	public DummyHttpClient(InetAddress ipAddress, String hostName) {
+	public DummyHttpClient(InetAddress ipAddress) {
 		this.ipAddress = ipAddress;
-		this.hostName = hostName;
 	}
 
 	@Override
@@ -33,15 +30,6 @@ public class DummyHttpClient implements IHttpClient {
 			return Optional.of(ipAddress);
 		} else {
 			return Optional.of(default_ipAddress);
-		}
-	}
-
-	@Override
-	public String getClientHostName() {
-		if (hostName != null) {
-			return hostName;
-		} else {
-			return "ics834";
 		}
 	}
 

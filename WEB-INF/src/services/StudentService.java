@@ -1,4 +1,4 @@
-package domain.services;
+package services;
 
 import static org.apache.commons.lang3.Validate.*;
 

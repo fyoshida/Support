@@ -9,11 +9,11 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import domain.services.StudentService;
 import httpclient.HttpClientFactory;
 import httpclient.IHttpClient;
 import repository.IPcRepository;
 import repository.RepositoryFactory;
+import services.StudentService;
 
 @WebServlet(urlPatterns = { "/v1/initialize" })
 //active-seatsの応答関数

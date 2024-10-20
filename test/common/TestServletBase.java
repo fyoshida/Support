@@ -9,13 +9,23 @@ import javax.servlet.ServletException;
 
 public class TestServletBase extends TestServlet{
 
-	protected void getMessages(String servletName, Map<String, Object> scParameters)
+	protected void getMessagesWithServletContext(String servletName, Map<String, Object> scParameters)
 			throws MalformedURLException, IOException, ServletException, Exception {
 		setServletName(servletName);
 		setMethodType(MethodType.GET);
 
 		startServer();
 		setServletContext(scParameters);
+		callServlet();
+	}
+	
+	protected void getMessagesWithSession(String servletName, Map<String, Object> sessionParameters)
+			throws MalformedURLException, IOException, ServletException, Exception {
+		setServletName(servletName);
+		setMethodType(MethodType.GET);
+
+		startServer();
+		setSession(sessionParameters);
 		callServlet();
 	}
 
@@ -48,6 +58,12 @@ public class TestServletBase extends TestServlet{
 	private void setServletContext(Map<String, Object> scParameters) {
 		for (Entry<String, Object> entry : scParameters.entrySet()) {
 			servletContext.setAttribute(entry.getKey(), entry.getValue());
+		}
+	}
+	
+	private void setSession(Map<String, Object> sessionParameters) {
+		for (Entry<String, Object> entry : sessionParameters.entrySet()) {
+			session.setAttribute(entry.getKey(), entry.getValue());
 		}
 	}
 }

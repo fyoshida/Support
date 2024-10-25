@@ -18,12 +18,13 @@
         };
         // メッセージを受信したときに呼び出される
 		ws.onmessage = function(event) {
-			alert(event);
+			alert("aaa"+event.data);
     		console.log('Message received from server: ' + event.data);
 		};
 
 		// エラーが発生したときに呼び出される
 		ws.onerror = function(error) {
+    		alert("Error");
     		console.error('WebSocket error: ' + error);
 		};
 

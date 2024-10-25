@@ -3,7 +3,6 @@ package websocket;
 import java.io.IOException;
 import java.util.List;
 import java.util.Map;
-import java.util.Optional;
 import java.util.Set;
 import java.util.concurrent.CopyOnWriteArraySet;
 
@@ -20,7 +19,6 @@ import javax.websocket.server.ServerEndpoint;
 import javax.websocket.server.ServerEndpointConfig;
 import javax.websocket.server.ServerEndpointConfig.Configurator;
 
-import domain.entities.Student;
 import httpclient.HttpClientFactory;
 import httpclient.IHttpClient;
 import repository.IPcRepository;
@@ -54,13 +52,14 @@ public class WebsocketInitialize {
     @OnMessage
     public String onMessage(String message, Session session) {
         System.out.println("Received message: " + message + " from client: " + session.getId());
-        Optional<Student> optStudent = studentService.getClientStudent();
-        if(optStudent.isEmpty()) {
-        	return "";
-        }
-        Student student = optStudent.get();
+//        Optional<Student> optStudent = studentService.getClientStudent();
+//        if(optStudent.isEmpty()) {
+//        	return "";
+//        }
+//        Student student = optStudent.get();
 
-        sendMessage(session,"aaa");
+        sendMessage(session,"TestTest");
+        broadcastMessage("RRR");
         return "Echo: " + message;
     }
 

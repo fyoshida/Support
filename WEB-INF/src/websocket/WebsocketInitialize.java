@@ -18,6 +18,7 @@ import javax.websocket.Session;
 import javax.websocket.server.HandshakeRequest;
 import javax.websocket.server.ServerEndpoint;
 import javax.websocket.server.ServerEndpointConfig;
+import javax.websocket.server.ServerEndpointConfig.Configurator;
 
 import domain.entities.Student;
 import httpclient.HttpClientFactory;
@@ -26,8 +27,9 @@ import repository.IPcRepository;
 import repository.RepositoryFactory;
 import services.StudentService;
 
-@ServerEndpoint(value="/websocket/_initialize", configurator = _Initialize.ConfiguratorWithRequest.class)
-public class _Initialize {
+//@ServerEndpoint(value="/websocket/_initialize")
+@ServerEndpoint(value="/websocket/_initialize", configurator = WebsocketInitialize.ConfiguratorWithRequest.class)
+public class WebsocketInitialize {
 
     private static Set<Session> clientSessions = new CopyOnWriteArraySet<>(); // セッションのセット
 	private static StudentService studentService;
@@ -68,14 +70,13 @@ public class _Initialize {
     }
     
     @OnError
-    public void onError(Session session) {
-        System.out.println("WebSocket error: " + session.getId());
-   	
-    }
-    
+    public void onError(final Session client, final Throwable error) {
+        String log = client.getId() + " was error. [" + error.getMessage() + "]";
+        error.printStackTrace();
+    }    
    
     // Configuratorクラスの設定
-    public static class ConfiguratorWithRequest extends ServerEndpointConfig.Configurator {
+    public static class ConfiguratorWithRequest extends Configurator {
         @Override
         public void modifyHandshake(ServerEndpointConfig config, HandshakeRequest request, HandshakeResponse response) {
 

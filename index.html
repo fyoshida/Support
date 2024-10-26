@@ -654,17 +654,19 @@
 				var student = studentList[i];
 				if (student.helpStatus == "Troubled") {
 					studentList[i].waitingTimeBySecond += 1;
-					setStudentInfo(i + 1, studentList[i]);
 				}
+				setStudentInfo(i + 1, studentList[i]);
 			}
 		}
 
 		function setStudentOnClick(num, obj) {
 			var studentElement = document.getElementById("student" + num)
 			studentElement.addEventListener('click', (event) => {
-				if(obj.helpStatus=="None"){
+				if(obj.helpStatus=="Troubled"){
+				    ws.send("Supporting:" + obj.ipAdress);
+				}else if(obj.helpStatus=="None"){
 				    ws.send("Troubled:" + obj.ipAdress);
-				}else if(obj.helpStatus=="Troubled"){
+				}else if(obj.helpStatus=="Suppoting"){
 				    ws.send("None:" + obj.ipAdress);
 				}
 			})
@@ -672,17 +674,23 @@
 
 		function setStudentInfo(num, obj) {
 			const studentElement = document.getElementById("student" + num);
-			//		if(obj.helpStatus=="None"){
-			//			studentElement.style.visibility="hidden";
-			//		}else{
+			if(obj.helpStatus=="None"){
+				studentElement.style.backgroundColor="white";
+			}else if(obj.helpStatus=="Troubled"){
+				studentElement.style.backgroundColor="orange";
+			}else if(obj.helpStatus=="Suppoting"){
+				studentElement.style.backgroundColor="lightgreen";
+			}
 			const time = obj.waitingTimeBySecond;
 			const hour = Math.floor(time / 3600);
 			const minute = Math.floor((time - hour * 3600) / 60);
 			const second = time - hour * 3600 - minute * 60;
 			document.getElementById("pcname" + num).innerText = obj.pcId;
-			document.getElementById("status" + num).style.display = "none";
+			document.getElementById("status" + num).innerText = obj.helpStatus;
+			document.getElementById("status" + num).style.display = "block";
 			document.getElementById("time" + num).innerText = hour + ":" + minute + ":" + second;
 			document.getElementById("priority" + num).innerText = obj.handPriority;
+			
 			//		}
 		}
 

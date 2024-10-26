@@ -21,8 +21,12 @@
         // メッセージを受信したときに呼び出される
 		ws.onmessage = function(event) {
 			alert("aaa"+event.data);
-			const objArray = JSON.parse(jsonData);
-		    objArray.forEach(obj => {
+			const obj = JSON.parse(jsonData);
+			const student=obj.clientStudent;
+			const handupStudentList=obj.handupStudentList;
+			const studentList=obj.studentList;
+		    studentList.forEach(student => {
+				alert(student.handPriority);
         		console.log(`Name: ${obj.name}, Age: ${obj.age}`);
     		});
     		console.log('Message received from server: ' + event.data);
@@ -40,6 +44,17 @@
 	    };
 	});
 
+	class Student {
+      constructor(pcId,ipAddress,helpStatus,waitingTimeBySecond,handPriority) {
+        this.pcId = pcId;
+        this.ipAddress = ipAddress;
+        this.helpStatus = helpStatus;
+        this.waitingTimeBySecond = waitingTimeBySecond;
+        this.handPriority = handPriority;
+    }
+
+ 
+}
 
 	</script>
   </body>

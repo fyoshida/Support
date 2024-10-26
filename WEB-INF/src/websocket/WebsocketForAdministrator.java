@@ -76,7 +76,7 @@ public class WebsocketForAdministrator {
 		String jsonText = getJsonText(teacherResponse);
 		broadcastMessage(jsonText);
 		
-		return "Echo: " + message;
+		return jsonText;
 	}
 
 	@OnClose

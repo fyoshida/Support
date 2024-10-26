@@ -1,0 +1,15 @@
+.student{
+	border: 2px solid orangered;
+	background-color: lightblue;
+	border-radius: 10px;
+	padding: 10px;
+}
+.pcname{
+	text-align: center;
+}
+.prioroty{
+	text-align: center;
+}
+.time{
+	text-align: center;
+}

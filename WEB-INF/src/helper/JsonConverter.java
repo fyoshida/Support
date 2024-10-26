@@ -6,18 +6,21 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
+import websocket.StudentResponse;
+import websocket.TeacherResponse;
+
 
 public class JsonConverter {
-	public static String getJsonText(StudentJson pcJson) throws JsonProcessingException{
+	public static String getJsonText(TeacherResponse response) throws JsonProcessingException{
 		String jsonText = "";
 
-		if(pcJson == null ) {
+		if(response == null ) {
 			return jsonText="null";
 		}
 
 		ObjectMapper mapper = new ObjectMapper();
 		try {
-			jsonText = mapper.writeValueAsString(pcJson);
+			jsonText = mapper.writeValueAsString(response);
 		} catch (JsonProcessingException e) {
 			e.printStackTrace();
 		}
@@ -25,16 +28,16 @@ public class JsonConverter {
 		return jsonText;
 	}
 
-	public static String getJsonText(List<StudentJson> pcJsonList) throws JsonProcessingException{
+	public static String getJsonText(StudentResponse response) throws JsonProcessingException{
 		String jsonText = "";
 
-		if(pcJsonList == null ) {
+		if(response == null ) {
 			return "null";
 		}
 
 		ObjectMapper mapper = new ObjectMapper();
 		try {
-			jsonText = mapper.writeValueAsString(pcJsonList);
+			jsonText = mapper.writeValueAsString(response);
 		} catch (JsonProcessingException e) {
 			e.printStackTrace();
 		}

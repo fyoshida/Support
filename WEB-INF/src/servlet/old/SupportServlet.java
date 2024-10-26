@@ -38,7 +38,7 @@ public class SupportServlet extends HttpServlet {
 		List<Student> studentList = studentService.getStudentList();
 
 		// Student --> PcJson
-		List<StudentJson> pcJsonList=StudentJsonHelper.getPcJson(studentList);
+		List<StudentJson> pcJsonList=StudentJsonHelper.getStudentJsonList(studentList);
 
 		// JSON形式で出力
 		PrintWriter out = resp.getWriter();

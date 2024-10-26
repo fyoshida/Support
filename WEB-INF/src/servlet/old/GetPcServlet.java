@@ -38,7 +38,7 @@ public class GetPcServlet extends HttpServlet {
 		Student student = optStudent.get();
 		
 		// Student --> PcJson
-		StudentJson pcJson = StudentJsonHelper.fromStudent(student);
+		StudentJson pcJson = StudentJsonHelper.getStudentJson(student);
 
 		// JSON形式で出力
 		PrintWriter out = resp.getWriter();

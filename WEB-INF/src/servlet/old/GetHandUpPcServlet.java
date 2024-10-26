@@ -42,7 +42,7 @@ public class GetHandUpPcServlet extends HttpServlet {
 		// Student --> PcJson
 		List<StudentJson> pcJsonList;
 		if(session.getAttribute("Administrator")!=null) {
-			pcJsonList=StudentJsonHelper.getPcJson(studentList);
+			pcJsonList=StudentJsonHelper.getStudentJsonList(studentList);
 		}else {
 			Optional<Student> optStudent = studentService.getClientStudent();
 			if( optStudent.isEmpty()) {
@@ -50,7 +50,7 @@ public class GetHandUpPcServlet extends HttpServlet {
 			}
 			Student student = optStudent.get();
 			IpAddress ipAddress=student.getPc().getIpAddress();
-			pcJsonList=StudentJsonHelper.getPcJsonForStudent(studentList,ipAddress);
+			pcJsonList=StudentJsonHelper.getStundentJsonListForStudent(studentList,ipAddress);
 		}
 
 		// JSON形式で出力

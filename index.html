@@ -11,7 +11,9 @@
     .then(response => response.text())
     .then(data => {
         const clientIp = data.trim(); // WebSocketのURLを取得
-        const ws = new WebSocket("ws://localhost/Support/websocket/_initialize?ip="+clientIp);
+        const ws = new WebSocket("ws://localhost/Support/websocket/_administrator");
+//        const ws = new WebSocket("ws://localhost/Support/websocket/teacher);-->
+//        const ws = new WebSocket("ws://localhost/Support/websocket?ip="+clientIp);-->
         ws.onopen = () => {
     		ws.send('Hello from JavaScript client!');
             console.log("WebSocket connection opened.");
@@ -19,6 +21,10 @@
         // メッセージを受信したときに呼び出される
 		ws.onmessage = function(event) {
 			alert("aaa"+event.data);
+			const objArray = JSON.parse(jsonData);
+		    objArray.forEach(obj => {
+        		console.log(`Name: ${obj.name}, Age: ${obj.age}`);
+    		});
     		console.log('Message received from server: ' + event.data);
 		};
 

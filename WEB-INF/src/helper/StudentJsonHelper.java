@@ -10,7 +10,7 @@ import httpclient.HttpClientFactory;
 
 public class StudentJsonHelper {
 
-	public static StudentJson fromStudent(Student student) {
+	public static StudentJson getStudentJson(Student student) {
 		StudentJson pcJson = new StudentJson();
 		pcJson.setPcId(student.getPc().getHostName());
 		pcJson.setIpAdress(student.getPc().getIpAddress().getDisplayName());
@@ -20,7 +20,7 @@ public class StudentJsonHelper {
 		return pcJson;
 	}
 	
-	public static StudentJson fromStudentWithoutPcInfo(Student student) {
+	public static StudentJson getStudentJsonWithoutPcInfo(Student student) {
 		StudentJson pcJson = new StudentJson();
 		pcJson.setPcId("");
 		pcJson.setIpAdress("");
@@ -30,30 +30,30 @@ public class StudentJsonHelper {
 		return pcJson;
 	}
 
-	public static StudentJson fromStudentForStudent(Student student, IpAddress ipAddress) {
+	public static StudentJson getStudentJsonForStudent(Student student, IpAddress ipAddress) {
 		if (student.getPc().getIpAddress().equals(ipAddress)) {
-			return fromStudent(student);
+			return getStudentJson(student);
 		} else {
-			return fromStudentWithoutPcInfo(student);
+			return getStudentJsonWithoutPcInfo(student);
 		}
 	}
 
-	public static List<StudentJson> getPcJsonForStudent(List<Student> studentList, IpAddress ipAddress) {
+	public static List<StudentJson> getStundentJsonListForStudent(List<Student> studentList, IpAddress ipAddress) {
 		List<StudentJson> pcJsonList = new LinkedList<StudentJson>();
 
 		for (Student student : studentList) {
-			StudentJson pcJson = fromStudentForStudent(student,ipAddress);
+			StudentJson pcJson = getStudentJsonForStudent(student,ipAddress);
 			pcJsonList.add(pcJson);
 		}
 
 		return pcJsonList;
 	}
 
-	public static List<StudentJson> getPcJson(List<Student> studentList) {
+	public static List<StudentJson> getStudentJsonList(List<Student> studentList) {
 		List<StudentJson> pcJsonList = new LinkedList<StudentJson>();
 
 		for (Student student : studentList) {
-			StudentJson pcJson = fromStudent(student);
+			StudentJson pcJson = getStudentJson(student);
 			pcJsonList.add(pcJson);
 		}
 

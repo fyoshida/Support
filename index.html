@@ -31,6 +31,7 @@
             data-bs-toggle="tab"
             data-bs-target="#seat"
             type="button"
+            onclick="seatOnClick()"
           >
             座席
           </button>
@@ -41,6 +42,7 @@
             data-bs-toggle="tab"
             data-bs-target="#waitinglist"
             type="button"
+            onclick="waitOnClick()"
           >
             待ち行列
           </button>
@@ -643,19 +645,443 @@
 
         </div>
         <div id="waitinglist" class="tab-pane">
-
+			<div id="wstudent1" class="student"  style="visibility: hidden;">
+				<div id="wpcname1" class="pcname"></div>
+				<div id="wstatus1" class="status"></div>
+				<div id="wpriority1" class="prioroty"></div>
+				<div id="wtime1" class="time"></div>
+			</div>
+			<div id="wstudent2" class="student"  style="visibility: hidden;">
+				<div id="wpcname2" class="pcname"></div>
+				<div id="wstatus2" class="status"></div>
+				<div id="wpriority2" class="prioroty"></div>
+				<div id="wtime2" class="time"></div>
+			</div>
+			<div id="wstudent3" class="student" style="visibility: hidden;">
+				<div id="wpcname3" class="pcname"></div>
+				<div id="wstatus3" class="status"></div>
+				<div id="wpriority3" class="prioroty"></div>
+				<div id="wtime3" class="time"></div>
+			</div>
+			<div id="wstudent4" class="student"  style="visibility: hidden;">
+				<div id="wpcname4" class="pcname"></div>
+				<div id="wstatus4" class="status"></div>
+				<div id="wpriority4" class="prioroty"></div>
+				<div id="wtime4" class="time"></div>
+			</div>
+			<div id="wstudent5" class="student" style="visibility: hidden;">
+				<div id="wpcname5" class="pcname"></div>
+				<div id="wstatus5" class="status"></div>
+				<div id="wpriority5" class="prioroty"></div>
+				<div id="wtime5" class="time"></div>
+			</div>
+			<div id="wstudent6" class="student" style="visibility: hidden;">
+				<div id="wpcname6" class="pcname"></div>
+				<div id="wstatus6" class="status"></div>
+				<div id="wpriority6" class="prioroty"></div>
+				<div id="wtime6" class="time"></div>
+			</div>
+			<div id="wstudent7" class="student" style="visibility: hidden;">
+				<div id="wpcname7" class="pcname"></div>
+				<div id="wstatus7" class="status"></div>
+				<div id="wpriority7" class="prioroty"></div>
+				<div id="wtime7" class="time"></div>
+			</div>
+			<div id="wstudent8" class="student" style="visibility: hidden;">
+				<div id="wpcname8" class="pcname"></div>
+				<div id="wstatus8" class="status"></div>
+				<div id="wpriority8" class="prioroty"></div>
+				<div id="wtime8" class="time"></div>
+			</div>
+			<div id="wstudent9" class="student" style="visibility: hidden;">
+				<div id="wpcname9" class="pcname"></div>
+				<div id="wstatus9" class="status"></div>
+				<div id="wpriority9" class="prioroty"></div>
+				<div id="wtime9" class="time"></div>
+			</div>
+			<div id="wstudent10" class="student" style="visibility: hidden;">
+				<div id="wpcname10" class="pcname"></div>
+				<div id="wstatus10" class="status"></div>
+				<div id="wpriority10" class="prioroty"></div>
+				<div id="wtime10" class="time"></div>
+			</div>
+			<div id="wstudent11" class="student" style="visibility: hidden;">
+				<div id="wpcname11" class="pcname"></div>
+				<div id="wstatus11" class="status"></div>
+				<div id="wpriority11" class="prioroty"></div>
+				<div id="wtime11" class="time"></div>
+			</div>
+			<div id="wstudent12" class="student" style="visibility: hidden;">
+				<div id="wpcname12" class="pcname"></div>
+				<div id="wstatus12" class="status"></div>
+				<div id="wpriority12" class="prioroty"></div>
+				<div id="wtime12" class="time"></div>
+			</div>
+			<div id="wstudent13" class="student" style="visibility: hidden;">
+				<div id="wpcname13" class="pcname"></div>
+				<div id="wstatus13" class="status"></div>
+				<div id="wpriority13" class="prioroty"></div>
+				<div id="wtime13" class="time"></div>
+			</div>
+			<div id="wstudent14" class="student" style="visibility: hidden;">
+				<div id="wpcname14" class="pcname"></div>
+				<div id="wstatus14" class="status"></div>
+				<div id="wpriority14" class="prioroty"></div>
+				<div id="wtime14" class="time"></div>
+			</div>
+			<div id="wstudent15" class="student" style="visibility: hidden;">
+				<div id="wpcname15" class="pcname"></div>
+				<div id="wstatus15" class="status"></div>
+				<div id="wpriority15" class="prioroty"></div>
+				<div id="wtime15" class="time"></div>
+			</div>
+			<div id="wstudent16" class="student" style="visibility: hidden;">
+				<div id="wpcname16" class="pcname"></div>
+				<div id="wstatus16" class="status"></div>
+				<div id="wpriority16" class="prioroty"></div>
+				<div id="wtime16" class="time"></div>
+			</div>
+			<div id="wstudent17" class="student" style="visibility: hidden;">
+				<div id="wpcname17" class="pcname"></div>
+				<div id="wstatus17" class="status"></div>
+				<div id="wpriority17" class="prioroty"></div>
+				<div id="wtime17" class="time"></div>
+			</div>
+			<div id="wstudent18" class="student" style="visibility: hidden;">
+				<div id="wpcname18" class="pcname"></div>
+				<div id="wstatus18" class="status"></div>
+				<div id="wpriority18" class="prioroty"></div>
+				<div id="wtime18" class="time"></div>
+			</div>
+			<div id="wstudent19" class="student" style="visibility: hidden;">
+				<div id="wpcname19" class="pcname"></div>
+				<div id="wstatus19" class="status"></div>
+				<div id="wpriority19" class="prioroty"></div>
+				<div id="wtime19" class="time"></div>
+			</div>
+			<div id="wstudent20" class="student" style="visibility: hidden;">
+				<div id="wpcname20" class="pcname"></div>
+				<div id="wstatus20" class="status"></div>
+				<div id="wpriority20" class="prioroty"></div>
+				<div id="wtime20" class="time"></div>
+			</div>
+			<div id="wstudent21" class="student" style="visibility: hidden;">
+				<div id="wpcname21" class="pcname"></div>
+				<div id="wstatus21" class="status"></div>
+				<div id="wpriority21" class="prioroty"></div>
+				<div id="wtime21" class="time"></div>
+			</div>
+			<div id="wstudent22" class="student" style="visibility: hidden;">
+				<div id="wpcname22" class="pcname"></div>
+				<div id="wstatus22" class="status"></div>
+				<div id="wpriority22" class="prioroty"></div>
+				<div id="wtime22" class="time"></div>
+			</div>
+			<div id="wstudent23" class="student" style="visibility: hidden;">
+				<div id="wpcname23" class="pcname"></div>
+				<div id="wstatus23" class="status"></div>
+				<div id="wpriority23" class="prioroty"></div>
+				<div id="wtime23" class="time"></div>
+			</div>
+			<div id="wstudent24" class="student" style="visibility: hidden;">
+				<div id="wpcname24" class="pcname"></div>
+				<div id="wstatus24" class="status"></div>
+				<div id="wpriority24" class="prioroty"></div>
+				<div id="wtime24" class="time"></div>
+			</div>
+			<div id="wstudent25" class="student" style="visibility: hidden;">
+				<div id="wpcname25" class="pcname"></div>
+				<div id="wstatus25" class="status"></div>
+				<div id="wpriority25" class="prioroty"></div>
+				<div id="wtime25" class="time"></div>
+			</div>
+			<div id="wstudent26" class="student" style="visibility: hidden;">
+				<div id="wpcname26" class="pcname"></div>
+				<div id="wstatus26" class="status"></div>
+				<div id="wpriority26" class="prioroty"></div>
+				<div id="wtime26" class="time"></div>
+			</div>
+			<div id="wstudent27" class="student" style="visibility: hidden;">
+				<div id="wpcname27" class="pcname"></div>
+				<div id="wstatus27" class="status"></div>
+				<div id="wpriority27" class="prioroty"></div>
+				<div id="wtime27" class="time"></div>
+			</div>
+			<div id="wstudent28" class="student" style="visibility: hidden;">
+				<div id="wpcname20" class="pcname"></div>
+				<div id="wstatus20" class="status"></div>
+				<div id="wpriority20" class="prioroty"></div>
+				<div id="wtime20" class="time"></div>
+			</div>
+			<div id="wstudent29" class="student" style="visibility: hidden;">
+				<div id="wpcname29" class="pcname"></div>
+				<div id="wstatus29" class="status"></div>
+				<div id="wpriority29" class="prioroty"></div>
+				<div id="wtime29" class="time"></div>
+			</div>
+			<div id="wstudent30" class="student" style="visibility: hidden;">
+				<div id="wpcname30" class="pcname"></div>
+				<div id="wstatus30" class="status"></div>
+				<div id="wpriority30" class="prioroty"></div>
+				<div id="wtime30" class="time"></div>
+			</div>
+			<div id="wstudent31" class="student" style="visibility: hidden;">
+				<div id="wpcname31" class="pcname"></div>
+				<div id="wstatus31" class="status"></div>
+				<div id="wpriority31" class="prioroty"></div>
+				<div id="wtime31" class="time"></div>
+			</div>
+			<div id="wstudent32" class="student" style="visibility: hidden;">
+				<div id="wpcname32" class="pcname"></div>
+				<div id="wstatus32" class="status"></div>
+				<div id="wpriority32" class="prioroty"></div>
+				<div id="wtime32" class="time"></div>
+			</div>
+			<div id="wstudent33" class="student" style="visibility: hidden;">
+				<div id="wpcname33" class="pcname"></div>
+				<div id="wstatus33" class="status"></div>
+				<div id="wpriority33" class="prioroty"></div>
+				<div id="wtime33" class="time"></div>
+			</div>
+			<div id="wstudent34" class="student" style="visibility: hidden;">
+				<div id="wpcname34" class="pcname"></div>
+				<div id="wstatus34" class="status"></div>
+				<div id="wpriority34" class="prioroty"></div>
+				<div id="wtime34" class="time"></div>
+			</div>
+			<div id="wstudent35" class="student" style="visibility: hidden;">
+				<div id="wpcname35" class="pcname"></div>
+				<div id="wstatus35" class="status"></div>
+				<div id="wpriority35" class="prioroty"></div>
+				<div id="wtime35" class="time"></div>
+			</div>
+			<div id="wstudent36" class="student" style="visibility: hidden;">
+				<div id="wpcname36" class="pcname"></div>
+				<div id="wstatus36" class="status"></div>
+				<div id="wpriority36" class="prioroty"></div>
+				<div id="wtime36" class="time"></div>
+			</div>
+			<div id="wstudent37" class="student" style="visibility: hidden;">
+				<div id="wpcname37" class="pcname"></div>
+				<div id="wstatus37" class="status"></div>
+				<div id="wpriority37" class="prioroty"></div>
+				<div id="wtime37" class="time"></div>
+			</div>
+			<div id="wstudent38" class="student" style="visibility: hidden;">
+				<div id="wpcname38" class="pcname"></div>
+				<div id="wstatus38" class="status"></div>
+				<div id="wpriority38" class="prioroty"></div>
+				<div id="wtime38" class="time"></div>
+			</div>
+			<div id="wstudent39" class="student" style="visibility: hidden;">
+				<div id="wpcname39" class="pcname"></div>
+				<div id="wstatus39" class="status"></div>
+				<div id="wpriority39" class="prioroty"></div>
+				<div id="wtime39" class="time"></div>
+			</div>
+			<div id="wstudent40" class="student" style="visibility: hidden;">
+				<div id="wpcname40" class="pcname"></div>
+				<div id="wstatus40" class="status"></div>
+				<div id="wpriority40" class="prioroty"></div>
+				<div id="wtime40" class="time"></div>
+			</div>
+			<div id="wstudent41" class="student" style="visibility: hidden;">
+				<div id="wpcname41" class="pcname"></div>
+				<div id="wstatus41" class="status"></div>
+				<div id="wpriority41" class="prioroty"></div>
+				<div id="wtime41" class="time"></div>
+			</div>
+			<div id="wstudent42" class="student" style="visibility: hidden;">
+				<div id="wpcname42" class="pcname"></div>
+				<div id="wstatus42" class="status"></div>
+				<div id="wpriority42" class="prioroty"></div>
+				<div id="wtime42" class="time"></div>
+			</div>
+			<div id="wstudent43" class="student" style="visibility: hidden;">
+				<div id="wpcname43" class="pcname"></div>
+				<div id="wstatus43" class="status"></div>
+				<div id="wpriority43" class="prioroty"></div>
+				<div id="wtime43" class="time"></div>
+			</div>
+			<div id="wstudent44" class="student" style="visibility: hidden;">
+				<div id="wpcname44" class="pcname"></div>
+				<div id="wstatus44" class="status"></div>
+				<div id="wpriority44" class="prioroty"></div>
+				<div id="wtime44" class="time"></div>
+			</div>
+			<div id="wstudent45" class="student" style="visibility: hidden;">
+				<div id="wpcname45" class="pcname"></div>
+				<div id="wstatus45" class="status"></div>
+				<div id="wpriority45" class="prioroty"></div>
+				<div id="wtime45" class="time"></div>
+			</div>
+			<div id="wstudent46" class="student" style="visibility: hidden;">
+				<div id="wpcname46" class="pcname"></div>
+				<div id="wstatus46" class="status"></div>
+				<div id="wpriority46" class="prioroty"></div>
+				<div id="wtime46" class="time"></div>
+			</div>
+			<div id="wstudent47" class="student" style="visibility: hidden;">
+				<div id="wpcname47" class="pcname"></div>
+				<div id="wstatus47" class="status"></div>
+				<div id="wpriority47" class="prioroty"></div>
+				<div id="wtime47" class="time"></div>
+			</div>
+			<div id="wstudent48" class="student" style="visibility: hidden;">
+				<div id="wpcname48" class="pcname"></div>
+				<div id="wstatus48" class="status"></div>
+				<div id="wpriority48" class="prioroty"></div>
+				<div id="wtime48" class="time"></div>
+			</div>
+			<div id="wstudent49" class="student" style="visibility: hidden;">
+				<div id="wpcname49" class="pcname"></div>
+				<div id="wstatus49" class="status"></div>
+				<div id="wpriority49" class="prioroty"></div>
+				<div id="wtime49" class="time"></div>
+			</div>
+			<div id="wstudent50" class="student" style="visibility: hidden;">
+				<div id="wpcname50" class="pcname"></div>
+				<div id="wstatus50" class="status"></div>
+				<div id="wpriority50" class="prioroty"></div>
+				<div id="wtime50" class="time"></div>
+			</div>
+			<div id="wstudent51" class="student" style="visibility: hidden;">
+				<div id="wpcname51" class="pcname"></div>
+				<div id="wstatus51" class="status"></div>
+				<div id="wpriority51" class="prioroty"></div>
+				<div id="wtime51" class="time"></div>
+			</div>
+			<div id="wstudent52" class="student" style="visibility: hidden;">
+				<div id="wpcname52" class="pcname"></div>
+				<div id="wstatus52" class="status"></div>
+				<div id="wpriority52" class="prioroty"></div>
+				<div id="wtime52" class="time"></div>
+			</div>
+			<div id="wstudent53" class="student" style="visibility: hidden;">
+				<div id="wpcname53" class="pcname"></div>
+				<div id="wstatus53" class="status"></div>
+				<div id="wpriority53" class="prioroty"></div>
+				<div id="wtime53" class="time"></div>
+			</div>
+			<div id="wstudent54" class="student" style="visibility: hidden;">
+				<div id="wpcname54" class="pcname"></div>
+				<div id="wstatus54" class="status"></div>
+				<div id="wpriority54" class="prioroty"></div>
+				<div id="wtime54" class="time"></div>
+			</div>
+			<div id="wstudent55" class="student" style="visibility: hidden;">
+				<div id="wpcname55" class="pcname"></div>
+				<div id="wstatus55" class="status"></div>
+				<div id="wpriority55" class="prioroty"></div>
+				<div id="wtime55" class="time"></div>
+			</div>
+			<div id="wstudent56" class="student" style="visibility: hidden;">
+				<div id="wpcname56" class="pcname"></div>
+				<div id="wstatus56" class="status"></div>
+				<div id="wpriority56" class="prioroty"></div>
+				<div id="wtime56" class="time"></div>
+			</div>
+			<div id="wstudent57" class="student" style="visibility: hidden;">
+				<div id="wpcname57" class="pcname"></div>
+				<div id="wstatus57" class="status"></div>
+				<div id="wpriority57" class="prioroty"></div>
+				<div id="wtime57" class="time"></div>
+			</div>
+			<div id="wstudent58" class="student" style="visibility: hidden;">
+				<div id="wpcname58" class="pcname"></div>
+				<div id="wstatus58" class="status"></div>
+				<div id="wpriority58" class="prioroty"></div>
+				<div id="wtime58" class="time"></div>
+			</div>
+			<div id="wstudent59" class="student" style="visibility: hidden;">
+				<div id="wpcname59" class="pcname"></div>
+				<div id="wstatus59" class="status"></div>
+				<div id="wpriority59" class="prioroty"></div>
+				<div id="wtime59" class="time"></div>
+			</div>
+			<div id="wstudent60" class="student" style="visibility: hidden;">
+				<div id="wpcname60" class="pcname"></div>
+				<div id="wstatus60" class="status"></div>
+				<div id="wpriority60" class="prioroty"></div>
+				<div id="wtime60" class="time"></div>
+			</div>
+			<div id="wstudent61" class="student" style="visibility: hidden;">
+				<div id="wpcname61" class="pcname"></div>
+				<div id="wstatus61" class="status"></div>
+				<div id="wpriority61" class="prioroty"></div>
+				<div id="wtime61" class="time"></div>
+			</div>
+			<div id="wstudent62" class="student" style="visibility: hidden;">
+				<div id="wpcname62" class="pcname"></div>
+				<div id="wstatus62" class="status"></div>
+				<div id="wpriority62" class="prioroty"></div>
+				<div id="wtime62" class="time"></div>
+			</div>
+			<div id="wstudent63" class="student" style="visibility: hidden;">
+				<div id="wpcname63" class="pcname"></div>
+				<div id="wstatus63" class="status"></div>
+				<div id="wpriority63" class="prioroty"></div>
+				<div id="wtime63" class="time"></div>
+			</div>
+			<div id="wstudent64" class="student" style="visibility: hidden;">
+				<div id="wpcname64" class="pcname"></div>
+				<div id="wstatus64" class="status"></div>
+				<div id="wpriority64" class="prioroty"></div>
+				<div id="wtime64" class="time"></div>
+			</div>
+			<div id="wstudent65" class="student" style="visibility: hidden;">
+				<div id="wpcname65" class="pcname"></div>
+				<div id="wstatus65" class="status"></div>
+				<div id="wpriority65" class="prioroty"></div>
+				<div id="wtime65" class="time"></div>
+			</div>
+			<div id="wstudent66" class="student" style="visibility: hidden;">
+				<div id="wpcname66" class="pcname"></div>
+				<div id="wstatus66" class="status"></div>
+				<div id="wpriority66" class="prioroty"></div>
+				<div id="wtime66" class="time"></div>
+			</div>
+			<div id="wstudent67" class="student" style="visibility: hidden;">
+				<div id="wpcname67" class="pcname"></div>
+				<div id="wstatus67" class="status"></div>
+				<div id="wpriority67" class="prioroty"></div>
+				<div id="wtime67" class="time"></div>
+			</div>
+			<div id="wstudent68" class="student" style="visibility: hidden;">
+				<div id="wpcname68" class="pcname"></div>
+				<div id="wstatus68" class="status"></div>
+				<div id="wpriority68" class="prioroty"></div>
+				<div id="wtime68" class="time"></div>
+			</div>
+			<div id="wstudent69" class="student" style="visibility: hidden;">
+				<div id="wpcname69" class="pcname"></div>
+				<div id="wstatus69" class="status"></div>
+				<div id="wpriority69" class="prioroty"></div>
+				<div id="wtime69" class="time"></div>
+			</div>
+			<div id="wstudent70" class="student" style="visibility: hidden;">
+				<div id="wpcname70" class="pcname"></div>
+				<div id="wstatus70" class="status"></div>
+				<div id="wpriority70" class="prioroty"></div>
+				<div id="wtime70" class="time"></div>
+			</div>
+			<div id="wstudent71" class="student" style="visibility: hidden;">
+				<div id="wpcname71" class="pcname"></div>
+				<div id="wstatus71" class="status"></div>
+				<div id="wpriority71" class="prioroty"></div>
+				<div id="wtime71" class="time"></div>
+			</div>
         </div>
 
       </div>
     </main>
 
-
-	<div id="app"></div>
 	<script>
 		var ws;
 		var student;
 		var handupStudentList;
 		var studentList;
+		var tab="seat";
 		var maxWaitingTime=0;
 		fetch('/Support/connect-websocket')
 			.then(response => response.text())
@@ -681,6 +1107,19 @@
 						setStudentInfo(i + 1, studentList[i]);
 					}
 
+					var count=0;
+					for(var i=0; i<handupStudentList.length; i++){
+						if(handupStudentList[i].helpStatus != "None"){
+							count++;
+							setStudentOnClickW(count, handupStudentList[i]);
+							setStudentInfoW(count, handupStudentList[i]);
+						}
+					}
+					for(count++; count<=71; count++){
+						document.getElementById("wstudent" + count).style.visibility="gone";
+						document.getElementById("wstudent" + count).style.display="none";
+					}
+					
 					console.log('Message received from server: ' + event.data);
 				};
 
@@ -696,6 +1135,9 @@
 				};
 			});
 
+		//-------------------
+		// 待ち時間の更新
+		//-------------------
 		const intervalId = setInterval(() => {
 			waitingtimeUpdate();
 			//        clearInterval(intervalId); // インターバルをクリア
@@ -722,8 +1164,23 @@
 			return max;
 		}
 
+		//-------------------
+		// クリック時の動作設定
+		//-------------------
 		function setStudentOnClick(num, obj) {
-			var studentElement = document.getElementById("student" + num)
+			var studentElement = document.getElementById("student" + num);
+			studentElement.addEventListener('click', (event) => {
+				if(obj.helpStatus=="Troubled"){
+				    ws.send("Supporting:" + obj.ipAdress);
+				}else if(obj.helpStatus=="None"){
+				    ws.send("Troubled:" + obj.ipAdress);
+				}else if(obj.helpStatus=="Supporting"){
+				    ws.send("None:" + obj.ipAdress);
+				}
+			})
+		}
+		function setStudentOnClickW(num, obj) {
+			var studentElement = document.getElementById("wstudent" + num);
 			studentElement.addEventListener('click', (event) => {
 				if(obj.helpStatus=="Troubled"){
 				    ws.send("Supporting:" + obj.ipAdress);
@@ -735,6 +1192,31 @@
 			})
 		}
 
+		//-------------------
+		// 学生情報の表示設定
+		//-------------------
+		function setStudentInfo(num, obj) {
+			document.getElementById("pcname" + num).innerText = obj.pcId;
+			document.getElementById("status" + num).style.display = "none";
+			setStudentInfoStatus(num,obj);
+			setStudentInfoPriority(num,obj);
+			setStudentInfoTime(num,obj);
+		}
+
+		function setStudentInfoW(num, obj) {
+			var studentElement =document.getElementById("wstudent" + num);
+			studentElement.style.visibility="visible";
+			studentElement.style.display="block";
+			studentElement.style.width="200px";
+			studentElement.style.height="200px";
+
+			document.getElementById("wpcname" + num).innerText = obj.pcId;
+			document.getElementById("wstatus" + num).style.display = "none";
+			setStudentInfoStatusW(num,obj);
+			setStudentInfoPriorityW(num,obj);
+			setStudentInfoTimeW(num,obj);
+		}
+		
 		function setStudentInfoStatus(num,obj){
 			var color="white";
 			if(obj.helpStatus=="None"){
@@ -746,6 +1228,18 @@
 			}
 			document.getElementById("student" + num).style.backgroundColor=color;
 		}
+
+		function setStudentInfoStatusW(num,obj){
+			var color="white";
+			if(obj.helpStatus=="None"){
+				color="white";
+			}else if(obj.helpStatus=="Troubled"){
+				color="yellow";
+			}else if(obj.helpStatus=="Supporting"){
+				color="lightgreen";
+			}
+			document.getElementById("wstudent" + num).style.backgroundColor=color;
+		}
 		
 		function setStudentInfoPriority(num,obj){
 			document.getElementById("priority" + num).innerText = obj.handPriority;
@@ -753,6 +1247,14 @@
 				document.getElementById("priority" + num).style.display = "none";				
 			}else{
 				document.getElementById("priority" + num).style.display = "block";	
+			}
+		}
+		function setStudentInfoPriorityW(num,obj){
+			document.getElementById("wpriority" + num).innerText = obj.handPriority;
+			if(obj.handPriority == "999"){
+				document.getElementById("wpriority" + num).style.display = "none";				
+			}else{
+				document.getElementById("wpriority" + num).style.display = "block";	
 			}
 		}
 		
@@ -775,39 +1277,64 @@
 				timeBarLength=45;
 				color="black";
 			}
-			document.getElementById("time" + num).style.width = timeBarLength+"px";
-			document.getElementById("time" + num).style.background = color;
+			if(obj.helpStatus=="Troubled"){
+				document.getElementById("time" + num).style.display="block";
+				document.getElementById("time" + num).style.width = timeBarLength+"px";
+				document.getElementById("time" + num).style.background = color;
+			}else{
+				document.getElementById("time" + num).style.display="none";
+			}
+		}
+		function setStudentInfoTimeW(num,obj){
+			const time = obj.waitingTimeBySecond;
+			const hour = Math.floor(time / 3600);
+			const minute = Math.floor((time - hour * 3600) / 60);
+			const second = time - hour * 3600 - minute * 60;
+			var color="white";
+			if(maxWaitingTime <60){
+				timeBarLength=Math.floor(time/60*45);
+				color="blue";
+			}else if(maxWaitingTime <300){
+				timeBarLength=Math.floor(time/300*45);
+				color="red";
+			}else if(maxWaitingTime <600){
+				timeBarLength=Math.floor(time/600*45);
+				color="black";
+			}else{
+				timeBarLength=45;
+				color="black";
+			}
+			if(obj.helpStatus=="Troubled"){
+				document.getElementById("wtime" + num).style.display="block";
+				document.getElementById("wtime" + num).style.width = timeBarLength+"px";
+				document.getElementById("wtime" + num).style.background = color;
+			}else{
+				document.getElementById("wtime" + num).style.display="none";
+			}
 		}
 		
-		function setStudentInfo(num, obj) {
-			const studentElement = document.getElementById("student" + num);
-			document.getElementById("pcname" + num).innerText = obj.pcId;
-			document.getElementById("status" + num).style.display = "none";
-			setStudentInfoStatus(num,obj);
-			setStudentInfoPriority(num,obj);
-			setStudentInfoTime(num,obj);
+		//-------------------
+		// 待ち行列の表示
+		//-------------------
+		
+		//-------------------
+		// タブクリック時の動作
+		//-------------------
+		function seatOnClick(){
+			for(var i=1; i<=71; i++){
+				document.getElementById("wstudent" + i).style.visibility="none";
+				document.getElementById("student" + i).style.visibility="visible";
+			}
+		}
+		
+		function waitOnClick(){
+			for(var i=1; i<=71; i++){
+				document.getElementById("student" + i).style.visibility="none";
+				document.getElementById("wstudent" + i).style.visibility="visible";
+			}
 		}
 
-		class Student {
-			constructor(pcId, ipAddress, helpStatus, waitingTimeBySecond, handPriority) {
-				this.pcId = pcId;
-				this.ipAddress = ipAddress;
-				this.helpStatus = helpStatus;
-				this.waitingTimeBySecond = waitingTimeBySecond;
-				this.handPriority = handPriority;
-			}
-
-			sample() {
-				studentList.forEach(student => {
-					alert(student.handPriority);
-					console.log(`Name: ${obj.name}, Age: ${obj.age}`);
-				});
-			}
-
-
-
-		}
-
+		
 	</script>
 </body>
 

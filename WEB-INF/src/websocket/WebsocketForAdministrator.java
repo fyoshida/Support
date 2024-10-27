@@ -2,21 +2,16 @@ package websocket;
 
 import java.io.IOException;
 import java.util.List;
-import java.util.Map;
 import java.util.Set;
 import java.util.concurrent.CopyOnWriteArraySet;
 
 import javax.websocket.EndpointConfig;
-import javax.websocket.HandshakeResponse;
 import javax.websocket.OnClose;
 import javax.websocket.OnError;
 import javax.websocket.OnMessage;
 import javax.websocket.OnOpen;
 import javax.websocket.Session;
-import javax.websocket.server.HandshakeRequest;
 import javax.websocket.server.ServerEndpoint;
-import javax.websocket.server.ServerEndpointConfig;
-import javax.websocket.server.ServerEndpointConfig.Configurator;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 
@@ -31,11 +26,12 @@ import repository.IPcRepository;
 import repository.RepositoryFactory;
 
 //@ServerEndpoint(value="/websocket/_initialize")
-@ServerEndpoint(value = "/websocket/_administrator", configurator = WebsocketForAdministrator.ConfiguratorWithRequest.class)
+@ServerEndpoint(value = "/websocket/_administrator", configurator = ConfiguratorWithRequest.class)
 public class WebsocketForAdministrator {
 
 	public static Set<Session> clientSessions = new CopyOnWriteArraySet<>(); // セッションのセット
 	public static StudentManager studentManager;
+	private IpAddress clientIpAddress;
 
 	@OnOpen
 	public void onOpen(Session session, EndpointConfig config) {
@@ -47,6 +43,9 @@ public class WebsocketForAdministrator {
 		List<Pc> pcList = repository.getPcList();
 		studentManager = new StudentManager(pcList);
 
+		String strIpAddress = (String) config.getUserProperties().get("IpAddress");
+		clientIpAddress=new IpAddress(strIpAddress);
+		
 		TeacherResponse teacherResponse = getTeacherResponbse();
 		String jsonText = getJsonText(teacherResponse);
 		sendMessage(session,jsonText);
@@ -112,19 +111,19 @@ public class WebsocketForAdministrator {
 		return jsonText;
 	}
 
-	// Configuratorクラスの設定
-	public static class ConfiguratorWithRequest extends Configurator {
-		@Override
-		public void modifyHandshake(ServerEndpointConfig config, HandshakeRequest request, HandshakeResponse response) {
-
-			Map<String, List<String>> params = request.getParameterMap();
-			if (params.containsKey("ip")) {
-				String ipAddress = params.get("ip").get(0);
-				config.getUserProperties().put("IpAddress", ipAddress);
-			}
-
-		}
-	}
+//	// Configuratorクラスの設定
+//	public static class ConfiguratorWithRequest extends Configurator {
+//		@Override
+//		public void modifyHandshake(ServerEndpointConfig config, HandshakeRequest request, HandshakeResponse response) {
+//
+//			Map<String, List<String>> params = request.getParameterMap();
+//			if (params.containsKey("SessionId")) {
+//				String sessionId = params.get("SessionId").get(0);
+//				config.getUserProperties().put("SessionId", sessionId);
+//			}
+//
+//		}
+//	}
 
 	private void sendMessage(Session session, String message) {
 		try {

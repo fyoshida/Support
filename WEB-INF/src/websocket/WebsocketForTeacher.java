@@ -28,10 +28,14 @@ import helper.StudentJsonHelper;
 @ServerEndpoint(value = "/websocket/teacher", configurator = WebsocketForTeacher.ConfiguratorWithRequest.class)
 public class WebsocketForTeacher {
 
+	private IpAddress clientIpAddress;
 
 	@OnOpen
 	public void onOpen(Session session, EndpointConfig config) {
 
+		String strIpAddress = (String) config.getUserProperties().get("IpAddress");
+		clientIpAddress=new IpAddress(strIpAddress);
+		
 		TeacherResponse teacherResponse = getTeacherResponbse();
 		String jsonText = getJsonText(teacherResponse);
 		sendMessage(session,jsonText);

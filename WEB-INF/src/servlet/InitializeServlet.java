@@ -26,9 +26,9 @@ public class InitializeServlet extends HttpServlet {
 			clientIp = "127.0.0.1";
 		}
 
-	    resp.getWriter().write(clientIp);
+		session.setAttribute("IpAddress", clientIp);
 
-		session.setAttribute("clientIp", clientIp);
+		resp.getWriter().write(session.getId());
 
 //		req.getRequestDispatcher("/index.html").forward(req, resp);
 	}

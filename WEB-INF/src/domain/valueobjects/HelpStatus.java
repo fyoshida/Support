@@ -23,7 +23,7 @@ public class HelpStatus {
 		case 1:
 			return "Troubled";
 		default:
-			return "Suppoting";
+			return "Supporting";
 		}
 	}
 	

@@ -1,15 +1,48 @@
 .student{
-	border: 2px solid orangered;
-	background-color: lightblue;
-	border-radius: 10px;
-	padding: 10px;
+	border: 2px solid deepskyblue;
+	background-color: lightcyan;
+	border-radius: 5px;
+	padding: 5px;
+	width: 60px;
+	height: 60px;
 }
 .pcname{
+	position: relative;
+	top: -5px;
+	vertical-align: middle;
 	text-align: center;
 }
 .prioroty{
+	position: relative;
+	top: -8px;
+	vertical-align: middle;
 	text-align: center;
+	height: 20px;
 }
 .time{
-	text-align: center;
+	vertical-align: middle;
+	text-align: right;
+	position: relative;
+	top: -5px;
+	width        : 45px;
+	height       : 10px;
+	background   : linear-gradient(to bottom, #99ccff, #0059b3);
+}
+
+/* タブ全体の色 */
+.nav-tabs .nav-link {
+	background-color: #f8f9fa; /* 通常のタブの色 */
+	color: #007bff;
+}
+    
+/* アクティブなタブの色 */
+.nav-tabs .nav-link.active {
+	background-color: #007bff;
+	color: white;
+}
+    
+/* ホバー時の色 */
+.nav-tabs .nav-link:hover {
+	background-color: #0056b3;
+	color: white;
 }

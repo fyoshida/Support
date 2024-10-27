@@ -35,8 +35,9 @@ public class WebsoForStudent {
 	@OnOpen
 	public void onOpen(Session session, EndpointConfig config) {
 		WebsocketForAdministrator.clientSessions.add(session);
-		String clientIp = (String) config.getUserProperties().get("IpAddress");
-		clientIpAddress = new IpAddress(clientIp);
+		
+		String strIpAddress = (String) config.getUserProperties().get("IpAddress");
+		clientIpAddress=new IpAddress(strIpAddress);
 
 		Optional<Student> optStudent = WebsocketForAdministrator.studentManager.getStudent(clientIpAddress);
 		if (optStudent.isEmpty()) {

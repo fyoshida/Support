@@ -6,7 +6,6 @@ import java.util.List;
 
 import domain.entities.Student;
 import domain.valueobjects.IpAddress;
-import httpclient.HttpClientFactory;
 
 public class StudentJsonHelper {
 
@@ -60,12 +59,12 @@ public class StudentJsonHelper {
 		return pcJsonList;
 	}
 
-	public static StudentJson findPcJson(List<StudentJson> pcJsonList, String ipAddress) {
-		for (StudentJson pcJson : pcJsonList) {
-			if (pcJson.getIpAdress().equals(HttpClientFactory.ipAddress)) {
-				return pcJson;
-			}
-		}
-		return null;
-	}
+//	public static StudentJson findPcJson(List<StudentJson> pcJsonList, String ipAddress) {
+//		for (StudentJson pcJson : pcJsonList) {
+//			if (pcJson.getIpAdress().equals(HttpClientFactory.ipAddress)) {
+//				return pcJson;
+//			}
+//		}
+//		return null;
+//	}
 }

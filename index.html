@@ -1,77 +1,117 @@
 <!DOCTYPE html>
 <html lang="ja">
-
-<head>
-	<meta charset="UTF-8" />
+  <head>
+    <meta charset="utf-8" />
+	<title>サポートシステム</title>
+	<link rel="stylesheet" href="./css/support.css">
+    <!-- Bootstrap用CSSの読み込み -->
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+      integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH"
+      crossorigin="anonymous"
+    />
+    <!-- Bootstrap用JavaScriptの読み込み -->
+    <script
+      src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
+      integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz"
+      crossorigin="anonymous"
+    ></script>
+  </head>
 	<title>サポートシステム</title>
 	<link rel="stylesheet" href="./css/support.css">
 </head>
 
 <body>
+	<main class="p-3">
+      <ul class="nav nav-tabs">
+        <li class="nav-item">
+          <button
+            class="nav-link active"
+            data-bs-toggle="tab"
+            data-bs-target="#seat"
+            type="button"
+          >
+            座席
+          </button>
+        </li>
+        <li class="nav-item">
+          <button
+            class="nav-link"
+            data-bs-toggle="tab"
+            data-bs-target="#waitinglist"
+            type="button"
+          >
+            待ち行列
+          </button>
+        </li>
+      </ul>
+      <div class="tab-content">
+        <div id="seat" class="tab-pane active">
 	<table>
 		<tr>
 			<td>
 				<div id="student1" class="student">
 					<div id="pcname1" class="pcname"></div>
 					<div id="status1" class="status"></div>
-					<div id="time1" class="time"></div>
 					<div id="priority1" class="prioroty"></div>
+					<div id="time1" class="time"></div>
 				</div>
 			</td>
 			<td>
 				<div id="student2" class="student">
 					<div id="pcname2" class="pcname"></div>
 					<div id="status2" class="status"></div>
-					<div id="time2" class="time"></div>
 					<div id="priority2" class="prioroty"></div>
+					<div id="time2" class="time"></div>
 				</div>
 			</td>
 			<td>
 				<div id="student3" class="student">
 					<div id="pcname3" class="pcname"></div>
 					<div id="status3" class="status"></div>
-					<div id="time3" class="time"></div>
 					<div id="priority3" class="prioroty"></div>
+					<div id="time3" class="time"></div>
 				</div>
 			</td>
 			<td>
 				<div id="student4" class="student">
 					<div id="pcname4" class="pcname"></div>
 					<div id="status4" class="status"></div>
-					<div id="time4" class="time"></div>
 					<div id="priority4" class="prioroty"></div>
+					<div id="time4" class="time"></div>
 				</div>
 			</td>
 			<td>
 				<div id="student5" class="student">
 					<div id="pcname5" class="pcname"></div>
 					<div id="status5" class="status"></div>
-					<div id="time5" class="time"></div>
 					<div id="priority5" class="prioroty"></div>
+					<div id="time5" class="time"></div>
 				</div>
 			</td>
 			<td>
 				<div id="student6" class="student">
 					<div id="pcname6" class="pcname"></div>
 					<div id="status6" class="status"></div>
-					<div id="time6" class="time"></div>
 					<div id="priority6" class="prioroty"></div>
+					<div id="time6" class="time"></div>
 				</div>
 			</td>
 			<td>
 				<div id="student7" class="student">
 					<div id="pcname7" class="pcname"></div>
 					<div id="status7" class="status"></div>
-					<div id="time7" class="time"></div>
 					<div id="priority7" class="prioroty"></div>
+					<div id="time7" class="time"></div>
 				</div>
 			</td>
 			<td>
 				<div id="student8" class="student">
 					<div id="pcname8" class="pcname"></div>
 					<div id="status8" class="status"></div>
-					<div id="time8" class="time"></div>
 					<div id="priority8" class="prioroty"></div>
+					<div id="time8" class="time"></div>
 				</div>
 			</td>
 		</tr>
@@ -80,64 +120,64 @@
 				<div id="student9" class="student" style="visibility: hidden;">
 					<div id="pcname9" class="pcname"></div>
 					<div id="status9" class="status"></div>
-					<div id="time9" class="time"></div>
 					<div id="priority9" class="prioroty"></div>
+					<div id="time9" class="time"></div>
 				</div>
 			</td>
 			<td>
 				<div id="student10" class="student">
 					<div id="pcname10" class="pcname"></div>
 					<div id="status10" class="status"></div>
-					<div id="time10" class="time"></div>
 					<div id="priority10" class="prioroty"></div>
+					<div id="time10" class="time"></div>
 				</div>
 			</td>
 			<td>
 				<div id="student11" class="student">
 					<div id="pcname11" class="pcname"></div>
 					<div id="status11" class="status"></div>
-					<div id="time11" class="time"></div>
 					<div id="priority11" class="prioroty"></div>
+					<div id="time11" class="time"></div>
 				</div>
 			</td>
 			<td>
 				<div id="student12" class="student">
 					<div id="pcname12" class="pcname"></div>
 					<div id="status12" class="status"></div>
-					<div id="time12" class="time"></div>
 					<div id="priority12" class="prioroty"></div>
+					<div id="time12" class="time"></div>
 				</div>
 			</td>
 			<td>
 				<div id="student13" class="student">
 					<div id="pcname13" class="pcname"></div>
 					<div id="status13" class="status"></div>
-					<div id="time13" class="time"></div>
 					<div id="priority13" class="prioroty"></div>
+					<div id="time13" class="time"></div>
 				</div>
 			</td>
 			<td>
 				<div id="student14" class="student">
 					<div id="pcname14" class="pcname"></div>
 					<div id="status14" class="status"></div>
-					<div id="time14" class="time"></div>
 					<div id="priority14" class="prioroty"></div>
+					<div id="time14" class="time"></div>
 				</div>
 			</td>
 			<td>
 				<div id="student15" class="student">
 					<div id="pcname15" class="pcname"></div>
 					<div id="status15" class="status"></div>
-					<div id="time15" class="time"></div>
 					<div id="priority15" class="prioroty"></div>
+					<div id="time15" class="time"></div>
 				</div>
 			</td>
 			<td>
 				<div id="student16" class="student">
 					<div id="pcname16" class="pcname"></div>
 					<div id="status16" class="status"></div>
-					<div id="time16" class="time"></div>
 					<div id="priority16" class="prioroty"></div>
+					<div id="time16" class="time"></div>
 				</div>
 			</td>
 		</tr>
@@ -146,64 +186,64 @@
 				<div id="student17" class="student">
 					<div id="pcname17" class="pcname"></div>
 					<div id="status17" class="status"></div>
-					<div id="time17" class="time"></div>
 					<div id="priority17" class="prioroty"></div>
+					<div id="time17" class="time"></div>
 				</div>
 			</td>
 			<td>
 				<div id="student18" class="student">
 					<div id="pcname18" class="pcname"></div>
 					<div id="status18" class="status"></div>
-					<div id="time18" class="time"></div>
 					<div id="priority18" class="prioroty"></div>
+					<div id="time18" class="time"></div>
 				</div>
 			</td>
 			<td>
 				<div id="student19" class="student">
 					<div id="pcname19" class="pcname"></div>
 					<div id="status19" class="status"></div>
-					<div id="time19" class="time"></div>
 					<div id="priority19" class="prioroty"></div>
+					<div id="time19" class="time"></div>
 				</div>
 			</td>
 			<td>
 				<div id="student20" class="student">
 					<div id="pcname20" class="pcname"></div>
 					<div id="status20" class="status"></div>
-					<div id="time20" class="time"></div>
 					<div id="priority20" class="prioroty"></div>
+					<div id="time20" class="time"></div>
 				</div>
 			</td>
 			<td>
 				<div id="student21" class="student">
 					<div id="pcname21" class="pcname"></div>
 					<div id="status21" class="status"></div>
-					<div id="time21" class="time"></div>
 					<div id="priority21" class="prioroty"></div>
+					<div id="time21" class="time"></div>
 				</div>
 			</td>
 			<td>
 				<div id="student22" class="student">
 					<div id="pcname22" class="pcname"></div>
 					<div id="status22" class="status"></div>
-					<div id="time22" class="time"></div>
 					<div id="priority22" class="prioroty"></div>
+					<div id="time22" class="time"></div>
 				</div>
 			</td>
 			<td>
 				<div id="student23" class="student">
 					<div id="pcname23" class="pcname"></div>
 					<div id="status23" class="status"></div>
-					<div id="time23" class="time"></div>
 					<div id="priority23" class="prioroty"></div>
+					<div id="time23" class="time"></div>
 				</div>
 			</td>
 			<td>
 				<div id="student24" class="student">
 					<div id="pcname24" class="pcname"></div>
 					<div id="status24" class="status"></div>
-					<div id="time24" class="time"></div>
 					<div id="priority24" class="prioroty"></div>
+					<div id="time24" class="time"></div>
 				</div>
 			</td>
 		</tr>
@@ -212,64 +252,64 @@
 				<div id="student25" class="student" style="visibility: hidden;">
 					<div id="pcname25" class="pcname"></div>
 					<div id="status25" class="status"></div>
-					<div id="time25" class="time"></div>
 					<div id="priority25" class="prioroty"></div>
+					<div id="time25" class="time"></div>
 				</div>
 			</td>
 			<td>
 				<div id="student26" class="student">
 					<div id="pcname26" class="pcname"></div>
 					<div id="status26" class="status"></div>
-					<div id="time26" class="time"></div>
 					<div id="priority26" class="prioroty"></div>
+					<div id="time26" class="time"></div>
 				</div>
 			</td>
 			<td>
 				<div id="student27" class="student">
 					<div id="pcname27" class="pcname"></div>
 					<div id="status27" class="status"></div>
-					<div id="time27" class="time"></div>
 					<div id="priority27" class="prioroty"></div>
+					<div id="time27" class="time"></div>
 				</div>
 			</td>
 			<td>
 				<div id="student28" class="student">
 					<div id="pcname28" class="pcname"></div>
 					<div id="status28" class="status"></div>
-					<div id="time28" class="time"></div>
 					<div id="priority28" class="prioroty"></div>
+					<div id="time28" class="time"></div>
 				</div>
 			</td>
 			<td>
 				<div id="student29" class="student">
 					<div id="pcname29" class="pcname"></div>
 					<div id="status29" class="status"></div>
-					<div id="time29" class="time"></div>
 					<div id="priority29" class="prioroty"></div>
+					<div id="time29" class="time"></div>
 				</div>
 			</td>
 			<td>
 				<div id="student30" class="student">
 					<div id="pcname30" class="pcname"></div>
 					<div id="status30" class="status"></div>
-					<div id="time30" class="time"></div>
 					<div id="priority30" class="prioroty"></div>
+					<div id="time30" class="time"></div>
 				</div>
 			</td>
 			<td>
 				<div id="student31" class="student">
 					<div id="pcname31" class="pcname"></div>
 					<div id="status31" class="status"></div>
-					<div id="time31" class="time"></div>
 					<div id="priority31" class="prioroty"></div>
+					<div id="time31" class="time"></div>
 				</div>
 			</td>
 			<td>
 				<div id="student32" class="student">
 					<div id="pcname32" class="pcname"></div>
 					<div id="status32" class="status"></div>
-					<div id="time32" class="time"></div>
 					<div id="priority32" class="prioroty"></div>
+					<div id="time32" class="time"></div>
 				</div>
 			</td>
 		</tr>
@@ -278,64 +318,64 @@
 				<div id="student33" class="student">
 					<div id="pcname33" class="pcname"></div>
 					<div id="status33" class="status"></div>
-					<div id="time33" class="time"></div>
 					<div id="priority33" class="prioroty"></div>
+					<div id="time33" class="time"></div>
 				</div>
 			</td>
 			<td>
 				<div id="student34" class="student">
 					<div id="pcname34" class="pcname"></div>
 					<div id="status34" class="status"></div>
-					<div id="time34" class="time"></div>
 					<div id="priority34" class="prioroty"></div>
+					<div id="time34" class="time"></div>
 				</div>
 			</td>
 			<td>
 				<div id="student35" class="student">
 					<div id="pcname35" class="pcname"></div>
 					<div id="status35" class="status"></div>
-					<div id="time35" class="time"></div>
 					<div id="priority35" class="prioroty"></div>
+					<div id="time35" class="time"></div>
 				</div>
 			</td>
 			<td>
 				<div id="student36" class="student">
 					<div id="pcname36" class="pcname"></div>
 					<div id="status36" class="status"></div>
-					<div id="time36" class="time"></div>
 					<div id="priority36" class="prioroty"></div>
+					<div id="time36" class="time"></div>
 				</div>
 			</td>
 			<td>
 				<div id="student37" class="student">
 					<div id="pcname37" class="pcname"></div>
 					<div id="status37" class="status"></div>
-					<div id="time37" class="time"></div>
 					<div id="priority37" class="prioroty"></div>
+					<div id="time37" class="time"></div>
 				</div>
 			</td>
 			<td>
 				<div id="student38" class="student">
 					<div id="pcname38" class="pcname"></div>
 					<div id="status38" class="status"></div>
-					<div id="time38" class="time"></div>
 					<div id="priority38" class="prioroty"></div>
+					<div id="time38" class="time"></div>
 				</div>
 			</td>
 			<td>
 				<div id="student39" class="student">
 					<div id="pcname39" class="pcname"></div>
 					<div id="status39" class="status"></div>
-					<div id="time39" class="time"></div>
 					<div id="priority39" class="prioroty"></div>
+					<div id="time39" class="time"></div>
 				</div>
 			</td>
 			<td>
 				<div id="student40" class="student">
 					<div id="pcname40" class="pcname"></div>
 					<div id="status40" class="status"></div>
-					<div id="time40" class="time"></div>
 					<div id="priority40" class="prioroty"></div>
+					<div id="time40" class="time"></div>
 				</div>
 			</td>
 		</tr>
@@ -344,64 +384,64 @@
 				<div id="student41" class="student">
 					<div id="pcname41" class="pcname"></div>
 					<div id="status41" class="status"></div>
-					<div id="time41" class="time"></div>
 					<div id="priority41" class="prioroty"></div>
+					<div id="time41" class="time"></div>
 				</div>
 			</td>
 			<td>
 				<div id="student42" class="student">
 					<div id="pcname42" class="pcname"></div>
 					<div id="status42" class="status"></div>
-					<div id="time42" class="time"></div>
 					<div id="priority42" class="prioroty"></div>
+					<div id="time42" class="time"></div>
 				</div>
 			</td>
 			<td>
 				<div id="student43" class="student">
 					<div id="pcname43" class="pcname"></div>
 					<div id="status43" class="status"></div>
-					<div id="time43" class="time"></div>
 					<div id="priority43" class="prioroty"></div>
+					<div id="time43" class="time"></div>
 				</div>
 			</td>
 			<td>
 				<div id="student44" class="student">
 					<div id="pcname44" class="pcname"></div>
 					<div id="status44" class="status"></div>
-					<div id="time44" class="time"></div>
 					<div id="priority44" class="prioroty"></div>
+					<div id="time44" class="time"></div>
 				</div>
 			</td>
 			<td>
 				<div id="student45" class="student">
 					<div id="pcname45" class="pcname"></div>
 					<div id="status45" class="status"></div>
-					<div id="time45" class="time"></div>
 					<div id="priority45" class="prioroty"></div>
+					<div id="time45" class="time"></div>
 				</div>
 			</td>
 			<td>
 				<div id="student46" class="student">
 					<div id="pcname46" class="pcname"></div>
 					<div id="status46" class="status"></div>
-					<div id="time46" class="time"></div>
 					<div id="priority46" class="prioroty"></div>
+					<div id="time46" class="time"></div>
 				</div>
 			</td>
 			<td>
 				<div id="student47" class="student">
 					<div id="pcname47" class="pcname"></div>
 					<div id="status47" class="status"></div>
-					<div id="time47" class="time"></div>
 					<div id="priority47" class="prioroty"></div>
+					<div id="time47" class="time"></div>
 				</div>
 			</td>
 			<td>
 				<div id="student48" class="student">
 					<div id="pcname48" class="pcname"></div>
 					<div id="status48" class="status"></div>
-					<div id="time48" class="time"></div>
 					<div id="priority48" class="prioroty"></div>
+					<div id="time48" class="time"></div>
 				</div>
 			</td>
 		</tr>
@@ -410,64 +450,64 @@
 				<div id="student49" class="student">
 					<div id="pcname49" class="pcname"></div>
 					<div id="status49" class="status"></div>
-					<div id="time49" class="time"></div>
 					<div id="priority49" class="prioroty"></div>
+					<div id="time49" class="time"></div>
 				</div>
 			</td>
 			<td>
 				<div id="student50" class="student">
 					<div id="pcname50" class="pcname"></div>
 					<div id="status50" class="status"></div>
-					<div id="time50" class="time"></div>
 					<div id="priority50" class="prioroty"></div>
+					<div id="time50" class="time"></div>
 				</div>
 			</td>
 			<td>
 				<div id="student51" class="student">
 					<div id="pcname51" class="pcname"></div>
 					<div id="status51" class="status"></div>
-					<div id="time51" class="time"></div>
 					<div id="priority51" class="prioroty"></div>
+					<div id="time51" class="time"></div>
 				</div>
 			</td>
 			<td>
 				<div id="student52" class="student">
 					<div id="pcname52" class="pcname"></div>
 					<div id="status52" class="status"></div>
-					<div id="time52" class="time"></div>
 					<div id="priority52" class="prioroty"></div>
+					<div id="time52" class="time"></div>
 				</div>
 			</td>
 			<td>
 				<div id="student53" class="student">
 					<div id="pcname53" class="pcname"></div>
 					<div id="status53" class="status"></div>
-					<div id="time53" class="time"></div>
 					<div id="priority53" class="prioroty"></div>
+					<div id="time53" class="time"></div>
 				</div>
 			</td>
 			<td>
 				<div id="student54" class="student">
 					<div id="pcname54" class="pcname"></div>
 					<div id="status54" class="status"></div>
-					<div id="time54" class="time"></div>
 					<div id="priority54" class="prioroty"></div>
+					<div id="time54" class="time"></div>
 				</div>
 			</td>
 			<td>
 				<div id="student55" class="student">
 					<div id="pcname55" class="pcname"></div>
 					<div id="status55" class="status"></div>
-					<div id="time55" class="time"></div>
 					<div id="priority55" class="prioroty"></div>
+					<div id="time55" class="time"></div>
 				</div>
 			</td>
 			<td>
 				<div id="student56" class="student">
 					<div id="pcname56" class="pcname"></div>
 					<div id="status56" class="status"></div>
-					<div id="time56" class="time"></div>
 					<div id="priority56" class="prioroty"></div>
+					<div id="time56" class="time"></div>
 				</div>
 			</td>
 		</tr>
@@ -476,64 +516,64 @@
 				<div id="student57" class="student">
 					<div id="pcname57" class="pcname"></div>
 					<div id="status57" class="status"></div>
-					<div id="time57" class="time"></div>
 					<div id="priority57" class="prioroty"></div>
+					<div id="time57" class="time"></div>
 				</div>
 			</td>
 			<td>
 				<div id="student58" class="student">
 					<div id="pcname58" class="pcname"></div>
 					<div id="status58" class="status"></div>
-					<div id="time58" class="time"></div>
 					<div id="priority58" class="prioroty"></div>
+					<div id="time58" class="time"></div>
 				</div>
 			</td>
 			<td>
 				<div id="student59" class="student">
 					<div id="pcname59" class="pcname"></div>
 					<div id="status59" class="status"></div>
-					<div id="time59" class="time"></div>
 					<div id="priority59" class="prioroty"></div>
+					<div id="time59" class="time"></div>
 				</div>
 			</td>
 			<td>
 				<div id="student60" class="student">
 					<div id="pcname60" class="pcname"></div>
 					<div id="status60" class="status"></div>
-					<div id="time60" class="time"></div>
 					<div id="priority60" class="prioroty"></div>
+					<div id="time60" class="time"></div>
 				</div>
 			</td>
 			<td>
 				<div id="student61" class="student">
 					<div id="pcname61" class="pcname"></div>
 					<div id="status61" class="status"></div>
-					<div id="time61" class="time"></div>
 					<div id="priority61" class="prioroty"></div>
+					<div id="time61" class="time"></div>
 				</div>
 			</td>
 			<td>
 				<div id="student62" class="student">
 					<div id="pcname62" class="pcname"></div>
 					<div id="status62" class="status"></div>
-					<div id="time62" class="time"></div>
 					<div id="priority62" class="prioroty"></div>
+					<div id="time62" class="time"></div>
 				</div>
 			</td>
 			<td>
 				<div id="student63" class="student">
 					<div id="pcname63" class="pcname"></div>
 					<div id="status63" class="status"></div>
-					<div id="time63" class="time"></div>
 					<div id="priority63" class="prioroty"></div>
+					<div id="time63" class="time"></div>
 				</div>
 			</td>
 			<td>
 				<div id="student64" class="student">
 					<div id="pcname64" class="pcname"></div>
 					<div id="status64" class="status"></div>
-					<div id="time64" class="time"></div>
 					<div id="priority64" class="prioroty"></div>
+					<div id="time64" class="time"></div>
 				</div>
 			</td>
 		</tr>
@@ -542,48 +582,48 @@
 				<div id="student66" class="student">
 					<div id="pcname66" class="pcname"></div>
 					<div id="status66" class="status"></div>
-					<div id="time66" class="time"></div>
 					<div id="priority66" class="prioroty"></div>
+					<div id="time66" class="time"></div>
 				</div>
 			</td>
 			<td>
 				<div id="student67" class="student">
 					<div id="pcname67" class="pcname"></div>
 					<div id="status67" class="status"></div>
-					<div id="time67" class="time"></div>
 					<div id="priority67" class="prioroty"></div>
+					<div id="time67" class="time"></div>
 				</div>
 			</td>
 			<td>
 				<div id="student68" class="student">
 					<div id="pcname68" class="pcname"></div>
 					<div id="status68" class="status"></div>
-					<div id="time68" class="time"></div>
 					<div id="priority68" class="prioroty"></div>
+					<div id="time68" class="time"></div>
 				</div>
 			</td>
 			<td>
 				<div id="student69" class="student">
 					<div id="pcname69" class="pcname"></div>
 					<div id="status69" class="status"></div>
-					<div id="time69" class="time"></div>
 					<div id="priority69" class="prioroty"></div>
+					<div id="time69" class="time"></div>
 				</div>
 			</td>
 			<td>
 				<div id="student70" class="student">
 					<div id="pcname70" class="pcname"></div>
 					<div id="status70" class="status"></div>
-					<div id="time70" class="time"></div>
 					<div id="priority70" class="prioroty"></div>
+					<div id="time70" class="time"></div>
 				</div>
 			</td>
 			<td>
 				<div id="student71" class="student">
 					<div id="pcname71" class="pcname"></div>
 					<div id="status71" class="status"></div>
-					<div id="time71" class="time"></div>
 					<div id="priority71" class="prioroty"></div>
+					<div id="time71" class="time"></div>
 				</div>
 			</td>
 			<td>
@@ -592,6 +632,7 @@
 					<div id="status65" class="status"></div>
 					<div id="time65" class="time"></div>
 					<div id="priority65" class="prioroty"></div>
+					<div id="time65" class="time"></div>
 				</div>
 			</td>
 			<td>
@@ -600,16 +641,26 @@
 
 	</table>
 
+        </div>
+        <div id="waitinglist" class="tab-pane">
+
+        </div>
+
+      </div>
+    </main>
+
+
 	<div id="app"></div>
 	<script>
 		var ws;
 		var student;
 		var handupStudentList;
 		var studentList;
+		var maxWaitingTime=0;
 		fetch('/Support/connect-websocket')
 			.then(response => response.text())
 			.then(data => {
-				const clientIp = data.trim(); // WebSocketのURLを取得
+				const sessionId = data.trim(); // WebSocketのURLを取得
 				ws = new WebSocket("ws://localhost/Support/websocket/_administrator");
 				//        const ws = new WebSocket("ws://localhost/Support/websocket/teacher);-->
 				//        const ws = new WebSocket("ws://localhost/Support/websocket?ip="+clientIp);-->
@@ -623,7 +674,8 @@
 					student = obj.clientStudent;
 					handupStudentList = obj.handupStudentList;
 					studentList = obj.studentList;
-
+					
+					maxWaitingTime = getMaxWaitingTime(studentList);
 					for (var i = 0; i < studentList.length; i++) {
 						setStudentOnClick(i + 1, studentList[i]);
 						setStudentInfo(i + 1, studentList[i]);
@@ -645,18 +697,29 @@
 			});
 
 		const intervalId = setInterval(() => {
-			timeUpdate();
+			waitingtimeUpdate();
 			//        clearInterval(intervalId); // インターバルをクリア
 		}, 1000);
 
-		function timeUpdate() {
+		function waitingtimeUpdate() {
 			for (var i = 0; i < studentList.length; i++) {
 				var student = studentList[i];
 				if (student.helpStatus == "Troubled") {
-					studentList[i].waitingTimeBySecond += 1;
+					studentList[i].waitingTimeBySecond++;
 				}
 				setStudentInfo(i + 1, studentList[i]);
 			}
+			maxWaitingTime++;
+		}
+		
+		function getMaxWaitingTime(studentList){
+			var max=0;
+			for(var i=0; i<studentList.length; i++){
+				if( max < studentList[i].waitingTimeBySecond){
+					max=studentList[i].waitingTimeBySecond;
+				}
+			}
+			return max;
 		}
 
 		function setStudentOnClick(num, obj) {
@@ -666,32 +729,63 @@
 				    ws.send("Supporting:" + obj.ipAdress);
 				}else if(obj.helpStatus=="None"){
 				    ws.send("Troubled:" + obj.ipAdress);
-				}else if(obj.helpStatus=="Suppoting"){
+				}else if(obj.helpStatus=="Supporting"){
 				    ws.send("None:" + obj.ipAdress);
 				}
 			})
 		}
 
-		function setStudentInfo(num, obj) {
-			const studentElement = document.getElementById("student" + num);
+		function setStudentInfoStatus(num,obj){
+			var color="white";
 			if(obj.helpStatus=="None"){
-				studentElement.style.backgroundColor="white";
+				color="white";
 			}else if(obj.helpStatus=="Troubled"){
-				studentElement.style.backgroundColor="orange";
-			}else if(obj.helpStatus=="Suppoting"){
-				studentElement.style.backgroundColor="lightgreen";
+				color="yellow";
+			}else if(obj.helpStatus=="Supporting"){
+				color="lightgreen";
 			}
+			document.getElementById("student" + num).style.backgroundColor=color;
+		}
+		
+		function setStudentInfoPriority(num,obj){
+			document.getElementById("priority" + num).innerText = obj.handPriority;
+			if(obj.handPriority == "999"){
+				document.getElementById("priority" + num).style.display = "none";				
+			}else{
+				document.getElementById("priority" + num).style.display = "block";	
+			}
+		}
+		
+		function setStudentInfoTime(num,obj){
 			const time = obj.waitingTimeBySecond;
 			const hour = Math.floor(time / 3600);
 			const minute = Math.floor((time - hour * 3600) / 60);
 			const second = time - hour * 3600 - minute * 60;
+			var color="white";
+			if(maxWaitingTime <60){
+				timeBarLength=Math.floor(time/60*45);
+				color="blue";
+			}else if(maxWaitingTime <300){
+				timeBarLength=Math.floor(time/300*45);
+				color="red";
+			}else if(maxWaitingTime <600){
+				timeBarLength=Math.floor(time/600*45);
+				color="black";
+			}else{
+				timeBarLength=45;
+				color="black";
+			}
+			document.getElementById("time" + num).style.width = timeBarLength+"px";
+			document.getElementById("time" + num).style.background = color;
+		}
+		
+		function setStudentInfo(num, obj) {
+			const studentElement = document.getElementById("student" + num);
 			document.getElementById("pcname" + num).innerText = obj.pcId;
-			document.getElementById("status" + num).innerText = obj.helpStatus;
-			document.getElementById("status" + num).style.display = "block";
-			document.getElementById("time" + num).innerText = hour + ":" + minute + ":" + second;
-			document.getElementById("priority" + num).innerText = obj.handPriority;
-			
-			//		}
+			document.getElementById("status" + num).style.display = "none";
+			setStudentInfoStatus(num,obj);
+			setStudentInfoPriority(num,obj);
+			setStudentInfoTime(num,obj);
 		}
 
 		class Student {

@@ -19,7 +19,7 @@
 	text-align: center;
 	height: 20px;
 }
-.time{
+.timebar{
 	vertical-align: middle;
 	text-align: right;
 	position: relative;
@@ -27,6 +27,24 @@
 	width        : 45px;
 	height       : 10px;
 	background   : linear-gradient(to bottom, #99ccff, #0059b3);
+}
+.time{
+	position: relative;
+	top: -3px;
+	left: -3px;
+	display: none;
+	font-size: 18px;
+	text-align: right;
+}
+#seat-table{
+	position: relative;
+	left: 20px;
+	
+}
+#dialog {
+  transform: none;
+  position: fixed; /* 絶対位置を指定 */
+  margin: 0;
 }
 
 /* タブ全体の色 */

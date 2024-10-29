@@ -29,7 +29,6 @@
 		fetch('/Support/connect-websocket')
 			.then(response => response.text())
 			.then(data => {
-				const sessionId = data.trim(); // WebSocketのURLを取得
 				ws = new WebSocket("ws://localhost/Support/websocket/_administrator");
 				//        const ws = new WebSocket("ws://localhost/Support/websocket/teacher);-->
 				//        const ws = new WebSocket("ws://localhost/Support/websocket?ip="+clientIp);-->

@@ -8,11 +8,12 @@ import java.util.StringTokenizer;
 public class IpAddress {
 	private int[] addresses = new int[4];
 
-	public IpAddress(String ipAddressString) {
-		notNull(ipAddressString);
-		notBlank(ipAddressString);
+	public IpAddress(String strIpAddress) {
+		if(strIpAddress==null || strIpAddress.equals("")) {
+			strIpAddress ="0.0.0.0";
+		}
 
-		StringTokenizer st = new StringTokenizer(ipAddressString, ".");
+		StringTokenizer st = new StringTokenizer(strIpAddress, ".");
 		isTrue(st.countTokens() == 4);
 
 		for (int i = 0; i < 4; i++) {

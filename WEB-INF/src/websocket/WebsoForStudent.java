@@ -2,20 +2,15 @@ package websocket;
 
 import java.io.IOException;
 import java.util.List;
-import java.util.Map;
 import java.util.Optional;
 
 import javax.websocket.EndpointConfig;
-import javax.websocket.HandshakeResponse;
 import javax.websocket.OnClose;
 import javax.websocket.OnError;
 import javax.websocket.OnMessage;
 import javax.websocket.OnOpen;
 import javax.websocket.Session;
-import javax.websocket.server.HandshakeRequest;
 import javax.websocket.server.ServerEndpoint;
-import javax.websocket.server.ServerEndpointConfig;
-import javax.websocket.server.ServerEndpointConfig.Configurator;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 
@@ -26,7 +21,7 @@ import helper.StudentJson;
 import helper.StudentJsonHelper;
 
 //@ServerEndpoint(value="/websocket/_initialize")
-@ServerEndpoint(value = "/websocket", configurator = WebsoForStudent.ConfiguratorWithRequest.class)
+@ServerEndpoint(value = "/websocket", configurator = ConfiguratorWithRequest.class)
 public class WebsoForStudent {
 
 	private IpAddress clientIpAddress;
@@ -34,18 +29,21 @@ public class WebsoForStudent {
 
 	@OnOpen
 	public void onOpen(Session session, EndpointConfig config) {
-		WebsocketForAdministrator.clientSessions.add(session);
-		
+	
 		String strIpAddress = (String) config.getUserProperties().get("IpAddress");
 		clientIpAddress=new IpAddress(strIpAddress);
+		clientIpAddress=new IpAddress("133.44.118.158");
 
-		Optional<Student> optStudent = WebsocketForAdministrator.studentManager.getStudent(clientIpAddress);
+		Optional<Student> optStudent = WebsocketForTA.studentManager.getStudent(clientIpAddress);
 		if (optStudent.isEmpty()) {
 			return ;
 		}
 		student = optStudent.get();
+		
+		StudentSession studentSession = new StudentSession(student,session);
+		WebsocketForTA.studentSessions.add(studentSession);
 
-		StudentResponse studentResponse = getStudentResponbse();
+		StudentResponse studentResponse = getStudentResponse(student);
 		String jsonText = getJsonText(studentResponse);
 		sendMessage(session,jsonText);
 	}
@@ -54,21 +52,33 @@ public class WebsoForStudent {
 	public String onMessage(String message, Session session) {
 		switch(message) {
 		case "None":
-			WebsocketForAdministrator.studentManager.handDown(clientIpAddress);
+			WebsocketForTA.studentManager.handDown(clientIpAddress);
 			break;
 		case "Troubled":
-			WebsocketForAdministrator.studentManager.handUp(clientIpAddress);
+			WebsocketForTA.studentManager.handUp(clientIpAddress);
 			break;
 		case "Supporting":
-			WebsocketForAdministrator.studentManager.supporting(clientIpAddress);
+			WebsocketForTA.studentManager.supporting(clientIpAddress);
 			break;
 		}
 
-		StudentResponse studentResponse = getStudentResponbse();
-		String jsonText = getJsonText(studentResponse);
-		broadcastMessage(jsonText);
+		TeacherResponse teacherResponse = getTeacherResponbse();
+		String jsonTextTa = getJsonText(teacherResponse);
+		broadcastMessageForTa(jsonTextTa);
 		
-		return "Echo: " + message;
+		for(StudentSession studentSession : WebsocketForTA.studentSessions) {
+			Student student = studentSession.getStudent();
+			Session client = studentSession.getSession();
+			
+			StudentResponse studentResponse = getStudentResponse(student);
+			String jsonText = getJsonText(studentResponse);
+			sendMessage(client, jsonText);
+		}
+		
+		StudentResponse studentResponse = getStudentResponse(student);
+		String jsonText = getJsonText(studentResponse);
+
+		return jsonText;
 	}
 
 	@OnClose
@@ -82,13 +92,35 @@ public class WebsoForStudent {
 		error.printStackTrace();
 	}
 
-	private StudentResponse getStudentResponbse() {
+	private TeacherResponse getTeacherResponbse() {
+		List<Student> studentList = WebsocketForTA.studentManager.getStudentList();
+		List<StudentJson> studentJsonList =StudentJsonHelper.getStudentJsonList(studentList);
+
+		List<Student> handupStudentList = WebsocketForTA.studentManager.getHandUpStudentList();
+		List<StudentJson> handupStudentJsonList =StudentJsonHelper.getStudentJsonList(handupStudentList);
+
+		return new TeacherResponse(studentJsonList,handupStudentJsonList);
+	}
+	
+	private StudentResponse getStudentResponse(Student student) {
 		StudentJson studentJson =StudentJsonHelper.getStudentJson(student);
 
-		List<Student> handupStudentList = WebsocketForAdministrator.studentManager.getHandUpStudentList();
+		List<Student> handupStudentList = WebsocketForTA.studentManager.getHandUpStudentList();
 		List<StudentJson> handupStudentJsonList =StudentJsonHelper.getStundentJsonListForStudent(handupStudentList,clientIpAddress);
 
 		return new StudentResponse(studentJson,handupStudentJsonList);
+	}
+	
+	private String getJsonText(TeacherResponse teacherResponse) {
+		// JSON形式で出力
+		String jsonText = "";
+		try {
+			jsonText = JsonConverter.getJsonText(teacherResponse);
+		} catch (JsonProcessingException e) {
+			// TODO 自動生成された catch ブロック
+			e.printStackTrace();
+		}
+		return jsonText;
 	}
 	
 	private String getJsonText(StudentResponse studentResponse) {
@@ -111,28 +143,28 @@ public class WebsoForStudent {
 		}
 	}
 
-	private void broadcastMessage(String message) {
-		for (Session client : WebsocketForAdministrator.clientSessions) {
+	private void broadcastMessageForTa(String message) {
+		for (Session client : WebsocketForTA.taSessions) {
 			try {
 				client.getBasicRemote().sendText(message); // 各クライアントにメッセージを送信
 			} catch (IOException e) {
 				e.printStackTrace();
-				WebsocketForAdministrator.clientSessions.remove(client); // 送信失敗したセッションは削除
+				WebsocketForTA.taSessions.remove(client); // 送信失敗したセッションは削除
 			}
 		}
 	}
-
-	// Configuratorクラスの設定
-	public static class ConfiguratorWithRequest extends Configurator {
-		@Override
-		public void modifyHandshake(ServerEndpointConfig config, HandshakeRequest request, HandshakeResponse response) {
-
-			Map<String, List<String>> params = request.getParameterMap();
-			if (params.containsKey("ip")) {
-				String ipAddress = params.get("ip").get(0);
-				config.getUserProperties().put("IpAddress", ipAddress);
+	
+	private void broadcastMessageForStudent(String message) {
+		for (StudentSession studentSession : WebsocketForTA.studentSessions) {
+			try {
+				Session client = studentSession.getSession();
+				client.getBasicRemote().sendText(message); // 各クライアントにメッセージを送信
+			} catch (IOException e) {
+				e.printStackTrace();
+				 WebsocketForTA.studentSessions.remove(studentSession); // 送信失敗したセッションは削除
 			}
-
 		}
 	}
+	
+
 }

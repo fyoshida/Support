@@ -3,57 +3,41 @@
   <head>
     <meta charset="utf-8" />
 	<title>サポートシステム</title>
-	<link rel="stylesheet" href="./index_ta.css">
-    <!-- Bootstrap用CSSの読み込み -->
-    <link
-      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
-      rel="stylesheet"
-      integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH"
-      crossorigin="anonymous"
-    />
-    <!-- Bootstrap用JavaScriptの読み込み -->
-    <script
-      src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
-      integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz"
-      crossorigin="anonymous"
-    ></script>
+	<link rel="stylesheet" href="./index.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@3.9.1/dist/chart.min.js"></script>
 	<script>
 		var ws;
 		var student;
 		var handupStudentList;
-		var studentList;
-		var tab="seat";
 		var maxWaitingTime=0;
-		var selectNum="";
-		var selectStudent="";
 		fetch('/Support/connect-websocket')
 			.then(response => response.text())
 			.then(data => {
-				const sessionId = data.trim(); // WebSocketのURLを取得
-				ws = new WebSocket("ws://localhost/Support/websocket/_administrator");
+				//ws = new WebSocket("ws://localhost/Support/websocket/_administrator");
 				//        const ws = new WebSocket("ws://localhost/Support/websocket/teacher);-->
-				//        const ws = new WebSocket("ws://localhost/Support/websocket?ip="+clientIp);-->
+				ws = new WebSocket("ws://localhost/Support/websocket");
 				ws.onopen = () => {
 					//    		ws.send('Hello from JavaScript client!');
 					//            console.log("WebSocket connection opened.");
+					setDialogClick();
+					showDialogUp();
+
 				};
 				
 				// メッセージを受信したときに呼び出される
 				ws.onmessage = function (event) {
 					const obj = JSON.parse(event.data);
 					student = obj.clientStudent;
-					studentList = obj.studentList;
 					handupStudentList = obj.handupStudentList;
 					
-					maxWaitingTime = getMaxWaitingTime(studentList);
-					for (var i = 0; i < studentList.length; i++) {
-						var num =studentList[i].pcId.slice(3);
-						setStudentOnClick(num, studentList[i]);
-						setStudentInfo(num, studentList[i]);
-					}
+					maxWaitingTime = getMaxWaitingTime(handupStudentList);
+					setStudentInfo(student);
 					
-					setDialogClick();
-					seatSenmonOnClick();
+					if(student.helpStatus=="None"){
+						showDialogUp();
+					}else{
+						showDialogDown();
+					}
 					console.log('Message received from server: ' + event.data);
 				};
 
@@ -80,23 +64,27 @@
 
 		function waitingtimeUpdate() {
 			maxWaitingTime++;
-			for (var i = 0; i < studentList.length; i++) {
-				var student = studentList[i];
-				if (student.helpStatus == "Troubled") {
-					studentList[i].waitingTimeBySecond++;
+			if (student != null && student.helpStatus == "Troubled") {
+				student.waitingTimeBySecond++;
+				setStudentInfoTime(student);
+				setStudentInfoTimebar(student);
+				updateChart();
+			}
+			for (var i = 0; i < handupStudentList.length; i++) {
+				if (handupStudentList[i].helpStatus == "Troubled") {
+					handupStudentList[i].waitingTimeBySecond++;
 				}
-				var num =studentList[i].pcId.slice(3);
-				setStudentInfoTime(num, studentList[i]);
-				setStudentInfoTimebar(num, studentList[i]);
 			}
 		}
 		
-		function getMaxWaitingTime(studentList){
+		function getMaxWaitingTime(handupStudentList){
 			var max=0;
-			for(var i=0; i<studentList.length; i++){
-				if( max < studentList[i].waitingTimeBySecond){
-					max=studentList[i].waitingTimeBySecond;
+			if(handupStudentList != null){
+			for(var i=0; i<handupStudentList.length; i++){
+				if( max < handupStudentList[i].waitingTimeBySecond){
+					max=handupStudentList[i].waitingTimeBySecond;
 				}
+			}
 			}
 			return max;
 		}
@@ -105,126 +93,82 @@
 		// クリック時の動作設定
 		//-------------------
 		function setDialogClick(){
-			document.getElementById("dialog").style.display="none";
-			document.getElementById("dialog-yes").addEventListener('click', (event) => {
-				// サーバに送信
-				if(selectStudent.helpStatus=="Troubled"){
-				    ws.send("Supporting:" + selectStudent.ipAdress);
-				}else if(selectStudent.helpStatus=="None"){
-				    ws.send("Troubled:" + selectStudent.ipAdress);
-				}else if(selectStudent.helpStatus=="Supporting"){
-				    ws.send("None:" + selectStudent.ipAdress);
-				}
-				
-				// 選択した学生のnumとobjをクリア
-					unselectStudent(selectNum,selectStudent);
-					
-				// ダイアログを消す
-				document.getElementById("dialog").style.display="none";
+			document.getElementById("dialog-up").addEventListener('click', (event) => {
+			    ws.send("Troubled");
+				showDialogDown();
 			});
-			document.getElementById("dialog-no").addEventListener('click', (event) => {
-				// 選択した学生のnumとobjをクリア
-				unselectTarget(selectNum,selectStudent);
-
-				// ダイアログを消す
-				document.getElementById("dialog").style.display="none";
+			document.getElementById("dialog-down").addEventListener('click', (event) => {
+			    ws.send("None");
+				showDialogUp();
 			});
 		}
 		
-		function setStudentOnClick(num, obj) {
-			var studentElement = document.getElementById("student"+num);
-			studentElement.addEventListener('click', (event) => {
-				// これまで選択していた学生をクリア
-				if(selectNum != null && selectNum !=""){
-					unselectTarget(num,obj);
-				}
-				// 学生を選択
-				selectTarget(num,obj);
-
-    			// ダイアログを表示
-				document.getElementById("dialog").style.display="block";
-				document.getElementById("dialog-message").innerText=obj.pcId+"をサポートしますか？";
-			})
+		function showDialogUp(){
+			document.getElementById("dialog-up").style.display="block";
+			document.getElementById("dialog-down").style.display="none";
 		}
 
-		//-------------------
-		// 学生の選択・選択解除
-		//-------------------
-		function selectTarget(num,obj){
-			selectNum=num;
-			selectStudent=obj;
-			setStudentInfo(selectNum,selectStudent);
-		}
-		
-		function unselectTarget(num,obj){
-			const oldSelectNum=num;
-			const oldSelectObj=obj;
-			selectNum="";
-			selectStudent="";
-			setStudentInfoStatus(oldSelectNum,oldSelectObj);
+		function showDialogDown(){
+			document.getElementById("dialog-up").style.display="none";
+			document.getElementById("dialog-down").style.display="block";
 		}
 		
 		//-------------------
 		// 学生情報の表示設定
 		//-------------------
-		function setStudentInfo(num, obj) {
-			document.getElementById("pcname" + num).innerText = obj.pcId;
-			document.getElementById("status" + num).style.display = "none";
-			setStudentInfoStatus(num,obj);
-			setStudentInfoPriority(num,obj);
-			setStudentInfoTimebar(num,obj);
-			setStudentInfoTime(num,obj);
+		function setStudentInfo(student) {
+			document.getElementById("pcname").innerText = student.pcId;
+			document.getElementById("status").style.display = "none";
+			setStudentInfoStatus(student);
+			setStudentInfoPriority(student);
+			setStudentInfoTimebar(student);
+			setStudentInfoTime(student);
 		}
 
-		function setStudentInfoStatus(num,obj){
+		function setStudentInfoStatus(student){
 			var color="white";
-			if(obj==selectStudent){
-				color="orange";
-			}else if(obj.helpStatus=="None"){
+			if(student.helpStatus=="None"){
 				color="white";
-			}else if(obj.helpStatus=="Troubled"){
+			}else if(student.helpStatus=="Troubled"){
 				color="yellow";
-			}else if(obj.helpStatus=="Supporting"){
+			}else if(student.helpStatus=="Supporting"){
 				color="lightgreen";
 			}
-			document.getElementById("student" + num).style.backgroundColor=color;
+			document.getElementById("student").style.backgroundColor=color;
 		}
 
-		function setStudentInfoPriority(num,obj){
-			document.getElementById("priority" + num).innerText = obj.handPriority;
-			if(obj.handPriority == "999"){
-				document.getElementById("priority" + num).style.display = "none";				
+		function setStudentInfoPriority(student){
+			document.getElementById("priority").innerText = student.handPriority;
+			if(student.handPriority == "999"){
+				document.getElementById("priority").style.display = "none";				
 			}else{
-				document.getElementById("priority" + num).style.display = "block";	
+				document.getElementById("priority").style.display = "block";	
 			}
 		}
 		
-		function setStudentInfoTime(num,obj){
-			const time = obj.waitingTimeBySecond;
+		function setStudentInfoTime(student){
+			const time = student.waitingTimeBySecond;
 			const hour = Math.floor(time / 3600);
 			const minute = Math.floor((time - hour * 3600) / 60);
 			const second = time - hour * 3600 - minute * 60;
 			
-			var displayTime="";
+			document.getElementById("time").innerText = getDisplayTime(hour,minute,second);
+		}
+		
+		function getDisplayTime(hour,minute,second){
 			if(hour==0 && minute ==0 ){
-				displayTime=second+" 秒";
+				return second+" 秒";
 			}else if(hour==0 && minute >0){
-				displayTime=minute+" 分 "+second+" 秒";
+				return minute+" 分 "+second+" 秒";
 			}else if(hour>0){
-				displayTime=hour+" 時 "+minute+" 分 "+second+" 秒";
+				return hour+" 時 "+minute+" 分 "+second+" 秒";
 			}
-			document.getElementById("time" + num).innerText=displayTime;
 		}
 
-		function setStudentInfoTimebar(num,obj){
-			const time = obj.waitingTimeBySecond;
+		function setStudentInfoTimebar(student){
+			const time = student.waitingTimeBySecond;
 
-			var maxBarLength=0;
-			if(tab=="kisoSeat" || tab=="senmonSeat"){
-				maxBarLength=45;
-			}else{
-				maxBarLength=120;
-			} 
+			var maxBarLength=120;
 
 			var color="white";
 			if(maxWaitingTime <60){
@@ -240,1076 +184,91 @@
 				timeBarLength=maxBarLength;
 				color="black";
 			}
-			if(obj.helpStatus=="Troubled"){
-				document.getElementById("timebar" + num).style.display="block";
-				document.getElementById("timebar" + num).style.width = timeBarLength+"px";
-				document.getElementById("timebar" + num).style.background = color;
+			if(student.helpStatus=="Troubled"){
+				document.getElementById("timebar").style.display="block";
+				document.getElementById("timebar").style.width = timeBarLength+"px";
+				document.getElementById("timebar").style.background = color;
 			}else{
-				document.getElementById("timebar" + num).style.display="none";
+				document.getElementById("timebar").style.display="none";
 			}
 		}
-		
-	
-		//-------------------
-		// タブクリック時の動作
-		//-------------------
-		function seatSenmonOnClick(){
-			tab="senmonSeat";
 
-			for(var i=0; i<studentList.length; i++){
-				const num = studentList[i].pcId.slice(3);
-				var studentElement=document.getElementById("student" + num);
-				if(num>=800){
-					studentElement.style.display="block";
-				}else{
-					studentElement.style.display="none";
-				}
-
-				studentElement.style.position="static";
-				studentElement.style.width="60px";
-				studentElement.style.height="60px";
-				
-				document.getElementById("pcname" + num).style.fontSize="15px";
-				
-				document.getElementById("priority" + num).style.position="relative";
-				document.getElementById("priority" + num).style.top="-8px";
-				document.getElementById("priority" + num).style.left="0px";
-				document.getElementById("priority" + num).style.fontSize="15px";
-
-				document.getElementById("timebar" + num).style.height="10px";
-				
-				document.getElementById("time" + num).style.display="none";
-			}
-			document.getElementById("dialog").style.top="";
-			document.getElementById("dialog").style.left="";
-		}
-		
-		function seatKisoOnClick(){
-			tab="kisoSeat";
-
-			for(var i=0; i<studentList.length; i++){
-				const num = studentList[i].pcId.slice(3);
-				var studentElement=document.getElementById("student" + num);
-				if(num<800){
-					studentElement.style.display="block";
-				}else{
-					studentElement.style.display="none";
-				}
-				studentElement.style.position="static";
-				studentElement.style.width="60px";
-				studentElement.style.height="60px";
-				
-				document.getElementById("pcname" + num).style.fontSize="15px";
-				
-				document.getElementById("priority" + num).style.position="relative";
-				document.getElementById("priority" + num).style.top="-8px";
-				document.getElementById("priority" + num).style.left="0px";
-				document.getElementById("priority" + num).style.fontSize="15px";
-
-				document.getElementById("timebar" + num).style.height="10px";
-				
-				document.getElementById("time" + num).style.display="none";
-				
-				document.getElementById("dialog").style.top="";
-				document.getElementById("dialog").style.left="";
-
-			}
-		}
-		
-		function waitOnClick(){
-			tab="wait"
-
-			for(var i=0; i<studentList.length; i++){
-				const num = studentList[i].pcId.slice(3);
-				document.getElementById("student" + num).style.display="none";
-				document.getElementById("student" + num).style.position="absolute";
-			}
-			for(var i=0; i<handupStudentList.length; i++){
-				const num=handupStudentList[i].pcId.slice(3);
-				var studentElement=document.getElementById("student" + num);
-				
-				var top=150+110*i;
-				studentElement.style.display="block";
-				studentElement.style.top=top+"px";
-				studentElement.style.left="40px";
-				studentElement.style.width="150px";
-				studentElement.style.height="100px";
-				
-				document.getElementById("priority" + num).style.position="absolute";
-				document.getElementById("priority" + num).style.fontSize="30px";
-				document.getElementById("priority" + num).style.top="0px";
-				document.getElementById("priority" + num).style.left="-35px";
-
-				document.getElementById("pcname" + num).style.fontSize="30px";
-
-				document.getElementById("timebar" + num).style.height="20px";
-
-				document.getElementById("time" + num).style.display="block";
-			}
-			
-			document.getElementById("dialog").style.top="70px";
-			document.getElementById("dialog").style.left="20px";
-
-		}
 	</script>
 
 	</head>
 	<body>
-	<main class="p-3">
-      <ul class="nav nav-tabs">
-        <li class="nav-item">
-          <button
-            class="nav-link active"
-            data-bs-toggle="tab"
-            data-bs-target="#seatSenmon"
-            type="button"
-            onclick="seatSenmonOnClick()"
-          >
-            専門
-          </button>
-        </li>
-        <li class="nav-item">
-          <button
-            class="nav-link active"
-            data-bs-toggle="tab"
-            data-bs-target="#seatKiso"
-            type="button"
-            onclick="seatKisoOnClick()"
-          >
-            基礎
-          </button>
-        </li>
-        <li class="nav-item">
-          <button
-            class="nav-link"
-            data-bs-toggle="tab"
-            data-bs-target="#waitinglist"
-            type="button"
-            onclick="waitOnClick()"
-          >
-            待ち行列
-          </button>
-        </li>
-      </ul>
-      <div class="tab-content">
-        <div id="seat" class="tab-pane active">
+		<div id="dialog-up">手を挙げる</div>
+		<div id="dialog-down">手を下ろす</div>
 
-        <div id="wait" class="tab-pane active">
+		<div id="student" class="student">
+			<div id="pcname" class="pcname"></div>
+			<div id="status" class="status"></div>
+			<div id="priority" class="prioroty"></div>
+			<div id="timebar" class="timebar"></div>
+			<div id="time" class="time"></div>
+		</div>
+		<div id="chart">
+			<canvas id="waiting_list_chart"></canvas>
+		</div>
 
-        </div>
-
-      </div>
-    </main>
-	<table id="senmon-seat-table">
-		<tr>
-			<td>
-				<div id="student801" class="student">
-					<div id="pcname801" class="pcname"></div>
-					<div id="status801" class="status"></div>
-					<div id="priority801" class="prioroty"></div>
-					<div id="timebar801" class="timebar"></div>
-					<div id="time801" class="time"></div>
-				</div>
-			</td>
-			<td>
-				<div id="student802" class="student">
-					<div id="pcname802" class="pcname"></div>
-					<div id="status802" class="status"></div>
-					<div id="priority802" class="prioroty"></div>
-					<div id="timebar802" class="timebar"></div>
-					<div id="time802" class="time"></div>
-				</div>
-			</td>
-			<td>
-				<div id="student803" class="student">
-					<div id="pcname803" class="pcname"></div>
-					<div id="status803" class="status"></div>
-					<div id="priority803" class="prioroty"></div>
-					<div id="timebar803" class="timebar"></div>
-					<div id="time803" class="time"></div>
-				</div>
-			</td>
-			<td>
-				<div id="student804" class="student">
-					<div id="pcname804" class="pcname"></div>
-					<div id="status804" class="status"></div>
-					<div id="priority804" class="prioroty"></div>
-					<div id="timebar804" class="timebar"></div>
-					<div id="time804" class="time"></div>
-				</div>
-			</td>
-			<td>
-				<div id="student805" class="student">
-					<div id="pcname805" class="pcname"></div>
-					<div id="status805" class="status"></div>
-					<div id="priority805" class="prioroty"></div>
-					<div id="timebar805" class="timebar"></div>
-					<div id="time805" class="time"></div>
-				</div>
-			</td>
-			<td>
-				<div id="student806" class="student">
-					<div id="pcname806" class="pcname"></div>
-					<div id="status806" class="status"></div>
-					<div id="priority806" class="prioroty"></div>
-					<div id="timebar806" class="timebar"></div>
-					<div id="time806" class="time"></div>
-				</div>
-			</td>
-			<td>
-				<div id="student807" class="student">
-					<div id="pcname807" class="pcname"></div>
-					<div id="status807" class="status"></div>
-					<div id="priority807" class="prioroty"></div>
-					<div id="timebar807" class="timebar"></div>
-					<div id="time807" class="time"></div>
-				</div>
-			</td>
-			<td>
-				<div id="student808" class="student">
-					<div id="pcname808" class="pcname"></div>
-					<div id="status808" class="status"></div>
-					<div id="priority808" class="prioroty"></div>
-					<div id="timebar808" class="timebar"></div>
-					<div id="time808" class="time"></div>
-				</div>
-			</td>
-		</tr>
-		<tr>
-			<td>
-				<div id="student809" class="student" style="visibility: hidden;">
-					<div id="pcname809" class="pcname"></div>
-					<div id="status809" class="status"></div>
-					<div id="priority809" class="prioroty"></div>
-					<div id="timebar809" class="timebar"></div>
-					<div id="time809" class="time"></div>
-				</div>
-			</td>
-			<td>
-				<div id="student810" class="student">
-					<div id="pcname810" class="pcname"></div>
-					<div id="status810" class="status"></div>
-					<div id="priority810" class="prioroty"></div>
-					<div id="timebar810" class="timebar"></div>
-					<div id="time810" class="time"></div>
-				</div>
-			</td>
-			<td>
-				<div id="student811" class="student">
-					<div id="pcname811" class="pcname"></div>
-					<div id="status811" class="status"></div>
-					<div id="priority811" class="prioroty"></div>
-					<div id="timebar811" class="timebar"></div>
-					<div id="time811" class="time"></div>
-				</div>
-			</td>
-			<td>
-				<div id="student812" class="student">
-					<div id="pcname812" class="pcname"></div>
-					<div id="status812" class="status"></div>
-					<div id="priority812" class="prioroty"></div>
-					<div id="timebar812" class="timebar"></div>
-					<div id="time812" class="time"></div>
-				</div>
-			</td>
-			<td>
-				<div id="student813" class="student">
-					<div id="pcname813" class="pcname"></div>
-					<div id="status813" class="status"></div>
-					<div id="priority813" class="prioroty"></div>
-					<div id="timebar813" class="timebar"></div>
-					<div id="time813" class="time"></div>
-				</div>
-			</td>
-			<td>
-				<div id="student814" class="student">
-					<div id="pcname814" class="pcname"></div>
-					<div id="status814" class="status"></div>
-					<div id="priority814" class="prioroty"></div>
-					<div id="timebar814" class="timebar"></div>
-					<div id="time814" class="time"></div>
-				</div>
-			</td>
-			<td>
-				<div id="student815" class="student">
-					<div id="pcname815" class="pcname"></div>
-					<div id="status815" class="status"></div>
-					<div id="priority815" class="prioroty"></div>
-					<div id="timebar815" class="timebar"></div>
-					<div id="time815" class="time"></div>
-				</div>
-			</td>
-			<td>
-				<div id="student816" class="student">
-					<div id="pcname816" class="pcname"></div>
-					<div id="status816" class="status"></div>
-					<div id="priority816" class="prioroty"></div>
-					<div id="timebar816" class="timebar"></div>
-					<div id="time816" class="time"></div>
-				</div>
-			</td>
-		</tr>
-		<tr>
-			<td>
-				<div id="student817" class="student">
-					<div id="pcname817" class="pcname"></div>
-					<div id="status817" class="status"></div>
-					<div id="priority817" class="prioroty"></div>
-					<div id="timebar817" class="timebar"></div>
-					<div id="time817" class="time"></div>
-				</div>
-			</td>
-			<td>
-				<div id="student818" class="student">
-					<div id="pcname818" class="pcname"></div>
-					<div id="status818" class="status"></div>
-					<div id="priority818" class="prioroty"></div>
-					<div id="timebar818" class="timebar"></div>
-					<div id="time818" class="time"></div>
-				</div>
-			</td>
-			<td>
-				<div id="student819" class="student">
-					<div id="pcname819" class="pcname"></div>
-					<div id="status819" class="status"></div>
-					<div id="priority819" class="prioroty"></div>
-					<div id="timebar819" class="timebar"></div>
-					<div id="time819" class="time"></div>
-				</div>
-			</td>
-			<td>
-				<div id="student820" class="student">
-					<div id="pcname820" class="pcname"></div>
-					<div id="status820" class="status"></div>
-					<div id="priority820" class="prioroty"></div>
-					<div id="timebar820" class="timebar"></div>
-					<div id="time820" class="time"></div>
-				</div>
-			</td>
-			<td>
-				<div id="student821" class="student">
-					<div id="pcname821" class="pcname"></div>
-					<div id="status821" class="status"></div>
-					<div id="priority821" class="prioroty"></div>
-					<div id="timebar821" class="timebar"></div>
-					<div id="time821" class="time"></div>
-				</div>
-			</td>
-			<td>
-				<div id="student822" class="student">
-					<div id="pcname822" class="pcname"></div>
-					<div id="status822" class="status"></div>
-					<div id="priority822" class="prioroty"></div>
-					<div id="timebar822" class="timebar"></div>
-					<div id="time822" class="time"></div>
-				</div>
-			</td>
-			<td>
-				<div id="student823" class="student">
-					<div id="pcname823" class="pcname"></div>
-					<div id="status823" class="status"></div>
-					<div id="priority823" class="prioroty"></div>
-					<div id="timebar823" class="timebar"></div>
-					<div id="time823" class="time"></div>
-				</div>
-			</td>
-			<td>
-				<div id="student824" class="student">
-					<div id="pcname824" class="pcname"></div>
-					<div id="status824" class="status"></div>
-					<div id="priority824" class="prioroty"></div>
-					<div id="timebar824" class="timebar"></div>
-					<div id="time824" class="time"></div>
-				</div>
-			</td>
-		</tr>
-		<tr>
-			<td>
-				<div id="student825" class="student" style="visibility: hidden;">
-					<div id="pcname825" class="pcname"></div>
-					<div id="status825" class="status"></div>
-					<div id="priority825" class="prioroty"></div>
-					<div id="timebar825" class="timebar"></div>
-					<div id="time825" class="time"></div>
-				</div>
-			</td>
-			<td>
-				<div id="student826" class="student">
-					<div id="pcname826" class="pcname"></div>
-					<div id="status826" class="status"></div>
-					<div id="priority826" class="prioroty"></div>
-					<div id="timebar826" class="timebar"></div>
-					<div id="time826" class="time"></div>
-				</div>
-			</td>
-			<td>
-				<div id="student827" class="student">
-					<div id="pcname827" class="pcname"></div>
-					<div id="status827" class="status"></div>
-					<div id="priority827" class="prioroty"></div>
-					<div id="timebar827" class="timebar"></div>
-					<div id="time827" class="time"></div>
-				</div>
-			</td>
-			<td>
-				<div id="student828" class="student">
-					<div id="pcname828" class="pcname"></div>
-					<div id="status828" class="status"></div>
-					<div id="priority828" class="prioroty"></div>
-					<div id="timebar828" class="timebar"></div>
-					<div id="time828" class="time"></div>
-				</div>
-			</td>
-			<td>
-				<div id="student829" class="student">
-					<div id="pcname829" class="pcname"></div>
-					<div id="status829" class="status"></div>
-					<div id="priority829" class="prioroty"></div>
-					<div id="timebar829" class="timebar"></div>
-					<div id="time829" class="time"></div>
-				</div>
-			</td>
-			<td>
-				<div id="student830" class="student">
-					<div id="pcname830" class="pcname"></div>
-					<div id="status830" class="status"></div>
-					<div id="priority830" class="prioroty"></div>
-					<div id="timebar830" class="timebar"></div>
-					<div id="time830" class="time"></div>
-				</div>
-			</td>
-			<td>
-				<div id="student831" class="student">
-					<div id="pcname831" class="pcname"></div>
-					<div id="status831" class="status"></div>
-					<div id="priority831" class="prioroty"></div>
-					<div id="timebar831" class="timebar"></div>
-					<div id="time831" class="time"></div>
-				</div>
-			</td>
-			<td>
-				<div id="student832" class="student">
-					<div id="pcname832" class="pcname"></div>
-					<div id="status832" class="status"></div>
-					<div id="priority832" class="prioroty"></div>
-					<div id="timebar832" class="timebar"></div>
-					<div id="time832" class="time"></div>
-				</div>
-			</td>
-		</tr>
-		<tr>
-			<td>
-				<div id="student833" class="student">
-					<div id="pcname833" class="pcname"></div>
-					<div id="status833" class="status"></div>
-					<div id="priority833" class="prioroty"></div>
-					<div id="timebar833" class="timebar"></div>
-					<div id="time833" class="time"></div>
-				</div>
-			</td>
-			<td>
-				<div id="student834" class="student">
-					<div id="pcname834" class="pcname"></div>
-					<div id="status834" class="status"></div>
-					<div id="priority834" class="prioroty"></div>
-					<div id="timebar834" class="timebar"></div>
-					<div id="time834" class="time"></div>
-				</div>
-			</td>
-			<td>
-				<div id="student835" class="student">
-					<div id="pcname835" class="pcname"></div>
-					<div id="status835" class="status"></div>
-					<div id="priority835" class="prioroty"></div>
-					<div id="timebar835" class="timebar"></div>
-					<div id="time835" class="time"></div>
-				</div>
-			</td>
-			<td>
-				<div id="student836" class="student">
-					<div id="pcname836" class="pcname"></div>
-					<div id="status836" class="status"></div>
-					<div id="priority836" class="prioroty"></div>
-					<div id="timebar836" class="timebar"></div>
-					<div id="time836" class="time"></div>
-				</div>
-			</td>
-			<td>
-				<div id="student837" class="student">
-					<div id="pcname837" class="pcname"></div>
-					<div id="status837" class="status"></div>
-					<div id="priority837" class="prioroty"></div>
-					<div id="timebar837" class="timebar"></div>
-					<div id="time837" class="time"></div>
-				</div>
-			</td>
-			<td>
-				<div id="student838" class="student">
-					<div id="pcname838" class="pcname"></div>
-					<div id="status838" class="status"></div>
-					<div id="priority838" class="prioroty"></div>
-					<div id="timebar838" class="timebar"></div>
-					<div id="time838" class="time"></div>
-				</div>
-			</td>
-			<td>
-				<div id="student839" class="student">
-					<div id="pcname839" class="pcname"></div>
-					<div id="status839" class="status"></div>
-					<div id="priority839" class="prioroty"></div>
-					<div id="timebar839" class="timebar"></div>
-					<div id="time839" class="time"></div>
-				</div>
-			</td>
-			<td>
-				<div id="student840" class="student">
-					<div id="pcname840" class="pcname"></div>
-					<div id="status840" class="status"></div>
-					<div id="priority840" class="prioroty"></div>
-					<div id="timebar840" class="timebar"></div>
-					<div id="time840" class="time"></div>
-				</div>
-			</td>
-		</tr>
-		<tr>
-			<td>
-				<div id="student841" class="student">
-					<div id="pcname841" class="pcname"></div>
-					<div id="status841" class="status"></div>
-					<div id="priority841" class="prioroty"></div>
-					<div id="timebar841" class="timebar"></div>
-					<div id="time841" class="time"></div>
-				</div>
-			</td>
-			<td>
-				<div id="student842" class="student">
-					<div id="pcname842" class="pcname"></div>
-					<div id="status842" class="status"></div>
-					<div id="priority842" class="prioroty"></div>
-					<div id="timebar842" class="timebar"></div>
-					<div id="time842" class="time"></div>
-				</div>
-			</td>
-			<td>
-				<div id="student843" class="student">
-					<div id="pcname843" class="pcname"></div>
-					<div id="status843" class="status"></div>
-					<div id="priority843" class="prioroty"></div>
-					<div id="timebar843" class="timebar"></div>
-					<div id="time843" class="time"></div>
-				</div>
-			</td>
-			<td>
-				<div id="student844" class="student">
-					<div id="pcname844" class="pcname"></div>
-					<div id="status844" class="status"></div>
-					<div id="priority844" class="prioroty"></div>
-					<div id="timebar844" class="timebar"></div>
-					<div id="time844" class="time"></div>
-				</div>
-			</td>
-			<td>
-				<div id="student845" class="student">
-					<div id="pcname845" class="pcname"></div>
-					<div id="status845" class="status"></div>
-					<div id="priority845" class="prioroty"></div>
-					<div id="timebar845" class="timebar"></div>
-					<div id="time845" class="time"></div>
-				</div>
-			</td>
-			<td>
-				<div id="student846" class="student">
-					<div id="pcname846" class="pcname"></div>
-					<div id="status846" class="status"></div>
-					<div id="priority846" class="prioroty"></div>
-					<div id="timebar846" class="timebar"></div>
-					<div id="time846" class="time"></div>
-				</div>
-			</td>
-			<td>
-				<div id="student847" class="student">
-					<div id="pcname847" class="pcname"></div>
-					<div id="status847" class="status"></div>
-					<div id="priority847" class="prioroty"></div>
-					<div id="timebar847" class="timebar"></div>
-					<div id="time847" class="time"></div>
-				</div>
-			</td>
-			<td>
-				<div id="student848" class="student">
-					<div id="pcname848" class="pcname"></div>
-					<div id="status848" class="status"></div>
-					<div id="priority848" class="prioroty"></div>
-					<div id="timebar848" class="timebar"></div>
-					<div id="time848" class="time"></div>
-				</div>
-			</td>
-		</tr>
-		<tr>
-			<td>
-				<div id="student849" class="student">
-					<div id="pcname849" class="pcname"></div>
-					<div id="status849" class="status"></div>
-					<div id="priority849" class="prioroty"></div>
-					<div id="timebar849" class="timebar"></div>
-					<div id="time849" class="time"></div>
-				</div>
-			</td>
-			<td>
-				<div id="student850" class="student">
-					<div id="pcname850" class="pcname"></div>
-					<div id="status850" class="status"></div>
-					<div id="priority850" class="prioroty"></div>
-					<div id="timebar850" class="timebar"></div>
-					<div id="time850" class="time"></div>
-				</div>
-			</td>
-			<td>
-				<div id="student851" class="student">
-					<div id="pcname851" class="pcname"></div>
-					<div id="status851" class="status"></div>
-					<div id="priority851" class="prioroty"></div>
-					<div id="timebar851" class="timebar"></div>
-					<div id="time851" class="time"></div>
-				</div>
-			</td>
-			<td>
-				<div id="student852" class="student">
-					<div id="pcname852" class="pcname"></div>
-					<div id="status852" class="status"></div>
-					<div id="priority852" class="prioroty"></div>
-					<div id="timebar852" class="timebar"></div>
-					<div id="time852" class="time"></div>
-				</div>
-			</td>
-			<td>
-				<div id="student853" class="student">
-					<div id="pcname853" class="pcname"></div>
-					<div id="status853" class="status"></div>
-					<div id="priority853" class="prioroty"></div>
-					<div id="timebar853" class="timebar"></div>
-					<div id="time853" class="time"></div>
-				</div>
-			</td>
-			<td>
-				<div id="student854" class="student">
-					<div id="pcname854" class="pcname"></div>
-					<div id="status854" class="status"></div>
-					<div id="priority854" class="prioroty"></div>
-					<div id="timebar854" class="timebar"></div>
-					<div id="time854" class="time"></div>
-				</div>
-			</td>
-			<td>
-				<div id="student855" class="student">
-					<div id="pcname855" class="pcname"></div>
-					<div id="status855" class="status"></div>
-					<div id="priority855" class="prioroty"></div>
-					<div id="timebar855" class="timebar"></div>
-					<div id="time855" class="time"></div>
-				</div>
-			</td>
-			<td>
-				<div id="student856" class="student">
-					<div id="pcname856" class="pcname"></div>
-					<div id="status856" class="status"></div>
-					<div id="priority856" class="prioroty"></div>
-					<div id="timebar856" class="timebar"></div>
-					<div id="time856" class="time"></div>
-				</div>
-			</td>
-		</tr>
-		<tr>
-			<td>
-				<div id="student857" class="student">
-					<div id="pcname857" class="pcname"></div>
-					<div id="status857" class="status"></div>
-					<div id="priority857" class="prioroty"></div>
-					<div id="timebar857" class="timebar"></div>
-					<div id="time857" class="time"></div>
-				</div>
-			</td>
-			<td>
-				<div id="student858" class="student">
-					<div id="pcname858" class="pcname"></div>
-					<div id="status858" class="status"></div>
-					<div id="priority858" class="prioroty"></div>
-					<div id="timebar858" class="timebar"></div>
-					<div id="time858" class="time"></div>
-				</div>
-			</td>
-			<td>
-				<div id="student859" class="student">
-					<div id="pcname859" class="pcname"></div>
-					<div id="status859" class="status"></div>
-					<div id="priority859" class="prioroty"></div>
-					<div id="timebar859" class="timebar"></div>
-					<div id="time859" class="time"></div>
-				</div>
-			</td>
-			<td>
-				<div id="student860" class="student">
-					<div id="pcname860" class="pcname"></div>
-					<div id="status860" class="status"></div>
-					<div id="priority860" class="prioroty"></div>
-					<div id="timebar860" class="timebar"></div>
-					<div id="time860" class="time"></div>
-				</div>
-			</td>
-			<td>
-				<div id="student861" class="student">
-					<div id="pcname861" class="pcname"></div>
-					<div id="status861" class="status"></div>
-					<div id="priority861" class="prioroty"></div>
-					<div id="timebar861" class="timebar"></div>
-					<div id="time861" class="time"></div>
-				</div>
-			</td>
-			<td>
-				<div id="student862" class="student">
-					<div id="pcname862" class="pcname"></div>
-					<div id="status862" class="status"></div>
-					<div id="priority862" class="prioroty"></div>
-					<div id="timebar862" class="timebar"></div>
-					<div id="time862" class="time"></div>
-				</div>
-			</td>
-			<td>
-				<div id="student863" class="student">
-					<div id="pcname863" class="pcname"></div>
-					<div id="status863" class="status"></div>
-					<div id="priority863" class="prioroty"></div>
-					<div id="timebar863" class="timebar"></div>
-					<div id="time863" class="time"></div>
-				</div>
-			</td>
-			<td>
-				<div id="student864" class="student">
-					<div id="pcname864" class="pcname"></div>
-					<div id="status864" class="status"></div>
-					<div id="priority864" class="prioroty"></div>
-					<div id="timebar864" class="timebar"></div>
-					<div id="time864" class="time"></div>
-				</div>
-			</td>
-		</tr>
-		<tr>
-			<td>
-				<div id="student866" class="student">
-					<div id="pcname866" class="pcname"></div>
-					<div id="status866" class="status"></div>
-					<div id="priority866" class="prioroty"></div>
-					<div id="timebar866" class="timebar"></div>
-					<div id="time866" class="time"></div>
-				</div>
-			</td>
-			<td>
-				<div id="student867" class="student">
-					<div id="pcname867" class="pcname"></div>
-					<div id="status867" class="status"></div>
-					<div id="priority867" class="prioroty"></div>
-					<div id="timebar867" class="timebar"></div>
-					<div id="time867" class="time"></div>
-				</div>
-			</td>
-			<td>
-				<div id="student868" class="student">
-					<div id="pcname868" class="pcname"></div>
-					<div id="status868" class="status"></div>
-					<div id="priority868" class="prioroty"></div>
-					<div id="timebar868" class="timebar"></div>
-					<div id="time868" class="time"></div>
-				</div>
-			</td>
-			<td>
-				<div id="student869" class="student">
-					<div id="pcname869" class="pcname"></div>
-					<div id="status869" class="status"></div>
-					<div id="priority869" class="prioroty"></div>
-					<div id="timebar869" class="timebar"></div>
-					<div id="time869" class="time"></div>
-				</div>
-			</td>
-			<td>
-				<div id="student870" class="student">
-					<div id="pcname870" class="pcname"></div>
-					<div id="status870" class="status"></div>
-					<div id="priority870" class="prioroty"></div>
-					<div id="timebar870" class="timebar"></div>
-					<div id="time870" class="time"></div>
-				</div>
-			</td>
-			<td>
-				<div id="student871" class="student">
-					<div id="pcname871" class="pcname"></div>
-					<div id="status871" class="status"></div>
-					<div id="priority871" class="prioroty"></div>
-					<div id="timebar871" class="timebar"></div>
-					<div id="time871" class="time"></div>
-				</div>
-			</td>
-			<td>
-				<div id="student865" class="student" style="visibility: hidden;">
-					<div id="pcname865" class="pcname"></div>
-					<div id="status865" class="status"></div>
-					<div id="priority865" class="prioroty"></div>
-					<div id="timebar865" class="timebar"></div>
-					<div id="time865" class="time"></div>
-				</div>
-			</td>
-			<td>
-			</td>
-		</tr>
-
-	</table>
+	</body>
 	
-		<table id="kiso-seat-table">
-		<tr>
-			<td>
-				<div id="student701" class="student">
-					<div id="pcname701" class="pcname"></div>
-					<div id="status701" class="status"></div>
-					<div id="priority701" class="prioroty"></div>
-					<div id="timebar701" class="timebar"></div>
-					<div id="time701" class="time"></div>
-				</div>
-			</td>
-			<td>
-				<div id="student702" class="student">
-					<div id="pcname702" class="pcname"></div>
-					<div id="status702" class="status"></div>
-					<div id="priority702" class="prioroty"></div>
-					<div id="timebar702" class="timebar"></div>
-					<div id="time702" class="time"></div>
-				</div>
-			</td>
-			<td>
-				<div id="student703" class="student">
-					<div id="pcname703" class="pcname"></div>
-					<div id="status703" class="status"></div>
-					<div id="priority703" class="prioroty"></div>
-					<div id="timebar703" class="timebar"></div>
-					<div id="time703" class="time"></div>
-				</div>
-			</td>
-			<td>
-				<div id="student704" class="student">
-					<div id="pcname704" class="pcname"></div>
-					<div id="status704" class="status"></div>
-					<div id="priority704" class="prioroty"></div>
-					<div id="timebar704" class="timebar"></div>
-					<div id="time704" class="time"></div>
-				</div>
-			</td>
-			<td>
-				<div id="student705" class="student">
-					<div id="pcname705" class="pcname"></div>
-					<div id="status705" class="status"></div>
-					<div id="priority705" class="prioroty"></div>
-					<div id="timebar705" class="timebar"></div>
-					<div id="time705" class="time"></div>
-				</div>
-			</td>
-		<td></td>
-		<td></td>
-		</tr><tr>
-			<td>
-				<div id="student706" class="student">
-					<div id="pcname706" class="pcname"></div>
-					<div id="status706" class="status"></div>
-					<div id="priority706" class="prioroty"></div>
-					<div id="timebar706" class="timebar"></div>
-					<div id="time706" class="time"></div>
-				</div>
-			</td>
-			<td>
-				<div id="student707" class="student">
-					<div id="pcname707" class="pcname"></div>
-					<div id="status707" class="status"></div>
-					<div id="priority707" class="prioroty"></div>
-					<div id="timebar707" class="timebar"></div>
-					<div id="time707" class="time"></div>
-				</div>
-			</td>
-			<td>
-				<div id="student708" class="student">
-					<div id="pcname708" class="pcname"></div>
-					<div id="status708" class="status"></div>
-					<div id="priority708" class="prioroty"></div>
-					<div id="timebar708" class="timebar"></div>
-					<div id="time708" class="time"></div>
-				</div>
-			</td>
-			<td>
-				<div id="student709" class="student">
-					<div id="pcname709" class="pcname"></div>
-					<div id="status709" class="status"></div>
-					<div id="priority709" class="prioroty"></div>
-					<div id="timebar709" class="timebar"></div>
-					<div id="time709" class="time"></div>
-				</div>
-			</td>
-			<td></td>
-			<td></td>
-			<td>
-				<div id="student710" class="student">
-					<div id="pcname710" class="pcname"></div>
-					<div id="status710" class="status"></div>
-					<div id="priority710" class="prioroty"></div>
-					<div id="timebar710" class="timebar"></div>
-					<div id="time710" class="time"></div>
-				</div>
-			</td>
-		</tr><tr>
-			<td>
-				<div id="student711" class="student">
-					<div id="pcname711" class="pcname"></div>
-					<div id="status711" class="status"></div>
-					<div id="priority711" class="prioroty"></div>
-					<div id="timebar711" class="timebar"></div>
-					<div id="time711" class="time"></div>
-				</div>
-			</td>
-			<td>
-				<div id="student712" class="student">
-					<div id="pcname712" class="pcname"></div>
-					<div id="status712" class="status"></div>
-					<div id="priority712" class="prioroty"></div>
-					<div id="timebar712" class="timebar"></div>
-					<div id="time712" class="time"></div>
-				</div>
-			</td>
-			<td>
-				<div id="student713" class="student">
-					<div id="pcname713" class="pcname"></div>
-					<div id="status713" class="status"></div>
-					<div id="priority713" class="prioroty"></div>
-					<div id="timebar713" class="timebar"></div>
-					<div id="time713" class="time"></div>
-				</div>
-			</td>
-			<td>
-				<div id="student714" class="student">
-					<div id="pcname714" class="pcname"></div>
-					<div id="status714" class="status"></div>
-					<div id="priority714" class="prioroty"></div>
-					<div id="timebar714" class="timebar"></div>
-					<div id="time714" class="time"></div>
-				</div>
-			</td>
-			<td>
-				<div id="student715" class="student">
-					<div id="pcname715" class="pcname"></div>
-					<div id="status715" class="status"></div>
-					<div id="priority715" class="prioroty"></div>
-					<div id="timebar715" class="timebar"></div>
-					<div id="time715" class="time"></div>
-				</div>
-			</td>
-			<td></td>
-			<td></td>
-		</tr><tr>
-			<td>
-				<div id="student716" class="student">
-					<div id="pcname716" class="pcname"></div>
-					<div id="status716" class="status"></div>
-					<div id="priority716" class="prioroty"></div>
-					<div id="timebar716" class="timebar"></div>
-					<div id="time716" class="time"></div>
-				</div>
-			</td>
-			<td>
-				<div id="student717" class="student">
-					<div id="pcname717" class="pcname"></div>
-					<div id="status717" class="status"></div>
-					<div id="priority717" class="prioroty"></div>
-					<div id="timebar717" class="timebar"></div>
-					<div id="time717" class="time"></div>
-				</div>
-			</td>
-			<td>
-				<div id="student718" class="student">
-					<div id="pcname718" class="pcname"></div>
-					<div id="status718" class="status"></div>
-					<div id="priority718" class="prioroty"></div>
-					<div id="timebar718" class="timebar"></div>
-					<div id="time718" class="time"></div>
-				</div>
-			</td>
-			<td>
-				<div id="student719" class="student">
-					<div id="pcname719" class="pcname"></div>
-					<div id="status719" class="status"></div>
-					<div id="priority719" class="prioroty"></div>
-					<div id="timebar719" class="timebar"></div>
-					<div id="time719" class="time"></div>
-				</div>
-			</td>
-			<td></td>
-			<td></td>
-			<td>
-				<div id="student720" class="student">
-					<div id="pcname720" class="pcname"></div>
-					<div id="status720" class="status"></div>
-					<div id="priority720" class="prioroty"></div>
-					<div id="timebar720" class="timebar"></div>
-					<div id="time720" class="time"></div>
-				</div>
-			</td>
-		</tr><tr>
-			<td>
-				<div id="student721" class="student">
-					<div id="pcname721" class="pcname"></div>
-					<div id="status721" class="status"></div>
-					<div id="priority721" class="prioroty"></div>
-					<div id="timebar721" class="timebar"></div>
-					<div id="time721" class="time"></div>
-				</div>
-			</td>
-			<td>
-				<div id="student722" class="student">
-					<div id="pcname722" class="pcname"></div>
-					<div id="status722" class="status"></div>
-					<div id="priority722" class="prioroty"></div>
-					<div id="timebar722" class="timebar"></div>
-					<div id="time722" class="time"></div>
-				</div>
-			</td>
-			<td>
-				<div id="student723" class="student">
-					<div id="pcname723" class="pcname"></div>
-					<div id="status723" class="status"></div>
-					<div id="priority723" class="prioroty"></div>
-					<div id="timebar723" class="timebar"></div>
-					<div id="time723" class="time"></div>
-				</div>
-			</td>
-			<td>
-				<div id="student724" class="student">
-					<div id="pcname724" class="pcname"></div>
-					<div id="status724" class="status"></div>
-					<div id="priority724" class="prioroty"></div>
-					<div id="timebar724" class="timebar"></div>
-					<div id="time724" class="time"></div>
-				</div>
-			</td>
-			<td>
-				<div id="student725" class="student">
-					<div id="pcname725" class="pcname"></div>
-					<div id="status725" class="status"></div>
-					<div id="priority725" class="prioroty"></div>
-					<div id="timebar725" class="timebar"></div>
-					<div id="time725" class="time"></div>
-				</div>
-			</td>
-		</tr>
-	</table>
-	<div id="dialog">
-		<div id="dialog-message">この端末をサポートしますか？</div>
-		<div id="dialog-yes">はい</div>
-		<div id="dialog-no">いいえ</div>
-	</div>
+	<style>
+	#waiting_list_chart {max-width:300px;max-height:500px;}
+	</style>
 
-</body>
+	<script>
+		function updateChart(){
+			var maxValue=120;
+
+			if(maxWaitingTime <60){
+				maxValue = 60;
+			}else if(maxWaitingTime <300){
+				maxValue = 300;
+			}else if(maxWaitingTime <600){
+				maxValue=600;
+			}else{
+				maxValue=600;
+			}
+
+		var labelList=[];
+		var dataList=[];
+		if(handupStudentList != null){
+			for(var i=0; i<handupStudentList.length; i++){
+				labelList.push(""+(i+1));
+				dataList.push(""+handupStudentList[i].waitingTimeBySecond);			
+			}
+		}
+
+		var ctx = document.getElementById('waiting_list_chart');
+
+		var data = {
+    		labels: labelList,
+    		datasets: [{
+        		label: '待ち時間',
+        		data: dataList,
+        		backgroundColor: 'rgba(255, 100, 100, 1)'
+    		}]
+		};
+
+		var capacity_options = {
+	    	indexAxis: 'y',
+	    	scales: {
+	        	x:{
+	            	min: 0,
+	            	max: maxValue
+	        	}
+	    	}
+		};
+
+		var waiting_list_chart = new Chart(ctx, {
+	    	type: 'bar',
+	    	data: data,
+	    	options: capacity_options
+		});
+			
+		}
+		
+</script>
 
 </html>

@@ -44,7 +44,7 @@
 #dialog {
   position: absolute;
   top: 0px;
-  right: 0px;
+  left: 300px;
   width:210px;
   height: 60px;
   border-style: solid;

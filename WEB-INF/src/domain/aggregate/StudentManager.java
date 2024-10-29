@@ -26,7 +26,6 @@ public class StudentManager {
 	}
 
 	private Student addPriority(Student student) {
-		IpAddress ipAddress = student.getPc().getIpAddress();
 		int priority = waitingManager.getPriority(student);
 		student.setPriority(priority);
 		return student; 

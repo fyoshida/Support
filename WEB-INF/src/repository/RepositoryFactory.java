@@ -11,9 +11,7 @@ public class RepositoryFactory {
 	public static String userName = "000000";
 	public static String passWord = "00000000";
 
-	public static RepositoryType repositoryType = RepositoryType.Memory;
-
-	public static IPcRepository getRepository() {
+	public static IPcRepository getRepository(RepositoryType repositoryType) {
 		switch (repositoryType) {
 		case DataBase:
 			return new DataBasePcRepository(dataBaseName, userName, passWord);

@@ -24,6 +24,7 @@ import helper.StudentJson;
 import helper.StudentJsonHelper;
 import repository.IPcRepository;
 import repository.RepositoryFactory;
+import repository.RepositoryType;
 
 //@ServerEndpoint(value="/websocket/_initialize")
 @ServerEndpoint(value = "/websocket/_administrator", configurator = ConfiguratorWithRequest.class)
@@ -37,7 +38,7 @@ public class WebsocketForAdministrator {
 	public void onOpen(Session session, EndpointConfig config) {
 
 		// リポジトリを取得
-		IPcRepository repository = RepositoryFactory.getRepository();
+		IPcRepository repository = RepositoryFactory.getRepository(RepositoryType.Memory);
 
 		// StudentManagerを生成
 		List<Pc> pcList = repository.getPcList();

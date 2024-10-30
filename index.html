@@ -249,19 +249,8 @@
 		}
 		
 		function getBarLength(maxWaitingTime, time, maxBarLength){
-			if(maxWaitingTime <60){
-				return Math.floor(time/60*maxBarLength);
-			}else if(maxWaitingTime <300){
-				return Math.floor(time/300*maxBarLength);
-			}else if(maxWaitingTime <600){
-				return Math.floor(time/600*maxBarLength);
-			}else if(maxWaitingTime <1800){
-				return Math.floor(time/1800*maxBarLength);
-			}else if(maxWaitingTime <3600){
-				return Math.floor(time/3600*maxBarLength);
-			}else{
-				return maxBarLength;
-			}
+			const maxTime=getMaxTime(maxWaitingTime);
+			return Math.floor(time/maxTime*maxBarLength);
 		}
 		
 		//-------------------

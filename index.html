@@ -4,7 +4,23 @@
     <meta charset="utf-8" />
 	<title>サポートシステム</title>
 	<link rel="stylesheet" href="./index.css">
-    <script src="https://cdn.jsdelivr.net/npm/chart.js@3.9.1/dist/chart.min.js"></script>
+
+
+	</head>
+	<body>
+		<div id="dialog-up">手を挙げる</div>
+		<div id="dialog-down">手を下ろす</div>
+
+		<div id="student" class="student">
+			<div id="pcname" class="pcname"></div>
+			<div id="status" class="status"></div>
+			<div id="priority" class="prioroty"></div>
+			<div id="timebar" class="timebar"></div>
+			<div id="time" class="time"></div>
+		</div>
+		<div id="chart">
+		</div>
+
 	<script>
 		var ws;
 		var student;
@@ -29,7 +45,7 @@
 					const obj = JSON.parse(event.data);
 					student = obj.clientStudent;
 					handupStudentList = obj.handupStudentList;
-					
+
 					maxWaitingTime = getMaxWaitingTime(handupStudentList);
 					setStudentInfo(student);
 					
@@ -68,23 +84,19 @@
 				student.waitingTimeBySecond++;
 				setStudentInfoTime(student);
 				setStudentInfoTimebar(student);
-				updateChart();
 			}
 			for (var i = 0; i < handupStudentList.length; i++) {
 				if (handupStudentList[i].helpStatus == "Troubled") {
 					handupStudentList[i].waitingTimeBySecond++;
 				}
 			}
+			drawChart(student,handupStudentList);
 		}
 		
 		function getMaxWaitingTime(handupStudentList){
-			var max=0;
-			if(handupStudentList != null){
-			for(var i=0; i<handupStudentList.length; i++){
-				if( max < handupStudentList[i].waitingTimeBySecond){
-					max=handupStudentList[i].waitingTimeBySecond;
-				}
-			}
+			max = 0;
+			if(handupStudentList != null && handupStudentList.length >0){
+				max = handupStudentList[0].waitingTimeBySecond;
 			}
 			return max;
 		}
@@ -147,12 +159,16 @@
 		}
 		
 		function setStudentInfoTime(student){
-			const time = student.waitingTimeBySecond;
-			const hour = Math.floor(time / 3600);
-			const minute = Math.floor((time - hour * 3600) / 60);
-			const second = time - hour * 3600 - minute * 60;
+			if(student.helpStatus == "Troubled"){
+				const time = student.waitingTimeBySecond;
+				const hour = Math.floor(time / 3600);
+				const minute = Math.floor((time - hour * 3600) / 60);
+				const second = time - hour * 3600 - minute * 60;
 			
-			document.getElementById("time").innerText = getDisplayTime(hour,minute,second);
+				document.getElementById("time").innerText = getDisplayTime(hour,minute,second);
+			}else{
+				document.getElementById("time").innerText = "";
+			}
 		}
 		
 		function getDisplayTime(hour,minute,second){
@@ -168,107 +184,104 @@
 		function setStudentInfoTimebar(student){
 			const time = student.waitingTimeBySecond;
 
-			var maxBarLength=120;
+			var timeBarLength = getBarLength(maxWaitingTime,time,120);
+			var timeBarColor=getBarColor(maxWaitingTime,time);
 
-			var color="white";
-			if(maxWaitingTime <60){
-				timeBarLength=Math.floor(time/60*maxBarLength);
-				color="blue";
-			}else if(maxWaitingTime <300){
-				timeBarLength=Math.floor(time/300*maxBarLength);
-				color="red";
-			}else if(maxWaitingTime <600){
-				timeBarLength=Math.floor(time/600*maxBarLength);
-				color="black";
-			}else{
-				timeBarLength=maxBarLength;
-				color="black";
-			}
 			if(student.helpStatus=="Troubled"){
 				document.getElementById("timebar").style.display="block";
 				document.getElementById("timebar").style.width = timeBarLength+"px";
-				document.getElementById("timebar").style.background = color;
+				document.getElementById("timebar").style.background = "#33CCFF";
 			}else{
 				document.getElementById("timebar").style.display="none";
 			}
 		}
-
-	</script>
-
-	</head>
-	<body>
-		<div id="dialog-up">手を挙げる</div>
-		<div id="dialog-down">手を下ろす</div>
-
-		<div id="student" class="student">
-			<div id="pcname" class="pcname"></div>
-			<div id="status" class="status"></div>
-			<div id="priority" class="prioroty"></div>
-			<div id="timebar" class="timebar"></div>
-			<div id="time" class="time"></div>
-		</div>
-		<div id="chart">
-			<canvas id="waiting_list_chart"></canvas>
-		</div>
-
-	</body>
-	
-	<style>
-	#waiting_list_chart {max-width:300px;max-height:500px;}
-	</style>
-
-	<script>
-		function updateChart(){
-			var maxValue=120;
-
+		
+		function getBarColor(maxWaitingTime, time){
 			if(maxWaitingTime <60){
-				maxValue = 60;
+				return "green";
 			}else if(maxWaitingTime <300){
-				maxValue = 300;
+				return "orange";
 			}else if(maxWaitingTime <600){
-				maxValue=600;
+				return "pink";
+			}else if(maxWaitingTime <1800){
+				return "red";
+			}else if(maxWaitingTime <3600){
+				return "black";
 			}else{
-				maxValue=600;
+				return "black";
 			}
-
-		var labelList=[];
-		var dataList=[];
-		if(handupStudentList != null){
-			for(var i=0; i<handupStudentList.length; i++){
-				labelList.push(""+(i+1));
-				dataList.push(""+handupStudentList[i].waitingTimeBySecond);			
-			}
-		}
-
-		var ctx = document.getElementById('waiting_list_chart');
-
-		var data = {
-    		labels: labelList,
-    		datasets: [{
-        		label: '待ち時間',
-        		data: dataList,
-        		backgroundColor: 'rgba(255, 100, 100, 1)'
-    		}]
-		};
-
-		var capacity_options = {
-	    	indexAxis: 'y',
-	    	scales: {
-	        	x:{
-	            	min: 0,
-	            	max: maxValue
-	        	}
-	    	}
-		};
-
-		var waiting_list_chart = new Chart(ctx, {
-	    	type: 'bar',
-	    	data: data,
-	    	options: capacity_options
-		});
-			
 		}
 		
-</script>
+		function getBarLength(maxWaitingTime, time, maxBarLength){
+			if(maxWaitingTime <60){
+				return Math.floor(time/60*maxBarLength);
+			}else if(maxWaitingTime <300){
+				return Math.floor(time/300*maxBarLength);
+			}else if(maxWaitingTime <600){
+				return Math.floor(time/600*maxBarLength);
+			}else if(maxWaitingTime <1800){
+				return Math.floor(time/1800*maxBarLength);
+			}else if(maxWaitingTime <3600){
+				return Math.floor(time/3600*maxBarLength);
+			}else{
+				return maxBarLength;
+			}
+		}
+		
+		function drawChart(student,handupStudentList){
+			if(handupStudentList == null || handupStudentList.length==0){
+				return;
+			}
+			var chartElement = document.getElementById("chart");
+			clearChildElement(chartElement);
+			addChildOrderElement(chartElement,handupStudentList);
+			addChildBarElement(chartElement,handupStudentList);
+			chartElement.style.height=(handupStudentList.length*25)+"px";
+		}
+		
+		function clearChildElement(chartElement){
+			while (chartElement.firstChild) {
+    			chartElement.removeChild(chartElement.firstChild);
+			}
+		}
+		
+		function addChildOrderElement(chartElement,handupStudentList){
+			for( var i=0; i<handupStudentList.length; i++){
+				const orderElement=document.createElement('div');
+				orderElement.setAttribute("id","rank"+(i+1));
+				orderElement.setAttribute("class","rank");
+				orderElement.style.position ="absolute"
+				orderElement.style.top =10+i*25+"px";
+				orderElement.style.left = "-30px"
+				orderElement.style.width= "20px";
+				orderElement.style.height = "20px";
+				orderElement.style.textAlign="right"
+				orderElement.innerText=(i+1);
+				chartElement.appendChild(orderElement);
+			}
+		}
+				
+		function addChildBarElement(chartElement,handupStudentList){
+			for( var i=0; i<handupStudentList.length; i++){
+				const barElement=document.createElement('div');
+				barElement.setAttribute("id","wait"+(i+1));
+				barElement.setAttribute("class","wait");
+				barElement.style.position ="absolute"
+				barElement.style.top =10+i*25+"px";
+				barElement.style.left ="5px";
+				barElement.style.width= getBarLength(maxWaitingTime,handupStudentList[i].waitingTimeBySecond,120)+"px";
+				barElement.style.height = "20px";
+				if(student.handPriority == i+1){
+					barElement.style.background= "#33CCFF";
+				}else{
+					barElement.style.background= getBarColor(maxWaitingTime,handupStudentList[i].waitingTimeBySecond);
+				}
+				chartElement.appendChild(barElement);
+			}
+		}
+		
+	</script>
+	</body>
+	
 
 </html>

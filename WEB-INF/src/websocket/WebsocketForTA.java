@@ -1,7 +1,9 @@
 package websocket;
 
 import java.io.IOException;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 import java.util.concurrent.CopyOnWriteArraySet;
 
@@ -19,9 +21,7 @@ import domain.aggregate.StudentManager;
 import domain.entities.Pc;
 import domain.entities.Student;
 import domain.valueobjects.IpAddress;
-import helper.JsonConverter;
-import helper.StudentJson;
-import helper.StudentJsonHelper;
+import helper.ResponseHelper;
 import repository.IPcRepository;
 import repository.RepositoryFactory;
 import repository.RepositoryType;
@@ -31,7 +31,7 @@ import repository.RepositoryType;
 public class WebsocketForTA {
 
 	public static Set<Session> taSessions = new CopyOnWriteArraySet<>(); // セッションのセット
-	public static Set<StudentSession> studentSessions = new CopyOnWriteArraySet<>(); // セッションのセット
+	public static Map<Student,Session> studentSessionMap = new HashMap <Student,Session>(); // セッションのセット
 	public static StudentManager studentManager;
 
 	@OnOpen
@@ -40,13 +40,20 @@ public class WebsocketForTA {
 		if(config.getUserProperties().get("UserType") !=null) {
 			userType = (String) config.getUserProperties().get("UserType");
 		}
-		userType="TA";
+		
+		userType="TA"; // 一時的に設定
+		
+		// Sessionをリストに保存
 		if (userType.equals("Administrator") || userType.equals("Teacher") || userType.equals("TA")) {
 			taSessions.add(session);
 		} else {
 			session.close();
 			return;
 		}
+
+		//-------------------
+		// 一時的に設定
+		//-------------------
 
 		// リポジトリを取得
 		IPcRepository repository = RepositoryFactory.getRepository(RepositoryType.Memory);
@@ -55,13 +62,16 @@ public class WebsocketForTA {
 		List<Pc> pcList = repository.getPcList();
 		studentManager = new StudentManager(pcList);
 
-		TeacherResponse teacherResponse = getTeacherResponbse();
-		String jsonText = getJsonText(teacherResponse);
-		sendMessage(session, jsonText);
+		//-------------------
+		// ここまで
+		//-------------------
+
+		String jsonText = ResponseHelper.getJsonForTeacher(studentManager.getStudentList(), studentManager.getHandUpStudentList());
+		sendMessage(session,jsonText);
 	}
 
 	@OnMessage
-	public String onMessage(String message, Session session) {
+	public String onMessage(String message, Session session) throws JsonProcessingException {
 		String[] messages = message.split(":");
 		String command = messages[0];
 		String ipAddress = messages[1];
@@ -85,19 +95,10 @@ public class WebsocketForTA {
 			break;
 		}
 
-		for (StudentSession studentSession : studentSessions) {
-			Student student = studentSession.getStudent();
-			Session client = studentSession.getSession();
-			StudentResponse studentResponse = getStudentResponse(student);
-			String jsonText = getJsonText(studentResponse);
-			sendMessage(client,jsonText);
-		}
+		broadcastStateForStudents();
+		broadcastStateForTa();
 
-		TeacherResponse teacherResponse = getTeacherResponbse();
-		String jsonTextTa = getJsonText(teacherResponse);
-		broadcastMessageForTa(jsonTextTa);
-
-		return jsonTextTa;
+		return ResponseHelper.getJsonForTeacher(studentManager.getStudentList(), studentManager.getHandUpStudentList());
 	}
 
 	@OnClose
@@ -112,67 +113,31 @@ public class WebsocketForTA {
 		error.printStackTrace();
 	}
 
-	private TeacherResponse getTeacherResponbse() {
-		List<Student> studentList = WebsocketForTA.studentManager.getStudentList();
-		List<StudentJson> studentJsonList = StudentJsonHelper.getStudentJsonList(studentList);
+	private void broadcastStateForTa() throws JsonProcessingException {
+		List<Student> studentList=studentManager.getStudentList();
+		List<Student> handupStudentList=studentManager.getHandUpStudentList();
 
-		List<Student> handupStudentList = WebsocketForTA.studentManager.getHandUpStudentList();
-		List<StudentJson> handupStudentJsonList = StudentJsonHelper.getStudentJsonList(handupStudentList);
-
-		return new TeacherResponse(studentJsonList, handupStudentJsonList);
+		String taBroadcastJson = ResponseHelper.getJsonForTeacher(studentList, handupStudentList);
+		broadcastMessageForTa(taBroadcastJson);
 	}
 
-	private StudentResponse getStudentResponse(Student student) {
-		StudentJson studentJson = StudentJsonHelper.getStudentJson(student);
-		
-		List<Student> handupStudentList = WebsocketForTA.studentManager.getHandUpStudentList();
-		List<StudentJson> handupStudentJsonList = StudentJsonHelper.getStundentJsonListForStudent(handupStudentList,
-				student.getPc().getIpAddress());
+	
+	private void broadcastStateForStudents() throws JsonProcessingException {
+		List<Student> handupStudentList=studentManager.getHandUpStudentList();
 
-		return new StudentResponse(studentJson,handupStudentJsonList);
+		Map<Student,String> jsonMap=ResponseHelper.getJsonListForStudent(studentSessionMap.keySet(), handupStudentList);
+		jsonMap.forEach((student,json) ->sendMessage(studentSessionMap.get(student),json));
 	}
 
-	private String getJsonText(TeacherResponse teacherResponse) {
-		// JSON形式で出力
-		String jsonText = "";
-		try {
-			jsonText = JsonConverter.getJsonText(teacherResponse);
-		} catch (JsonProcessingException e) {
-			// TODO 自動生成された catch ブロック
-			e.printStackTrace();
-		}
-		return jsonText;
-	}
-
-	private String getJsonText(StudentResponse studentResponse) {
-		// JSON形式で出力
-		String jsonText = "";
-		try {
-			jsonText = JsonConverter.getJsonText(studentResponse);
-		} catch (JsonProcessingException e) {
-			// TODO 自動生成された catch ブロック
-			e.printStackTrace();
-		}
-		return jsonText;
-	}
-
+	
 	private void sendMessage(Session session, String message) {
 		try {
 			session.getBasicRemote().sendText(message); // 非同期でメッセージを送信
 		} catch (Exception e) {
 			e.printStackTrace();
-		}
-	}
-
-	private void broadcastMessageForStudent(String message) {
-		for (StudentSession studentSession : studentSessions) {
-			try {
-				Session client = studentSession.getSession();
-				client.getBasicRemote().sendText(message); // 各クライアントにメッセージを送信
-			} catch (IOException e) {
-				e.printStackTrace();
-				studentSessions.remove(studentSession); // 送信失敗したセッションは削除
-			}
+			
+			taSessions.removeIf( client -> client.equals(session));
+			studentSessionMap.entrySet().removeIf(entry -> session.equals(entry.getValue()));
 		}
 	}
 

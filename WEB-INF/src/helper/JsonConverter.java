@@ -6,9 +6,6 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
-import websocket.StudentResponse;
-import websocket.TeacherResponse;
-
 
 public class JsonConverter {
 	public static String getJsonText(TeacherResponse response) throws JsonProcessingException{

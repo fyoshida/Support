@@ -4,6 +4,7 @@
     <meta charset="utf-8" />
 	<title>サポートシステム</title>
 	<link rel="stylesheet" href="./index_ta.css">
+	<script src="./time-helper.js"></script>
     <!-- Bootstrap用CSSの読み込み -->
     <link
       href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
@@ -90,14 +91,6 @@
 			}
 		}
 		
-		function getMaxWaitingTime(handupStudentList){
-			max = 0;
-			if(handupStudentList != null && handupStudentList.length >0){
-				max = handupStudentList[0].waitingTimeBySecond;
-			}
-			return max;
-		}
-
 		//-------------------
 		// クリック時の動作設定
 		//-------------------
@@ -114,7 +107,7 @@
 				}
 				
 				// 選択した学生のnumとobjをクリア
-				unselectStudent(selectNum,selectStudent);
+				unselectTarget(selectNum,selectStudent);
 					
 				// ダイアログを消す
 				document.getElementById("dialog").style.display="none";
@@ -158,7 +151,9 @@
 			const oldSelectObj=obj;
 			selectNum="";
 			selectStudent="";
-			setStudentInfoStatus(oldSelectNum,oldSelectObj);
+			if(oldSelectNum != null || oldSelectNum !=""){
+				setStudentInfoStatus(oldSelectNum,oldSelectObj);
+			}
 		}
 		
 		//-------------------
@@ -266,6 +261,93 @@
 				return maxBarLength;
 			}
 		}
+		//-------------------
+		// 時間関係の関数
+		//-------------------
+		function getMaxWaitingTime(handupStudentList){
+			max = 0;
+			if(handupStudentList != null && handupStudentList.length >0){
+				max = handupStudentList[0].waitingTimeBySecond;
+			}
+			return max;
+		}
+		
+		function getDisplayTime(hour,minute,second){
+			if(hour==0 && minute ==0 ){
+				return second+" 秒";
+			}else if(hour==0 && minute >0){
+				if(second ==0){
+					return minute+" 分";
+				}else{
+					return minute+" 分 "+second+" 秒";
+				}
+			}else{
+				if(minute ==0 && second ==0){
+					return hour+" 時間";
+				}else if(minute ==0 && second >0){
+					return hour+" 時間 "+second+" 秒";
+				}else if(minute >0 && second ==0){
+					return hour+" 時間 "+minute+" 分";
+				}else{
+					return hour+" 時間 "+minute+" 分 "+second+" 秒";
+				}
+			}
+		}
+		
+		function getDisplayTimeFromSecond(secondTime){
+			const hour = Math.floor(secondTime / 3600);
+			const minute = Math.floor((secondTime - hour * 3600) / 60);
+			const second = secondTime - hour * 3600 - minute * 60;
+			return getDisplayTime(hour,minute,second);
+		}
+		
+		function getMaxTime(maxWaitingTime){
+			if(maxWaitingTime <60){
+				return 60;
+			}else if(maxWaitingTime <300){
+				return 300;
+			}else if(maxWaitingTime <600){
+				return 600;
+			}else if(maxWaitingTime <1800){
+				return 1800;
+			}else if(maxWaitingTime <3600){
+				return 3600;
+			}else{
+				return 3600;
+			}
+		}
+		
+		function getBarColor(maxWaitingTime, time){
+			if(maxWaitingTime <60){
+				return "green";
+			}else if(maxWaitingTime <300){
+				return "orange";
+			}else if(maxWaitingTime <600){
+				return "pink";
+			}else if(maxWaitingTime <1800){
+				return "red";
+			}else if(maxWaitingTime <3600){
+				return "gray";
+			}else{
+				return "gray";
+			}
+		}
+		
+		function getBarLength(maxWaitingTime, time, maxBarLength){
+			if(maxWaitingTime <60){
+				return Math.floor(time/60*maxBarLength);
+			}else if(maxWaitingTime <300){
+				return Math.floor(time/300*maxBarLength);
+			}else if(maxWaitingTime <600){
+				return Math.floor(time/600*maxBarLength);
+			}else if(maxWaitingTime <1800){
+				return Math.floor(time/1800*maxBarLength);
+			}else if(maxWaitingTime <3600){
+				return Math.floor(time/3600*maxBarLength);
+			}else{
+				return maxBarLength;
+			}
+		}
 	
 		//-------------------
 		// タブクリック時の動作
@@ -285,7 +367,6 @@
 				studentElement.style.position="static";
 				studentElement.style.width="60px";
 				studentElement.style.height="60px";
-				
 				document.getElementById("pcname" + num).style.fontSize="15px";
 				
 				document.getElementById("priority" + num).style.position="relative";
@@ -351,6 +432,7 @@
 				studentElement.style.left="40px";
 				studentElement.style.width="150px";
 				studentElement.style.height="100px";
+
 				
 				document.getElementById("priority" + num).style.position="absolute";
 				document.getElementById("priority" + num).style.fontSize="30px";
@@ -420,7 +502,7 @@
 	<table id="senmon-seat-table">
 		<tr>
 			<td>
-				<div id="student801" class="student" class="student-senmon">
+				<div id="student801" class="student student-senmon">
 					<div id="pcname801" class="pcname"></div>
 					<div id="status801" class="status"></div>
 					<div id="priority801" class="prioroty"></div>
@@ -429,7 +511,7 @@
 				</div>
 			</td>
 			<td>
-				<div id="student802" class="student" class="student-senmon">
+				<div id="student802" class="student student-senmon">
 					<div id="pcname802" class="pcname"></div>
 					<div id="status802" class="status"></div>
 					<div id="priority802" class="prioroty"></div>
@@ -438,7 +520,7 @@
 				</div>
 			</td>
 			<td>
-				<div id="student803" class="student" class="student-senmon">
+				<div id="student803" class="student student-senmon">
 					<div id="pcname803" class="pcname"></div>
 					<div id="status803" class="status"></div>
 					<div id="priority803" class="prioroty"></div>
@@ -447,7 +529,7 @@
 				</div>
 			</td>
 			<td>
-				<div id="student804" class="student" class="student-senmon">
+				<div id="student804" class="student student-senmon">
 					<div id="pcname804" class="pcname"></div>
 					<div id="status804" class="status"></div>
 					<div id="priority804" class="prioroty"></div>
@@ -456,7 +538,7 @@
 				</div>
 			</td>
 			<td>
-				<div id="student805" class="student" class="student-senmon">
+				<div id="student805" class="student student-senmon">
 					<div id="pcname805" class="pcname"></div>
 					<div id="status805" class="status"></div>
 					<div id="priority805" class="prioroty"></div>
@@ -465,7 +547,7 @@
 				</div>
 			</td>
 			<td>
-				<div id="student806" class="student" class="student-senmon">
+				<div id="student806" class="student student-senmon">
 					<div id="pcname806" class="pcname"></div>
 					<div id="status806" class="status"></div>
 					<div id="priority806" class="prioroty"></div>
@@ -474,7 +556,7 @@
 				</div>
 			</td>
 			<td>
-				<div id="student807" class="student" class="student-senmon">
+				<div id="student807" class="student student-senmon">
 					<div id="pcname807" class="pcname"></div>
 					<div id="status807" class="status"></div>
 					<div id="priority807" class="prioroty"></div>
@@ -483,7 +565,7 @@
 				</div>
 			</td>
 			<td>
-				<div id="student808" class="student" class="student-senmon">
+				<div id="student808" class="student student-senmon">
 					<div id="pcname808" class="pcname"></div>
 					<div id="status808" class="status"></div>
 					<div id="priority808" class="prioroty"></div>
@@ -503,7 +585,7 @@
 				</div>
 			</td>
 			<td>
-				<div id="student810" class="student" class="student-senmon">
+				<div id="student810" class="student student-senmon">
 					<div id="pcname810" class="pcname"></div>
 					<div id="status810" class="status"></div>
 					<div id="priority810" class="prioroty"></div>
@@ -512,7 +594,7 @@
 				</div>
 			</td>
 			<td>
-				<div id="student811" class="student" class="student-senmon">
+				<div id="student811" class="student student-senmon">
 					<div id="pcname811" class="pcname"></div>
 					<div id="status811" class="status"></div>
 					<div id="priority811" class="prioroty"></div>
@@ -521,7 +603,7 @@
 				</div>
 			</td>
 			<td>
-				<div id="student812" class="student" class="student-senmon">
+				<div id="student812" class="student student-senmon">
 					<div id="pcname812" class="pcname"></div>
 					<div id="status812" class="status"></div>
 					<div id="priority812" class="prioroty"></div>
@@ -530,7 +612,7 @@
 				</div>
 			</td>
 			<td>
-				<div id="student813" class="student" class="student-senmon">
+				<div id="student813" class="student student-senmon">
 					<div id="pcname813" class="pcname"></div>
 					<div id="status813" class="status"></div>
 					<div id="priority813" class="prioroty"></div>
@@ -539,7 +621,7 @@
 				</div>
 			</td>
 			<td>
-				<div id="student814" class="student" class="student-senmon">
+				<div id="student814" class="student student-senmon">
 					<div id="pcname814" class="pcname"></div>
 					<div id="status814" class="status"></div>
 					<div id="priority814" class="prioroty"></div>
@@ -548,7 +630,7 @@
 				</div>
 			</td>
 			<td>
-				<div id="student815" class="student" class="student-senmon">
+				<div id="student815" class="student student-senmon">
 					<div id="pcname815" class="pcname"></div>
 					<div id="status815" class="status"></div>
 					<div id="priority815" class="prioroty"></div>
@@ -557,7 +639,7 @@
 				</div>
 			</td>
 			<td>
-				<div id="student816" class="student" class="student-senmon">
+				<div id="student816" class="student student-senmon">
 					<div id="pcname816" class="pcname"></div>
 					<div id="status816" class="status"></div>
 					<div id="priority816" class="prioroty"></div>
@@ -568,7 +650,7 @@
 		</tr>
 		<tr>
 			<td>
-				<div id="student817" class="student" class="student-senmon">
+				<div id="student817" class="student student-senmon">
 					<div id="pcname817" class="pcname"></div>
 					<div id="status817" class="status"></div>
 					<div id="priority817" class="prioroty"></div>
@@ -577,7 +659,7 @@
 				</div>
 			</td>
 			<td>
-				<div id="student818" class="student" class="student-senmon">
+				<div id="student818" class="student student-senmon">
 					<div id="pcname818" class="pcname"></div>
 					<div id="status818" class="status"></div>
 					<div id="priority818" class="prioroty"></div>
@@ -586,7 +668,7 @@
 				</div>
 			</td>
 			<td>
-				<div id="student819" class="student" class="student-senmon">
+				<div id="student819" class="student student-senmon">
 					<div id="pcname819" class="pcname"></div>
 					<div id="status819" class="status"></div>
 					<div id="priority819" class="prioroty"></div>
@@ -595,7 +677,7 @@
 				</div>
 			</td>
 			<td>
-				<div id="student820" class="student" class="student-senmon">
+				<div id="student820" class="student student-senmon">
 					<div id="pcname820" class="pcname"></div>
 					<div id="status820" class="status"></div>
 					<div id="priority820" class="prioroty"></div>
@@ -604,7 +686,7 @@
 				</div>
 			</td>
 			<td>
-				<div id="student821" class="student" class="student-senmon">
+				<div id="student821" class="student student-senmon">
 					<div id="pcname821" class="pcname"></div>
 					<div id="status821" class="status"></div>
 					<div id="priority821" class="prioroty"></div>
@@ -613,7 +695,7 @@
 				</div>
 			</td>
 			<td>
-				<div id="student822" class="student" class="student-senmon">
+				<div id="student822" class="student student-senmon">
 					<div id="pcname822" class="pcname"></div>
 					<div id="status822" class="status"></div>
 					<div id="priority822" class="prioroty"></div>
@@ -622,7 +704,7 @@
 				</div>
 			</td>
 			<td>
-				<div id="student823" class="student" class="student-senmon">
+				<div id="student823" class="student student-senmon">
 					<div id="pcname823" class="pcname"></div>
 					<div id="status823" class="status"></div>
 					<div id="priority823" class="prioroty"></div>
@@ -631,7 +713,7 @@
 				</div>
 			</td>
 			<td>
-				<div id="student824" class="student" class="student-senmon">
+				<div id="student824" class="student student-senmon">
 					<div id="pcname824" class="pcname"></div>
 					<div id="status824" class="status"></div>
 					<div id="priority824" class="prioroty"></div>
@@ -642,7 +724,7 @@
 		</tr>
 		<tr>
 			<td>
-				<div id="student825" class="student" class="student-senmon" style="visibility: hidden;">
+				<div id="student825" class="student student-senmon" style="visibility: hidden;">
 					<div id="pcname825" class="pcname"></div>
 					<div id="status825" class="status"></div>
 					<div id="priority825" class="prioroty"></div>
@@ -651,7 +733,7 @@
 				</div>
 			</td>
 			<td>
-				<div id="student826" class="student" class="student-senmon">
+				<div id="student826" class="student student-senmon">
 					<div id="pcname826" class="pcname"></div>
 					<div id="status826" class="status"></div>
 					<div id="priority826" class="prioroty"></div>
@@ -660,7 +742,7 @@
 				</div>
 			</td>
 			<td>
-				<div id="student827" class="student" class="student-senmon">
+				<div id="student827" class="student student-senmon">
 					<div id="pcname827" class="pcname"></div>
 					<div id="status827" class="status"></div>
 					<div id="priority827" class="prioroty"></div>
@@ -669,7 +751,7 @@
 				</div>
 			</td>
 			<td>
-				<div id="student828" class="student" class="student-senmon">
+				<div id="student828" class="student student-senmon">
 					<div id="pcname828" class="pcname"></div>
 					<div id="status828" class="status"></div>
 					<div id="priority828" class="prioroty"></div>
@@ -678,7 +760,7 @@
 				</div>
 			</td>
 			<td>
-				<div id="student829" class="student" class="student-senmon">
+				<div id="student829" class="student student-senmon">
 					<div id="pcname829" class="pcname"></div>
 					<div id="status829" class="status"></div>
 					<div id="priority829" class="prioroty"></div>
@@ -687,7 +769,7 @@
 				</div>
 			</td>
 			<td>
-				<div id="student830" class="student" class="student-senmon">
+				<div id="student830" class="student student-senmon">
 					<div id="pcname830" class="pcname"></div>
 					<div id="status830" class="status"></div>
 					<div id="priority830" class="prioroty"></div>
@@ -696,7 +778,7 @@
 				</div>
 			</td>
 			<td>
-				<div id="student831" class="student" class="student-senmon">
+				<div id="student831" class="student student-senmon">
 					<div id="pcname831" class="pcname"></div>
 					<div id="status831" class="status"></div>
 					<div id="priority831" class="prioroty"></div>
@@ -705,7 +787,7 @@
 				</div>
 			</td>
 			<td>
-				<div id="student832" class="student" class="student-senmon">
+				<div id="student832" class="student student-senmon">
 					<div id="pcname832" class="pcname"></div>
 					<div id="status832" class="status"></div>
 					<div id="priority832" class="prioroty"></div>
@@ -716,7 +798,7 @@
 		</tr>
 		<tr>
 			<td>
-				<div id="student833" class="student" class="student-senmon">
+				<div id="student833" class="student student-senmon">
 					<div id="pcname833" class="pcname"></div>
 					<div id="status833" class="status"></div>
 					<div id="priority833" class="prioroty"></div>
@@ -725,7 +807,7 @@
 				</div>
 			</td>
 			<td>
-				<div id="student834" class="student" class="student-senmon">
+				<div id="student834" class="student student-senmon">
 					<div id="pcname834" class="pcname"></div>
 					<div id="status834" class="status"></div>
 					<div id="priority834" class="prioroty"></div>
@@ -734,7 +816,7 @@
 				</div>
 			</td>
 			<td>
-				<div id="student835" class="student" class="student-senmon">
+				<div id="student835" class="student student-senmon">
 					<div id="pcname835" class="pcname"></div>
 					<div id="status835" class="status"></div>
 					<div id="priority835" class="prioroty"></div>
@@ -743,7 +825,7 @@
 				</div>
 			</td>
 			<td>
-				<div id="student836" class="student" class="student-senmon">
+				<div id="student836" class="student student-senmon">
 					<div id="pcname836" class="pcname"></div>
 					<div id="status836" class="status"></div>
 					<div id="priority836" class="prioroty"></div>
@@ -752,7 +834,7 @@
 				</div>
 			</td>
 			<td>
-				<div id="student837" class="student" class="student-senmon">
+				<div id="student837" class="student student-senmon">
 					<div id="pcname837" class="pcname"></div>
 					<div id="status837" class="status"></div>
 					<div id="priority837" class="prioroty"></div>
@@ -761,7 +843,7 @@
 				</div>
 			</td>
 			<td>
-				<div id="student838" class="student" class="student-senmon">
+				<div id="student838" class="student student-senmon">
 					<div id="pcname838" class="pcname"></div>
 					<div id="status838" class="status"></div>
 					<div id="priority838" class="prioroty"></div>
@@ -770,7 +852,7 @@
 				</div>
 			</td>
 			<td>
-				<div id="student839" class="student" class="student-senmon">
+				<div id="student839" class="student student-senmon">
 					<div id="pcname839" class="pcname"></div>
 					<div id="status839" class="status"></div>
 					<div id="priority839" class="prioroty"></div>
@@ -779,7 +861,7 @@
 				</div>
 			</td>
 			<td>
-				<div id="student840" class="student" class="student-senmon">
+				<div id="student840" class="student student-senmon">
 					<div id="pcname840" class="pcname"></div>
 					<div id="status840" class="status"></div>
 					<div id="priority840" class="prioroty"></div>
@@ -790,7 +872,7 @@
 		</tr>
 		<tr>
 			<td>
-				<div id="student841" class="student" class="student-senmon">
+				<div id="student841" class="student student-senmon">
 					<div id="pcname841" class="pcname"></div>
 					<div id="status841" class="status"></div>
 					<div id="priority841" class="prioroty"></div>
@@ -799,7 +881,7 @@
 				</div>
 			</td>
 			<td>
-				<div id="student842" class="student" class="student-senmon">
+				<div id="student842" class="student student-senmon">
 					<div id="pcname842" class="pcname"></div>
 					<div id="status842" class="status"></div>
 					<div id="priority842" class="prioroty"></div>
@@ -808,7 +890,7 @@
 				</div>
 			</td>
 			<td>
-				<div id="student843" class="student" class="student-senmon">
+				<div id="student843" class="student student-senmon">
 					<div id="pcname843" class="pcname"></div>
 					<div id="status843" class="status"></div>
 					<div id="priority843" class="prioroty"></div>
@@ -817,7 +899,7 @@
 				</div>
 			</td>
 			<td>
-				<div id="student844" class="student" class="student-senmon">
+				<div id="student844" class="student student-senmon">
 					<div id="pcname844" class="pcname"></div>
 					<div id="status844" class="status"></div>
 					<div id="priority844" class="prioroty"></div>
@@ -826,7 +908,7 @@
 				</div>
 			</td>
 			<td>
-				<div id="student845" class="student" class="student-senmon">
+				<div id="student845" class="student student-senmon">
 					<div id="pcname845" class="pcname"></div>
 					<div id="status845" class="status"></div>
 					<div id="priority845" class="prioroty"></div>
@@ -835,7 +917,7 @@
 				</div>
 			</td>
 			<td>
-				<div id="student846" class="student" class="student-senmon">
+				<div id="student846" class="student student-senmon">
 					<div id="pcname846" class="pcname"></div>
 					<div id="status846" class="status"></div>
 					<div id="priority846" class="prioroty"></div>
@@ -844,7 +926,7 @@
 				</div>
 			</td>
 			<td>
-				<div id="student847" class="student" class="student-senmon">
+				<div id="student847" class="student student-senmon">
 					<div id="pcname847" class="pcname"></div>
 					<div id="status847" class="status"></div>
 					<div id="priority847" class="prioroty"></div>
@@ -853,7 +935,7 @@
 				</div>
 			</td>
 			<td>
-				<div id="student848" class="student" class="student-senmon">
+				<div id="student848" class="student student-senmon">
 					<div id="pcname848" class="pcname"></div>
 					<div id="status848" class="status"></div>
 					<div id="priority848" class="prioroty"></div>
@@ -864,7 +946,7 @@
 		</tr>
 		<tr>
 			<td>
-				<div id="student849" class="student" class="student-senmon">
+				<div id="student849" class="student student-senmon">
 					<div id="pcname849" class="pcname"></div>
 					<div id="status849" class="status"></div>
 					<div id="priority849" class="prioroty"></div>
@@ -873,7 +955,7 @@
 				</div>
 			</td>
 			<td>
-				<div id="student850" class="student" class="student-senmon">
+				<div id="student850" class="student student-senmon">
 					<div id="pcname850" class="pcname"></div>
 					<div id="status850" class="status"></div>
 					<div id="priority850" class="prioroty"></div>
@@ -882,7 +964,7 @@
 				</div>
 			</td>
 			<td>
-				<div id="student851" class="student" class="student-senmon">
+				<div id="student851" class="student student-senmon">
 					<div id="pcname851" class="pcname"></div>
 					<div id="status851" class="status"></div>
 					<div id="priority851" class="prioroty"></div>
@@ -891,7 +973,7 @@
 				</div>
 			</td>
 			<td>
-				<div id="student852" class="student" class="student-senmon">
+				<div id="student852" class="student student-senmon">
 					<div id="pcname852" class="pcname"></div>
 					<div id="status852" class="status"></div>
 					<div id="priority852" class="prioroty"></div>
@@ -900,7 +982,7 @@
 				</div>
 			</td>
 			<td>
-				<div id="student853" class="student" class="student-senmon">
+				<div id="student853" class="student student-senmon">
 					<div id="pcname853" class="pcname"></div>
 					<div id="status853" class="status"></div>
 					<div id="priority853" class="prioroty"></div>
@@ -909,7 +991,7 @@
 				</div>
 			</td>
 			<td>
-				<div id="student854" class="student" class="student-senmon">
+				<div id="student854" class="student student-senmon">
 					<div id="pcname854" class="pcname"></div>
 					<div id="status854" class="status"></div>
 					<div id="priority854" class="prioroty"></div>
@@ -918,7 +1000,7 @@
 				</div>
 			</td>
 			<td>
-				<div id="student855" class="student" class="student-senmon">
+				<div id="student855" class="student student-senmon">
 					<div id="pcname855" class="pcname"></div>
 					<div id="status855" class="status"></div>
 					<div id="priority855" class="prioroty"></div>
@@ -927,7 +1009,7 @@
 				</div>
 			</td>
 			<td>
-				<div id="student856" class="student" class="student-senmon">
+				<div id="student856" class="student student-senmon">
 					<div id="pcname856" class="pcname"></div>
 					<div id="status856" class="status"></div>
 					<div id="priority856" class="prioroty"></div>
@@ -938,7 +1020,7 @@
 		</tr>
 		<tr>
 			<td>
-				<div id="student857" class="student" class="student-senmon">
+				<div id="student857" class="student student-senmon">
 					<div id="pcname857" class="pcname"></div>
 					<div id="status857" class="status"></div>
 					<div id="priority857" class="prioroty"></div>
@@ -947,7 +1029,7 @@
 				</div>
 			</td>
 			<td>
-				<div id="student858" class="student" class="student-senmon">
+				<div id="student858" class="student student-senmon">
 					<div id="pcname858" class="pcname"></div>
 					<div id="status858" class="status"></div>
 					<div id="priority858" class="prioroty"></div>
@@ -956,7 +1038,7 @@
 				</div>
 			</td>
 			<td>
-				<div id="student859" class="student" class="student-senmon">
+				<div id="student859" class="student student-senmon">
 					<div id="pcname859" class="pcname"></div>
 					<div id="status859" class="status"></div>
 					<div id="priority859" class="prioroty"></div>
@@ -965,7 +1047,7 @@
 				</div>
 			</td>
 			<td>
-				<div id="student860" class="student" class="student-senmon">
+				<div id="student860" class="student student-senmon">
 					<div id="pcname860" class="pcname"></div>
 					<div id="status860" class="status"></div>
 					<div id="priority860" class="prioroty"></div>
@@ -974,7 +1056,7 @@
 				</div>
 			</td>
 			<td>
-				<div id="student861" class="student" class="student-senmon">
+				<div id="student861" class="student student-senmon">
 					<div id="pcname861" class="pcname"></div>
 					<div id="status861" class="status"></div>
 					<div id="priority861" class="prioroty"></div>
@@ -983,7 +1065,7 @@
 				</div>
 			</td>
 			<td>
-				<div id="student862" class="student" class="student-senmon">
+				<div id="student862" class="student student-senmon">
 					<div id="pcname862" class="pcname"></div>
 					<div id="status862" class="status"></div>
 					<div id="priority862" class="prioroty"></div>
@@ -992,7 +1074,7 @@
 				</div>
 			</td>
 			<td>
-				<div id="student863" class="student" class="student-senmon">
+				<div id="student863" class="student student-senmon">
 					<div id="pcname863" class="pcname"></div>
 					<div id="status863" class="status"></div>
 					<div id="priority863" class="prioroty"></div>
@@ -1001,7 +1083,7 @@
 				</div>
 			</td>
 			<td>
-				<div id="student864" class="student" class="student-senmon">
+				<div id="student864" class="student student-senmon">
 					<div id="pcname864" class="pcname"></div>
 					<div id="status864" class="status"></div>
 					<div id="priority864" class="prioroty"></div>
@@ -1012,7 +1094,7 @@
 		</tr>
 		<tr>
 			<td>
-				<div id="student866" class="student" class="student-senmon">
+				<div id="student866" class="student student-senmon">
 					<div id="pcname866" class="pcname"></div>
 					<div id="status866" class="status"></div>
 					<div id="priority866" class="prioroty"></div>
@@ -1021,7 +1103,7 @@
 				</div>
 			</td>
 			<td>
-				<div id="student867" class="student" class="student-senmon">
+				<div id="student867" class="student student-senmon">
 					<div id="pcname867" class="pcname"></div>
 					<div id="status867" class="status"></div>
 					<div id="priority867" class="prioroty"></div>
@@ -1030,7 +1112,7 @@
 				</div>
 			</td>
 			<td>
-				<div id="student868" class="student" class="student-senmon">
+				<div id="student868" class="student student-senmon">
 					<div id="pcname868" class="pcname"></div>
 					<div id="status868" class="status"></div>
 					<div id="priority868" class="prioroty"></div>
@@ -1039,7 +1121,7 @@
 				</div>
 			</td>
 			<td>
-				<div id="student869" class="student" class="student-senmon">
+				<div id="student869" class="student student-senmon">
 					<div id="pcname869" class="pcname"></div>
 					<div id="status869" class="status"></div>
 					<div id="priority869" class="prioroty"></div>
@@ -1048,7 +1130,7 @@
 				</div>
 			</td>
 			<td>
-				<div id="student870" class="student" class="student-senmon">
+				<div id="student870" class="student student-senmon">
 					<div id="pcname870" class="pcname"></div>
 					<div id="status870" class="status"></div>
 					<div id="priority870" class="prioroty"></div>
@@ -1057,7 +1139,7 @@
 				</div>
 			</td>
 			<td>
-				<div id="student871" class="student" class="student-senmon">
+				<div id="student871" class="student student-senmon">
 					<div id="pcname871" class="pcname"></div>
 					<div id="status871" class="status"></div>
 					<div id="priority871" class="prioroty"></div>
@@ -1066,7 +1148,7 @@
 				</div>
 			</td>
 			<td>
-				<div id="student865" class="student" class="student-senmon" style="visibility: hidden;">
+				<div id="student865" class="student student-senmon" style="visibility: hidden;">
 					<div id="pcname865" class="pcname"></div>
 					<div id="status865" class="status"></div>
 					<div id="priority865" class="prioroty"></div>
@@ -1083,7 +1165,7 @@
 		<table id="kiso-seat-table">
 		<tr>
 			<td>
-				<div id="student701" class="student" class="student-kiso">
+				<div id="student701" class="student student-kiso">
 					<div id="pcname701" class="pcname"></div>
 					<div id="status701" class="status"></div>
 					<div id="priority701" class="prioroty"></div>
@@ -1092,7 +1174,7 @@
 				</div>
 			</td>
 			<td>
-				<div id="student702" class="student" class="student-kiso">
+				<div id="student702" class="student student-kiso">
 					<div id="pcname702" class="pcname"></div>
 					<div id="status702" class="status"></div>
 					<div id="priority702" class="prioroty"></div>
@@ -1101,7 +1183,7 @@
 				</div>
 			</td>
 			<td>
-				<div id="student703" class="student" class="student-kiso">
+				<div id="student703" class="student student-kiso">
 					<div id="pcname703" class="pcname"></div>
 					<div id="status703" class="status"></div>
 					<div id="priority703" class="prioroty"></div>
@@ -1110,7 +1192,7 @@
 				</div>
 			</td>
 			<td>
-				<div id="student704" class="student" class="student-kiso">
+				<div id="student704" class="student student-kiso">
 					<div id="pcname704" class="pcname"></div>
 					<div id="status704" class="status"></div>
 					<div id="priority704" class="prioroty"></div>
@@ -1119,7 +1201,7 @@
 				</div>
 			</td>
 			<td>
-				<div id="student705" class="student" class="student-kiso">
+				<div id="student705" class="student student-kiso">
 					<div id="pcname705" class="pcname"></div>
 					<div id="status705" class="status"></div>
 					<div id="priority705" class="prioroty"></div>
@@ -1131,7 +1213,7 @@
 		<td></td>
 		</tr><tr>
 			<td>
-				<div id="student706" class="student" class="student-kiso">
+				<div id="student706" class="student student-kiso">
 					<div id="pcname706" class="pcname"></div>
 					<div id="status706" class="status"></div>
 					<div id="priority706" class="prioroty"></div>
@@ -1140,7 +1222,7 @@
 				</div>
 			</td>
 			<td>
-				<div id="student707" class="student" class="student-kiso">
+				<div id="student707" class="student student-kiso">
 					<div id="pcname707" class="pcname"></div>
 					<div id="status707" class="status"></div>
 					<div id="priority707" class="prioroty"></div>
@@ -1149,7 +1231,7 @@
 				</div>
 			</td>
 			<td>
-				<div id="student708" class="student" class="student-kiso">
+				<div id="student708" class="student student-kiso">
 					<div id="pcname708" class="pcname"></div>
 					<div id="status708" class="status"></div>
 					<div id="priority708" class="prioroty"></div>
@@ -1158,7 +1240,7 @@
 				</div>
 			</td>
 			<td>
-				<div id="student709" class="student" class="student-kiso">
+				<div id="student709" class="student student-kiso">
 					<div id="pcname709" class="pcname"></div>
 					<div id="status709" class="status"></div>
 					<div id="priority709" class="prioroty"></div>
@@ -1169,7 +1251,7 @@
 			<td></td>
 			<td></td>
 			<td>
-				<div id="student710" class="student" class="student-kiso">
+				<div id="student710" class="student student-kiso">
 					<div id="pcname710" class="pcname"></div>
 					<div id="status710" class="status"></div>
 					<div id="priority710" class="prioroty"></div>
@@ -1179,7 +1261,7 @@
 			</td>
 		</tr><tr>
 			<td>
-				<div id="student711" class="student" class="student-kiso">
+				<div id="student711" class="student student-kiso">
 					<div id="pcname711" class="pcname"></div>
 					<div id="status711" class="status"></div>
 					<div id="priority711" class="prioroty"></div>
@@ -1188,7 +1270,7 @@
 				</div>
 			</td>
 			<td>
-				<div id="student712" class="student" class="student-kiso">
+				<div id="student712" class="student student-kiso">
 					<div id="pcname712" class="pcname"></div>
 					<div id="status712" class="status"></div>
 					<div id="priority712" class="prioroty"></div>
@@ -1197,7 +1279,7 @@
 				</div>
 			</td>
 			<td>
-				<div id="student713" class="student" class="student-kiso">
+				<div id="student713" class="student student-kiso">
 					<div id="pcname713" class="pcname"></div>
 					<div id="status713" class="status"></div>
 					<div id="priority713" class="prioroty"></div>
@@ -1206,7 +1288,7 @@
 				</div>
 			</td>
 			<td>
-				<div id="student714" class="student" class="student-kiso">
+				<div id="student714" class="student student-kiso">
 					<div id="pcname714" class="pcname"></div>
 					<div id="status714" class="status"></div>
 					<div id="priority714" class="prioroty"></div>
@@ -1215,7 +1297,7 @@
 				</div>
 			</td>
 			<td>
-				<div id="student715" class="student" class="student-kiso">
+				<div id="student715" class="student student-kiso">
 					<div id="pcname715" class="pcname"></div>
 					<div id="status715" class="status"></div>
 					<div id="priority715" class="prioroty"></div>
@@ -1227,7 +1309,7 @@
 			<td></td>
 		</tr><tr>
 			<td>
-				<div id="student716" class="student" class="student-kiso">
+				<div id="student716" class="student student-kiso">
 					<div id="pcname716" class="pcname"></div>
 					<div id="status716" class="status"></div>
 					<div id="priority716" class="prioroty"></div>
@@ -1236,7 +1318,7 @@
 				</div>
 			</td>
 			<td>
-				<div id="student717" class="student" class="student-kiso">
+				<div id="student717" class="student student-kiso">
 					<div id="pcname717" class="pcname"></div>
 					<div id="status717" class="status"></div>
 					<div id="priority717" class="prioroty"></div>
@@ -1245,7 +1327,7 @@
 				</div>
 			</td>
 			<td>
-				<div id="student718" class="student" class="student-kiso">
+				<div id="student718" class="student student-kiso">
 					<div id="pcname718" class="pcname"></div>
 					<div id="status718" class="status"></div>
 					<div id="priority718" class="prioroty"></div>
@@ -1254,7 +1336,7 @@
 				</div>
 			</td>
 			<td>
-				<div id="student719" class="student" class="student-kiso">
+				<div id="student719" class="student student-kiso">
 					<div id="pcname719" class="pcname"></div>
 					<div id="status719" class="status"></div>
 					<div id="priority719" class="prioroty"></div>
@@ -1265,7 +1347,7 @@
 			<td></td>
 			<td></td>
 			<td>
-				<div id="student720" class="student" class="student-kiso">
+				<div id="student720" class="student student-kiso">
 					<div id="pcname720" class="pcname"></div>
 					<div id="status720" class="status"></div>
 					<div id="priority720" class="prioroty"></div>
@@ -1275,7 +1357,7 @@
 			</td>
 		</tr><tr>
 			<td>
-				<div id="student721" class="student" class="student-kiso">
+				<div id="student721" class="student student-kiso">
 					<div id="pcname721" class="pcname"></div>
 					<div id="status721" class="status"></div>
 					<div id="priority721" class="prioroty"></div>
@@ -1284,7 +1366,7 @@
 				</div>
 			</td>
 			<td>
-				<div id="student722" class="student" class="student-kiso">
+				<div id="student722" class="student student-kiso">
 					<div id="pcname722" class="pcname"></div>
 					<div id="status722" class="status"></div>
 					<div id="priority722" class="prioroty"></div>
@@ -1293,7 +1375,7 @@
 				</div>
 			</td>
 			<td>
-				<div id="student723" class="student" class="student-kiso">
+				<div id="student723" class="student student-kiso">
 					<div id="pcname723" class="pcname"></div>
 					<div id="status723" class="status"></div>
 					<div id="priority723" class="prioroty"></div>
@@ -1302,7 +1384,7 @@
 				</div>
 			</td>
 			<td>
-				<div id="student724" class="student" class="student-kiso">
+				<div id="student724" class="student student-kiso">
 					<div id="pcname724" class="pcname"></div>
 					<div id="status724" class="status"></div>
 					<div id="priority724" class="prioroty"></div>
@@ -1311,7 +1393,7 @@
 				</div>
 			</td>
 			<td>
-				<div id="student725" class="student" class="student-kiso">
+				<div id="student725" class="student student-kiso">
 					<div id="pcname725" class="pcname"></div>
 					<div id="status725" class="status"></div>
 					<div id="priority725" class="prioroty"></div>

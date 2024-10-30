@@ -5,7 +5,6 @@
 	<title>サポートシステム</title>
 	<link rel="stylesheet" href="./index.css">
 
-
 	</head>
 	<body>
 		<div id="dialog-up">手を挙げる</div>
@@ -20,6 +19,7 @@
 		</div>
 		<div id="chart">
 		</div>
+		<div id="unitTime"></div>
 
 	<script>
 		var ws;
@@ -93,13 +93,6 @@
 			drawChart(student,handupStudentList);
 		}
 		
-		function getMaxWaitingTime(handupStudentList){
-			max = 0;
-			if(handupStudentList != null && handupStudentList.length >0){
-				max = handupStudentList[0].waitingTimeBySecond;
-			}
-			return max;
-		}
 
 		//-------------------
 		// クリック時の動作設定
@@ -161,25 +154,12 @@
 		function setStudentInfoTime(student){
 			if(student.helpStatus == "Troubled"){
 				const time = student.waitingTimeBySecond;
-				const hour = Math.floor(time / 3600);
-				const minute = Math.floor((time - hour * 3600) / 60);
-				const second = time - hour * 3600 - minute * 60;
-			
-				document.getElementById("time").innerText = getDisplayTime(hour,minute,second);
+				document.getElementById("time").innerText = getDisplayTimeFromSecond(time);
 			}else{
 				document.getElementById("time").innerText = "";
 			}
 		}
 		
-		function getDisplayTime(hour,minute,second){
-			if(hour==0 && minute ==0 ){
-				return second+" 秒";
-			}else if(hour==0 && minute >0){
-				return minute+" 分 "+second+" 秒";
-			}else if(hour>0){
-				return hour+" 時 "+minute+" 分 "+second+" 秒";
-			}
-		}
 
 		function setStudentInfoTimebar(student){
 			const time = student.waitingTimeBySecond;
@@ -195,6 +175,62 @@
 				document.getElementById("timebar").style.display="none";
 			}
 		}
+
+		//-------------------
+		// 時間関係の関数
+		//-------------------
+		function getMaxWaitingTime(handupStudentList){
+			max = 0;
+			if(handupStudentList != null && handupStudentList.length >0){
+				max = handupStudentList[0].waitingTimeBySecond;
+			}
+			return max;
+		}
+		
+		function getDisplayTime(hour,minute,second){
+			if(hour==0 && minute ==0 ){
+				return second+" 秒";
+			}else if(hour==0 && minute >0){
+				if(second ==0){
+					return minute+" 分";
+				}else{
+					return minute+" 分 "+second+" 秒";
+				}
+			}else{
+				if(minute ==0 && second ==0){
+					return hour+" 時間";
+				}else if(minute ==0 && second >0){
+					return hour+" 時間 "+second+" 秒";
+				}else if(minute >0 && second ==0){
+					return hour+" 時間 "+minute+" 分";
+				}else{
+					return hour+" 時間 "+minute+" 分 "+second+" 秒";
+				}
+			}
+		}
+		
+		function getDisplayTimeFromSecond(secondTime){
+			const hour = Math.floor(secondTime / 3600);
+			const minute = Math.floor((secondTime - hour * 3600) / 60);
+			const second = secondTime - hour * 3600 - minute * 60;
+			return getDisplayTime(hour,minute,second);
+		}
+		
+		function getMaxTime(maxWaitingTime){
+			if(maxWaitingTime <60){
+				return 60;
+			}else if(maxWaitingTime <300){
+				return 300;
+			}else if(maxWaitingTime <600){
+				return 600;
+			}else if(maxWaitingTime <1800){
+				return 1800;
+			}else if(maxWaitingTime <3600){
+				return 3600;
+			}else{
+				return 3600;
+			}
+		}
 		
 		function getBarColor(maxWaitingTime, time){
 			if(maxWaitingTime <60){
@@ -206,9 +242,9 @@
 			}else if(maxWaitingTime <1800){
 				return "red";
 			}else if(maxWaitingTime <3600){
-				return "black";
+				return "gray";
 			}else{
-				return "black";
+				return "gray";
 			}
 		}
 		
@@ -228,15 +264,25 @@
 			}
 		}
 		
+		//-------------------
+		// グラフ描画
+		//-------------------
 		function drawChart(student,handupStudentList){
+			var chartElement = document.getElementById("chart");
 			if(handupStudentList == null || handupStudentList.length==0){
+				chartElement.style.display="none";
 				return;
 			}
-			var chartElement = document.getElementById("chart");
+			chartElement.style.display="block";
 			clearChildElement(chartElement);
 			addChildOrderElement(chartElement,handupStudentList);
 			addChildBarElement(chartElement,handupStudentList);
 			chartElement.style.height=(handupStudentList.length*25)+"px";
+			
+			const unitElement = document.getElementById("unitTime");
+			const unitTime=getDisplayTimeFromSecond(getMaxTime(maxWaitingTime));
+			unitElement.innerText="("+unitTime+")";
+
 		}
 		
 		function clearChildElement(chartElement){
@@ -251,12 +297,20 @@
 				orderElement.setAttribute("id","rank"+(i+1));
 				orderElement.setAttribute("class","rank");
 				orderElement.style.position ="absolute"
-				orderElement.style.top =10+i*25+"px";
 				orderElement.style.left = "-30px"
 				orderElement.style.width= "20px";
 				orderElement.style.height = "20px";
 				orderElement.style.textAlign="right"
 				orderElement.innerText=(i+1);
+				if(student.handPriority == i+1){
+					orderElement.style.top = 6+i*25+"px";
+					orderElement.style.fontSize="20px";
+					orderElement.style.color="blue";
+				}else{
+					orderElement.style.top =10+i*25+"px";
+					orderElement.style.fontSize="15px";
+					orderElement.style.color="black";
+				}
 				chartElement.appendChild(orderElement);
 			}
 		}

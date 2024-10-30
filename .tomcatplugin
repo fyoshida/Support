@@ -6,7 +6,7 @@
     <reloadable>true</reloadable>
     <redirectLogger>false</redirectLogger>
     <updateXml>true</updateXml>
-    <warLocation></warLocation>
+    <warLocation>D:\Users\fyoshidalocal\Desktop\Support.war</warLocation>
     <extraInfo></extraInfo>
     <mavenClasspath>false</mavenClasspath>
     <webPath>/Support</webPath>

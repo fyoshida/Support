@@ -3,6 +3,7 @@ package websocket;
 import java.io.IOException;
 import java.util.List;
 import java.util.Map;
+import java.util.Map.Entry;
 import java.util.Optional;
 
 import javax.websocket.EndpointConfig;
@@ -60,7 +61,7 @@ public class WebsocketForStudent {
 		}
 
 		broadcastStateForTa();
-		broadcastStateForStudents(session);
+		broadcastStateForStudents();
 		
 		return 	ResponseHelper.getJsonForStudent(student,WebsocketForTA.studentManager.getHandUpStudentList());
 
@@ -86,11 +87,16 @@ public class WebsocketForStudent {
 	}
 
 	
-	private void broadcastStateForStudents(Session client) throws JsonProcessingException {
+	private void broadcastStateForStudents() throws JsonProcessingException {
 		List<Student> handupStudentList=WebsocketForTA.studentManager.getHandUpStudentList();
 
 		Map<Student,String> jsonMap=ResponseHelper.getJsonListForStudent(WebsocketForTA.studentSessionMap.keySet(), handupStudentList);
-		jsonMap.forEach((session,json) ->sendMessage(WebsocketForTA.studentSessionMap.get(session),json));
+		for(Entry<Student,String> entry: jsonMap.entrySet()) {
+			Student student = entry.getKey();
+			String json = entry.getValue();
+			Session session = WebsocketForTA.studentSessionMap.get(student);
+			sendMessage(session,json);
+		}
 	}
 
 	

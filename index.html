@@ -31,7 +31,8 @@
 			.then(data => {
 				//ws = new WebSocket("ws://localhost/Support/websocket/_administrator");
 				//        const ws = new WebSocket("ws://localhost/Support/websocket/teacher);-->
-				ws = new WebSocket("ws://localhost/Support/websocket");
+				// ws = new WebSocket("ws://localhost/Support/websocket");
+				ws = new WebSocket("ws://dashboard.nagaokaut.ac.jp/Support/websocket");
 				ws.onopen = () => {
 					//    		ws.send('Hello from JavaScript client!');
 					//            console.log("WebSocket connection opened.");
@@ -85,12 +86,14 @@
 				setStudentInfoTime(student);
 				setStudentInfoTimebar(student);
 			}
+			if(handupStudentList != null){
 			for (var i = 0; i < handupStudentList.length; i++) {
 				if (handupStudentList[i].helpStatus == "Troubled") {
 					handupStudentList[i].waitingTimeBySecond++;
 				}
 			}
 			drawChart(student,handupStudentList);
+			}
 		}
 		
 

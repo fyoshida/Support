@@ -1,9 +1,5 @@
 package websocket;
 
-import java.io.IOException;
-import java.util.List;
-import java.util.Map;
-import java.util.Map.Entry;
 import java.util.Optional;
 
 import javax.websocket.EndpointConfig;
@@ -32,38 +28,38 @@ public class WebsocketForStudent {
 	
 		String strIpAddress = (String) config.getUserProperties().get("IpAddress");
 		clientIpAddress=new IpAddress(strIpAddress);
-		clientIpAddress=new IpAddress("133.44.118.158");
+		clientIpAddress=new IpAddress("133.44.118.158"); // 一時的に設定
 
-		Optional<Student> optStudent = WebsocketForTA.studentManager.getStudent(clientIpAddress);
+		Optional<Student> optStudent = WebsocketForAdministrator.studentManager.getStudent(clientIpAddress);
 		if (optStudent.isEmpty()) {
 			return ;
 		}
 		student = optStudent.get();
 		
-		WebsocketForTA.studentSessionMap.put(student, session);
+		WebsocketForAdministrator.studentSessionMap.put(student, session);
 
-		String jsonText = JsonHelper.getJsonForStudent(student,WebsocketForTA.studentManager.getHandUpStudentList());
-		sendMessage(session,jsonText);
+		String jsonText = JsonHelper.getJsonForStudent(student,WebsocketForAdministrator.studentManager.getHandUpStudentList());
+		WebsocketForAdministrator.sendMessage(session,jsonText);
 	}
 	
 	@OnMessage
 	public String onMessage(String message, Session session) throws JsonProcessingException {
 		switch(message) {
 		case "None":
-			WebsocketForTA.studentManager.handDown(clientIpAddress);
+			WebsocketForAdministrator.studentManager.handDown(clientIpAddress);
 			break;
 		case "Troubled":
-			WebsocketForTA.studentManager.handUp(clientIpAddress);
+			WebsocketForAdministrator.studentManager.handUp(clientIpAddress);
 			break;
 		case "Supporting":
-			WebsocketForTA.studentManager.supporting(clientIpAddress);
+			WebsocketForAdministrator.studentManager.supporting(clientIpAddress);
 			break;
 		}
 
-		broadcastStateForTa();
-		broadcastStateForStudents();
+		WebsocketForAdministrator.broadcastStateForTa();
+		WebsocketForAdministrator.broadcastStateForStudents();
 		
-		return 	JsonHelper.getJsonForStudent(student,WebsocketForTA.studentManager.getHandUpStudentList());
+		return 	JsonHelper.getJsonForStudent(student,WebsocketForAdministrator.studentManager.getHandUpStudentList());
 
 	}
 
@@ -77,50 +73,5 @@ public class WebsocketForStudent {
 //		String log = client.getId() + " was error. [" + error.getMessage() + "]";
 		error.printStackTrace();
 	}
-
-	private void broadcastStateForTa() throws JsonProcessingException {
-		List<Student> studentList=WebsocketForTA.studentManager.getStudentList();
-		List<Student> handupStudentList=WebsocketForTA.studentManager.getHandUpStudentList();
-
-		String taBroadcastJson = JsonHelper.getJsonForTeacher(studentList, handupStudentList);
-		broadcastMessageForTa(taBroadcastJson);
-	}
-
-	
-	private void broadcastStateForStudents() throws JsonProcessingException {
-		List<Student> studentList=WebsocketForTA.studentManager.getStudentList();
-		List<Student> handupStudentList=WebsocketForTA.studentManager.getHandUpStudentList();
-
-		Map<Student,String> jsonMap=JsonHelper.getJsonListForStudent(WebsocketForTA.studentSessionMap.keySet(), studentList,handupStudentList);
-		for(Entry<Student,String> entry: jsonMap.entrySet()) {
-			Student student = entry.getKey();
-			String json = entry.getValue();
-			Session session = WebsocketForTA.studentSessionMap.get(student);
-			sendMessage(session,json);
-		}
-	}
-
-	
-	private void sendMessage(Session session, String message) {
-		try {
-			session.getBasicRemote().sendText(message); // 非同期でメッセージを送信
-		} catch (Exception e) {
-			e.printStackTrace();
-			WebsocketForTA.taSessions.removeIf( client -> client.equals(session));
-			WebsocketForTA.studentSessionMap.entrySet().removeIf(entry -> session.equals(entry.getValue()));
-		}
-	}
-
-	private void broadcastMessageForTa(String message) {
-		for (Session client : WebsocketForTA.taSessions) {
-			try {
-				client.getBasicRemote().sendText(message); // 各クライアントにメッセージを送信
-			} catch (IOException e) {
-				e.printStackTrace();
-				WebsocketForTA.taSessions.remove(client); // 送信失敗したセッションは削除
-			}
-		}
-	}
-	
 
 }

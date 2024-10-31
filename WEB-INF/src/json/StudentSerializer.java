@@ -10,7 +10,7 @@ import com.google.gson.JsonSerializer;
 
 import domain.entities.Student;
 
-public class StudentJsonSerializer implements JsonSerializer<Student>{
+public class StudentSerializer implements JsonSerializer<Student>{
 
 	@Override
 	public JsonElement serialize(Student student, Type typeOfSrc, JsonSerializationContext context) {

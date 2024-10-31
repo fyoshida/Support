@@ -32,7 +32,7 @@
 		fetch('/Support/connect-websocket')
 			.then(response => response.text())
 			.then(data => {
-				ws = new WebSocket("ws://localhost/Support/websocket/_administrator");
+				ws = new WebSocket("ws://localhost/Support/websocket/_ta");
 				//ws = new WebSocket("ws://dashboard.nagaokaut.ac.jp/Support/websocket/_administrator");
 				//        const ws = new WebSocket("ws://localhost/Support/websocket/teacher);-->
 				//        const ws = new WebSocket("ws://localhost/Support/websocket?ip="+clientIp);-->

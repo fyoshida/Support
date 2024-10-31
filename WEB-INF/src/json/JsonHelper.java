@@ -17,10 +17,12 @@ public class JsonHelper {
 	public static String getJsonForTeacher(List<Student> studentList, List<Student> handupStudentList)
 			throws JsonProcessingException {
 		
+		// 通常の学生用Gsonを生成
         GsonBuilder builder = new GsonBuilder();
-        builder.registerTypeAdapter(Student.class, new StudentJsonSerializer());
+        builder.registerTypeAdapter(Student.class, new StudentSerializer());
         Gson gson = builder.create();
 
+        // Jsonオブジェクトを生成
 		JsonObject jsonObject = new JsonObject();
 
 		jsonObject.add("studentList", gson.toJsonTree(studentList).getAsJsonArray());
@@ -33,14 +35,17 @@ public class JsonHelper {
 	public static String getJsonForStudent(Student student, List<Student> handupStudentList)
 			throws JsonProcessingException {
 
+		// 通常の学生用Gsonを生成
         GsonBuilder builder = new GsonBuilder();
-        builder.registerTypeAdapter(Student.class, new StudentJsonSerializer());
+        builder.registerTypeAdapter(Student.class, new StudentSerializer());
         Gson gson = builder.create();
 
+        // PC情報を除く学生用GSONを生成
         GsonBuilder builderWithoutPcInfo = new GsonBuilder();
-        builderWithoutPcInfo.registerTypeAdapter(Student.class, new StudentJsonWithoutPcInfoSerializer());
+        builderWithoutPcInfo.registerTypeAdapter(Student.class, new StudentWithoutPcInfoSerializer());
         Gson gsonWithoutPcInfo = builderWithoutPcInfo.create();
 
+        // Jsonオブジェクトを生成
 		JsonObject jsonObject = new JsonObject();
 
 		jsonObject.add("clientStudent", gson.toJsonTree(student));
@@ -54,12 +59,14 @@ public class JsonHelper {
 
 		Map<Student, String> jsonMap = new HashMap<Student, String>();
 
+        // 接続している学生ごとに送信用のJSONを生成
 		for (Student student : studentList) {
 			if (connectStudentList.contains(student)) {
 				String jsonText = getJsonForStudent(student, handupStudentList);
 				jsonMap.put(student, jsonText);
 			}
 		}
+		
 		return jsonMap;
 	}
 

@@ -123,9 +123,10 @@ public class WebsocketForTA {
 
 	
 	private void broadcastStateForStudents() throws JsonProcessingException {
+		List<Student> studentList=studentManager.getStudentList();
 		List<Student> handupStudentList=studentManager.getHandUpStudentList();
 
-		Map<Student,String> jsonMap=ResponseHelper.getJsonListForStudent(studentSessionMap.keySet(), handupStudentList);
+		Map<Student,String> jsonMap=ResponseHelper.getJsonListForStudent(studentSessionMap.keySet(), studentList,handupStudentList);
 		jsonMap.forEach((student,json) ->sendMessage(studentSessionMap.get(student),json));
 	}
 

@@ -4,6 +4,9 @@
     <meta charset="utf-8" />
 	<title>サポートシステム</title>
 	<link rel="stylesheet" href="./index_ta.css">
+	<script src="js/student-info.js" ></script>
+	<script src="js/time.js" ></script>
+	
     <!-- Bootstrap用CSSの読み込み -->
     <link
       href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
@@ -19,18 +22,18 @@
     ></script>
 	<script>
 		var ws;
-		var student;
 		var handupStudentList;
 		var studentList;
 		var tab="senmonSeat";
 		var maxWaitingTime=0;
+		var maxBarLength=45;
 		var selectNum="";
 		var selectStudent="";
 		fetch('/Support/connect-websocket')
 			.then(response => response.text())
 			.then(data => {
-				//ws = new WebSocket("ws://localhost/Support/websocket/_administrator");
-				ws = new WebSocket("ws://dashboard.nagaokaut.ac.jp/Support/websocket/_administrator");
+				ws = new WebSocket("ws://localhost/Support/websocket/_administrator");
+				//ws = new WebSocket("ws://dashboard.nagaokaut.ac.jp/Support/websocket/_administrator");
 				//        const ws = new WebSocket("ws://localhost/Support/websocket/teacher);-->
 				//        const ws = new WebSocket("ws://localhost/Support/websocket?ip="+clientIp);-->
 				ws.onopen = () => {
@@ -42,7 +45,6 @@
 				// メッセージを受信したときに呼び出される
 				ws.onmessage = function (event) {
 					const obj = JSON.parse(event.data);
-					student = obj.clientStudent;
 					studentList = obj.studentList;
 					handupStudentList = obj.handupStudentList;
 					
@@ -50,7 +52,7 @@
 					for (var i = 0; i < studentList.length; i++) {
 						var num =studentList[i].pcId.slice(3);
 						setStudentOnClick(num, studentList[i]);
-						setStudentInfo(num, studentList[i]);
+						setStudentInfo(num, studentList[i],"");
 					}
 
 					setDialogClick();
@@ -72,7 +74,6 @@
 
 				// エラーが発生したときに呼び出される
 				ws.onerror = function (error) {
-					alert("Error");
 					console.error('WebSocket error: ' + error);
 				};
 
@@ -93,6 +94,7 @@
 
 		function waitingtimeUpdate() {
 			maxWaitingTime++;
+			if(studentList != null){
 			for (var i = 0; i < studentList.length; i++) {
 				var student = studentList[i];
 				if (student.helpStatus == "Troubled") {
@@ -100,7 +102,8 @@
 				}
 				var num =studentList[i].pcId.slice(3);
 				setStudentInfoTime(num, studentList[i]);
-				setStudentInfoTimebar(num, studentList[i]);
+				setStudentInfoTimebar(num, studentList[i], maxBarLength);
+			}
 			}
 		}
 		
@@ -156,7 +159,7 @@
 		function selectTarget(num,obj){
 			selectNum=num;
 			selectStudent=obj;
-			setStudentInfo(selectNum,selectStudent);
+			setStudentInfo(selectNum,selectStudent,selectStudent);
 		}
 		
 		function unselectTarget(num,obj){
@@ -164,191 +167,9 @@
 			const oldSelectObj=obj;
 			selectNum="";
 			selectStudent="";
-			if(oldSelectNum != null || oldSelectNum !=""){
-				setStudentInfoStatus(oldSelectNum,oldSelectObj);
+			if(oldSelectNum != null && oldSelectNum !=""){
+				setStudentInfoStatus(oldSelectNum,oldSelectObj,selectStudent);
 			}
-		}
-		
-		//-------------------
-		// 学生情報の表示設定
-		//-------------------
-		function setStudentInfo(num, obj) {
-			document.getElementById("pcname" + num).innerText = obj.pcId;
-			document.getElementById("status" + num).style.display = "none";
-			setStudentInfoStatus(num,obj);
-			setStudentInfoPriority(num,obj);
-			setStudentInfoTimebar(num,obj);
-			setStudentInfoTime(num,obj);
-		}
-
-		function setStudentInfoStatus(num,obj){
-			var color="white";
-			if(obj==selectStudent){
-				color="orange";
-			}else if(obj.helpStatus=="None"){
-				color="white";
-			}else if(obj.helpStatus=="Troubled"){
-				color="yellow";
-			}else if(obj.helpStatus=="Supporting"){
-				color="lightgreen";
-			}
-			document.getElementById("student" + num).style.backgroundColor=color;
-		}
-
-		function setStudentInfoPriority(num,obj){
-			document.getElementById("priority" + num).innerText = obj.handPriority;
-			if(obj.handPriority == "999"){
-				document.getElementById("priority" + num).style.display = "none";				
-			}else{
-				document.getElementById("priority" + num).style.display = "block";	
-			}
-		}
-		
-		function setStudentInfoTime(num,obj){
-			const time = obj.waitingTimeBySecond;
-			const hour = Math.floor(time / 3600);
-			const minute = Math.floor((time - hour * 3600) / 60);
-			const second = time - hour * 3600 - minute * 60;
-			
-			var displayTime="";
-			if(hour==0 && minute ==0 ){
-				displayTime=second+" 秒";
-			}else if(hour==0 && minute >0){
-				displayTime=minute+" 分 "+second+" 秒";
-			}else if(hour>0){
-				displayTime=hour+" 時 "+minute+" 分 "+second+" 秒";
-			}
-			document.getElementById("time" + num).innerText=displayTime;
-		}
-
-		function setStudentInfoTimebar(num,obj){
-			const time = obj.waitingTimeBySecond;
-
-			var maxBarLength=0;
-			if(tab=="kisoSeat" || tab=="senmonSeat"){
-				maxBarLength=45;
-			}else{
-				maxBarLength=120;
-			} 
-
-			var timeBarLength = getBarLength(maxWaitingTime,time,maxBarLength);
-			var timeBarColor=getBarColor(maxWaitingTime,time);
-
-			if(obj.helpStatus=="Troubled"){
-				document.getElementById("timebar" + num).style.display="block";
-				document.getElementById("timebar" + num).style.width = timeBarLength+"px";
-				document.getElementById("timebar" + num).style.background = timeBarColor;
-			}else{
-				document.getElementById("timebar" + num).style.display="none";
-			}
-		}
-		
-		function getBarColor(maxWaitingTime, time){
-			if(maxWaitingTime <60){
-				return "green";
-			}else if(maxWaitingTime <300){
-				return "orange";
-			}else if(maxWaitingTime <600){
-				return "pink";
-			}else if(maxWaitingTime <1800){
-				return "red";
-			}else if(maxWaitingTime <3600){
-				return "black";
-			}else{
-				return "black";
-			}
-		}
-		
-		function getBarLength(maxWaitingTime, time,maxBarLength){
-			if(maxWaitingTime <60){
-				return Math.floor(time/60*maxBarLength);
-			}else if(maxWaitingTime <300){
-				return Math.floor(time/300*maxBarLength);
-			}else if(maxWaitingTime <600){
-				return Math.floor(time/600*maxBarLength);
-			}else if(maxWaitingTime <1800){
-				return Math.floor(time/1800*maxBarLength);
-			}else if(maxWaitingTime <3600){
-				return Math.floor(time/3600*maxBarLength);
-			}else{
-				return maxBarLength;
-			}
-		}
-		//-------------------
-		// 時間関係の関数
-		//-------------------
-		function getMaxWaitingTime(handupStudentList){
-			max = 0;
-			if(handupStudentList != null && handupStudentList.length >0){
-				max = handupStudentList[0].waitingTimeBySecond;
-			}
-			return max;
-		}
-		
-		function getDisplayTime(hour,minute,second){
-			if(hour==0 && minute ==0 ){
-				return second+" 秒";
-			}else if(hour==0 && minute >0){
-				if(second ==0){
-					return minute+" 分";
-				}else{
-					return minute+" 分 "+second+" 秒";
-				}
-			}else{
-				if(minute ==0 && second ==0){
-					return hour+" 時間";
-				}else if(minute ==0 && second >0){
-					return hour+" 時間 "+second+" 秒";
-				}else if(minute >0 && second ==0){
-					return hour+" 時間 "+minute+" 分";
-				}else{
-					return hour+" 時間 "+minute+" 分 "+second+" 秒";
-				}
-			}
-		}
-		
-		function getDisplayTimeFromSecond(secondTime){
-			const hour = Math.floor(secondTime / 3600);
-			const minute = Math.floor((secondTime - hour * 3600) / 60);
-			const second = secondTime - hour * 3600 - minute * 60;
-			return getDisplayTime(hour,minute,second);
-		}
-		
-		function getMaxTime(maxWaitingTime){
-			if(maxWaitingTime <60){
-				return 60;
-			}else if(maxWaitingTime <300){
-				return 300;
-			}else if(maxWaitingTime <600){
-				return 600;
-			}else if(maxWaitingTime <1800){
-				return 1800;
-			}else if(maxWaitingTime <3600){
-				return 3600;
-			}else{
-				return 3600;
-			}
-		}
-		
-		function getBarColor(maxWaitingTime, time){
-			if(maxWaitingTime <60){
-				return "green";
-			}else if(maxWaitingTime <300){
-				return "orange";
-			}else if(maxWaitingTime <600){
-				return "pink";
-			}else if(maxWaitingTime <1800){
-				return "red";
-			}else if(maxWaitingTime <3600){
-				return "gray";
-			}else{
-				return "gray";
-			}
-		}
-		
-		function getBarLength(maxWaitingTime, time, maxBarLength){
-			const maxTime=getMaxTime(maxWaitingTime);
-			return Math.floor(time/maxTime*maxBarLength);
 		}
 	
 		//-------------------
@@ -356,6 +177,7 @@
 		//-------------------
 		function seatSenmonTabOnClick(){
 			tab="senmonSeat";
+			maxBarLength=45;
 
 			for(var i=0; i<studentList.length; i++){
 				const num = studentList[i].pcId.slice(3);
@@ -364,12 +186,15 @@
 				setPcnameStyleForSeat(num);
 				setPriorityStyleForSeat(num);
 				setTimeStyleForSeat(num);
+
+				setStudentInfoTimebar(num, studentList[i], maxBarLength);
 			}
 			setDialogStyleForSeat();
 		}
 		
 		function seatKisoTabOnClick(){
 			tab="kisoSeat";
+			maxBarLength=45;
 
 			for(var i=0; i<studentList.length; i++){
 				const num = studentList[i].pcId.slice(3);
@@ -378,13 +203,16 @@
 				setPcnameStyleForSeat(num);
 				setPriorityStyleForSeat(num);
 				setTimeStyleForSeat(num);
+				
+				setStudentInfoTimebar(num, studentList[i], maxBarLength);
 			}
 			setDialogStyleForSeat();
 		}
 		
 		function waitTabOnClick(){
 			tab="wait"
-
+			maxBarLength=120;
+			
 			for(var i=0; i<studentList.length; i++){
 				const num = studentList[i].pcId.slice(3);
 				document.getElementById("student" + num).style.display="none";
@@ -397,6 +225,8 @@
 				setPcnameStyleForWait(num);
 				setPriorityStyleForWait(num);
 				setTimeStyleForWait(num);
+				
+				setStudentInfoTimebar(num, studentList[i], maxBarLength);
 			}
 			setDialogStyleForWait();
 		}

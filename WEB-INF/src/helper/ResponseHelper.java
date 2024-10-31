@@ -22,14 +22,16 @@ public class ResponseHelper {
 		return JsonConverter.getJsonText(teacherResponse);
 	}
 
-	public static Map<Student, String> getJsonListForStudent(Set<Student> studentList,
+	public static Map<Student, String> getJsonListForStudent(Set<Student> connectStudentList, List<Student> studentList,
 			List<Student> handupStudentList) throws JsonProcessingException {
-			
+
 		Map<Student, String> jsonMap = new HashMap<Student, String>();
 
 		for (Student student : studentList) {
-			String jsonText = getJsonForStudent(student,handupStudentList);
-			jsonMap.put(student, jsonText);
+			if (connectStudentList.contains(student)) {
+				String jsonText = getJsonForStudent(student, handupStudentList);
+				jsonMap.put(student, jsonText);
+			}
 		}
 		return jsonMap;
 	}

@@ -4,6 +4,9 @@
     <meta charset="utf-8" />
 	<title>サポートシステム</title>
 	<link rel="stylesheet" href="./index.css">
+	<script src="js/time.js" ></script>
+	<script src="js/student-info.js" ></script>
+	<script src="js/waitingtime-chart.js" ></script>
 
 	</head>
 	<body>
@@ -20,18 +23,20 @@
 		<div id="chart">
 		</div>
 		<div id="unitTime"></div>
-
+	</body>
+</html>
 	<script>
 		var ws;
 		var student;
 		var handupStudentList;
 		var maxWaitingTime=0;
+		var maxBarLength=120;
 		fetch('/Support/connect-websocket')
 			.then(response => response.text())
 			.then(data => {
 				//ws = new WebSocket("ws://localhost/Support/websocket/_administrator");
 				//        const ws = new WebSocket("ws://localhost/Support/websocket/teacher);-->
-				// ws = new WebSocket("ws://localhost/Support/websocket");
+				 //ws = new WebSocket("ws://localhost/Support/websocket");
 				ws = new WebSocket("ws://dashboard.nagaokaut.ac.jp/Support/websocket");
 				ws.onopen = () => {
 					//    		ws.send('Hello from JavaScript client!');
@@ -48,7 +53,7 @@
 					handupStudentList = obj.handupStudentList;
 
 					maxWaitingTime = getMaxWaitingTime(handupStudentList);
-					setStudentInfo(student);
+					setStudentInfo("",student);
 					
 					if(student.helpStatus=="None"){
 						showDialogUp();
@@ -60,7 +65,6 @@
 
 				// エラーが発生したときに呼び出される
 				ws.onerror = function (error) {
-					alert("Error");
 					console.error('WebSocket error: ' + error);
 				};
 
@@ -83,16 +87,16 @@
 			maxWaitingTime++;
 			if (student != null && student.helpStatus == "Troubled") {
 				student.waitingTimeBySecond++;
-				setStudentInfoTime(student);
-				setStudentInfoTimebar(student);
+				setStudentInfoTime("",student);
+				setStudentInfoTimebar("",student,120);
 			}
 			if(handupStudentList != null){
-			for (var i = 0; i < handupStudentList.length; i++) {
-				if (handupStudentList[i].helpStatus == "Troubled") {
-					handupStudentList[i].waitingTimeBySecond++;
+				for (var i = 0; i < handupStudentList.length; i++) {
+					if (handupStudentList[i].helpStatus == "Troubled") {
+						handupStudentList[i].waitingTimeBySecond++;
+					}
 				}
-			}
-			drawChart(student,handupStudentList);
+				drawChart(student,handupStudentList);
 			}
 		}
 		
@@ -120,214 +124,4 @@
 			document.getElementById("dialog-up").style.display="none";
 			document.getElementById("dialog-down").style.display="block";
 		}
-		
-		//-------------------
-		// 学生情報の表示設定
-		//-------------------
-		function setStudentInfo(student) {
-			document.getElementById("pcname").innerText = student.pcId;
-			document.getElementById("status").style.display = "none";
-			setStudentInfoStatus(student);
-			setStudentInfoPriority(student);
-			setStudentInfoTimebar(student);
-			setStudentInfoTime(student);
-		}
-
-		function setStudentInfoStatus(student){
-			var color="white";
-			if(student.helpStatus=="None"){
-				color="white";
-			}else if(student.helpStatus=="Troubled"){
-				color="yellow";
-			}else if(student.helpStatus=="Supporting"){
-				color="lightgreen";
-			}
-			document.getElementById("student").style.backgroundColor=color;
-		}
-
-		function setStudentInfoPriority(student){
-			document.getElementById("priority").innerText = student.handPriority;
-			if(student.handPriority == "999"){
-				document.getElementById("priority").style.display = "none";				
-			}else{
-				document.getElementById("priority").style.display = "block";	
-			}
-		}
-		
-		function setStudentInfoTime(student){
-			if(student.helpStatus == "Troubled"){
-				const time = student.waitingTimeBySecond;
-				document.getElementById("time").innerText = getDisplayTimeFromSecond(time);
-			}else{
-				document.getElementById("time").innerText = "";
-			}
-		}
-		
-
-		function setStudentInfoTimebar(student){
-			const time = student.waitingTimeBySecond;
-
-			var timeBarLength = getBarLength(maxWaitingTime,time,120);
-			var timeBarColor=getBarColor(maxWaitingTime,time);
-
-			if(student.helpStatus=="Troubled"){
-				document.getElementById("timebar").style.display="block";
-				document.getElementById("timebar").style.width = timeBarLength+"px";
-				document.getElementById("timebar").style.background = "#33CCFF";
-			}else{
-				document.getElementById("timebar").style.display="none";
-			}
-		}
-
-		//-------------------
-		// 時間関係の関数
-		//-------------------
-		function getMaxWaitingTime(handupStudentList){
-			max = 0;
-			if(handupStudentList != null && handupStudentList.length >0){
-				max = handupStudentList[0].waitingTimeBySecond;
-			}
-			return max;
-		}
-		
-		function getDisplayTime(hour,minute,second){
-			if(hour==0 && minute ==0 ){
-				return second+" 秒";
-			}else if(hour==0 && minute >0){
-				if(second ==0){
-					return minute+" 分";
-				}else{
-					return minute+" 分 "+second+" 秒";
-				}
-			}else{
-				if(minute ==0 && second ==0){
-					return hour+" 時間";
-				}else if(minute ==0 && second >0){
-					return hour+" 時間 "+second+" 秒";
-				}else if(minute >0 && second ==0){
-					return hour+" 時間 "+minute+" 分";
-				}else{
-					return hour+" 時間 "+minute+" 分 "+second+" 秒";
-				}
-			}
-		}
-		
-		function getDisplayTimeFromSecond(secondTime){
-			const hour = Math.floor(secondTime / 3600);
-			const minute = Math.floor((secondTime - hour * 3600) / 60);
-			const second = secondTime - hour * 3600 - minute * 60;
-			return getDisplayTime(hour,minute,second);
-		}
-		
-		function getMaxTime(maxWaitingTime){
-			if(maxWaitingTime <60){
-				return 60;
-			}else if(maxWaitingTime <300){
-				return 300;
-			}else if(maxWaitingTime <600){
-				return 600;
-			}else if(maxWaitingTime <1800){
-				return 1800;
-			}else if(maxWaitingTime <3600){
-				return 3600;
-			}else{
-				return 3600;
-			}
-		}
-		
-		function getBarColor(maxWaitingTime, time){
-			if(maxWaitingTime <60){
-				return "green";
-			}else if(maxWaitingTime <300){
-				return "orange";
-			}else if(maxWaitingTime <600){
-				return "pink";
-			}else if(maxWaitingTime <1800){
-				return "red";
-			}else if(maxWaitingTime <3600){
-				return "gray";
-			}else{
-				return "gray";
-			}
-		}
-		
-		function getBarLength(maxWaitingTime, time, maxBarLength){
-			const maxTime=getMaxTime(maxWaitingTime);
-			return Math.floor(time/maxTime*maxBarLength);
-		}
-		
-		//-------------------
-		// グラフ描画
-		//-------------------
-		function drawChart(student,handupStudentList){
-			var chartElement = document.getElementById("chart");
-			if(handupStudentList == null || handupStudentList.length==0){
-				chartElement.style.display="none";
-				return;
-			}
-			chartElement.style.display="block";
-			clearChildElement(chartElement);
-			addChildOrderElement(chartElement,handupStudentList);
-			addChildBarElement(chartElement,handupStudentList);
-			chartElement.style.height=(handupStudentList.length*25)+"px";
-			
-			const unitElement = document.getElementById("unitTime");
-			const unitTime=getDisplayTimeFromSecond(getMaxTime(maxWaitingTime));
-			unitElement.innerText="("+unitTime+")";
-
-		}
-		
-		function clearChildElement(chartElement){
-			while (chartElement.firstChild) {
-    			chartElement.removeChild(chartElement.firstChild);
-			}
-		}
-		
-		function addChildOrderElement(chartElement,handupStudentList){
-			for( var i=0; i<handupStudentList.length; i++){
-				const orderElement=document.createElement('div');
-				orderElement.setAttribute("id","rank"+(i+1));
-				orderElement.setAttribute("class","rank");
-				orderElement.style.position ="absolute"
-				orderElement.style.left = "-30px"
-				orderElement.style.width= "20px";
-				orderElement.style.height = "20px";
-				orderElement.style.textAlign="right"
-				orderElement.innerText=(i+1);
-				if(student.handPriority == i+1){
-					orderElement.style.top = 6+i*25+"px";
-					orderElement.style.fontSize="20px";
-					orderElement.style.color="blue";
-				}else{
-					orderElement.style.top =10+i*25+"px";
-					orderElement.style.fontSize="15px";
-					orderElement.style.color="black";
-				}
-				chartElement.appendChild(orderElement);
-			}
-		}
-				
-		function addChildBarElement(chartElement,handupStudentList){
-			for( var i=0; i<handupStudentList.length; i++){
-				const barElement=document.createElement('div');
-				barElement.setAttribute("id","wait"+(i+1));
-				barElement.setAttribute("class","wait");
-				barElement.style.position ="absolute"
-				barElement.style.top =10+i*25+"px";
-				barElement.style.left ="5px";
-				barElement.style.width= getBarLength(maxWaitingTime,handupStudentList[i].waitingTimeBySecond,120)+"px";
-				barElement.style.height = "20px";
-				if(student.handPriority == i+1){
-					barElement.style.background= "#33CCFF";
-				}else{
-					barElement.style.background= getBarColor(maxWaitingTime,handupStudentList[i].waitingTimeBySecond);
-				}
-				chartElement.appendChild(barElement);
-			}
-		}
-		
 	</script>
-	</body>
-	
-
-</html>

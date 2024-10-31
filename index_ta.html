@@ -115,11 +115,11 @@
 			document.getElementById("dialog-yes").addEventListener('click', (event) => {
 				// サーバに送信
 				if(selectStudent.helpStatus=="Troubled"){
-				    ws.send("Supporting:" + selectStudent.ipAdress);
+				    ws.send("Supporting:" + selectStudent.ipAddress);
 				}else if(selectStudent.helpStatus=="None"){
-				    ws.send("Troubled:" + selectStudent.ipAdress);
+				    ws.send("Troubled:" + selectStudent.ipAddress);
 				}else if(selectStudent.helpStatus=="Supporting"){
-				    ws.send("None:" + selectStudent.ipAdress);
+				    ws.send("None:" + selectStudent.ipAddress);
 				}
 				
 				// 選択した学生のnumとobjをクリア

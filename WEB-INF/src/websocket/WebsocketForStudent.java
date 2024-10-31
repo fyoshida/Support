@@ -18,7 +18,7 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 
 import domain.entities.Student;
 import domain.valueobjects.IpAddress;
-import helper.ResponseHelper;
+import json.JsonHelper;
 
 //@ServerEndpoint(value="/websocket/_initialize")
 @ServerEndpoint(value = "/websocket", configurator = ConfiguratorWithRequest.class)
@@ -42,7 +42,7 @@ public class WebsocketForStudent {
 		
 		WebsocketForTA.studentSessionMap.put(student, session);
 
-		String jsonText = ResponseHelper.getJsonForStudent(student,WebsocketForTA.studentManager.getHandUpStudentList());
+		String jsonText = JsonHelper.getJsonForStudent(student,WebsocketForTA.studentManager.getHandUpStudentList());
 		sendMessage(session,jsonText);
 	}
 	
@@ -63,7 +63,7 @@ public class WebsocketForStudent {
 		broadcastStateForTa();
 		broadcastStateForStudents();
 		
-		return 	ResponseHelper.getJsonForStudent(student,WebsocketForTA.studentManager.getHandUpStudentList());
+		return 	JsonHelper.getJsonForStudent(student,WebsocketForTA.studentManager.getHandUpStudentList());
 
 	}
 
@@ -82,7 +82,7 @@ public class WebsocketForStudent {
 		List<Student> studentList=WebsocketForTA.studentManager.getStudentList();
 		List<Student> handupStudentList=WebsocketForTA.studentManager.getHandUpStudentList();
 
-		String taBroadcastJson = ResponseHelper.getJsonForTeacher(studentList, handupStudentList);
+		String taBroadcastJson = JsonHelper.getJsonForTeacher(studentList, handupStudentList);
 		broadcastMessageForTa(taBroadcastJson);
 	}
 
@@ -91,7 +91,7 @@ public class WebsocketForStudent {
 		List<Student> studentList=WebsocketForTA.studentManager.getStudentList();
 		List<Student> handupStudentList=WebsocketForTA.studentManager.getHandUpStudentList();
 
-		Map<Student,String> jsonMap=ResponseHelper.getJsonListForStudent(WebsocketForTA.studentSessionMap.keySet(), studentList,handupStudentList);
+		Map<Student,String> jsonMap=JsonHelper.getJsonListForStudent(WebsocketForTA.studentSessionMap.keySet(), studentList,handupStudentList);
 		for(Entry<Student,String> entry: jsonMap.entrySet()) {
 			Student student = entry.getKey();
 			String json = entry.getValue();

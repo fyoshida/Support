@@ -21,7 +21,7 @@ import domain.aggregate.StudentManager;
 import domain.entities.Pc;
 import domain.entities.Student;
 import domain.valueobjects.IpAddress;
-import helper.ResponseHelper;
+import json.JsonHelper;
 import repository.IPcRepository;
 import repository.RepositoryFactory;
 import repository.RepositoryType;
@@ -66,7 +66,7 @@ public class WebsocketForTA {
 		// ここまで
 		//-------------------
 
-		String jsonText = ResponseHelper.getJsonForTeacher(studentManager.getStudentList(), studentManager.getHandUpStudentList());
+		String jsonText = JsonHelper.getJsonForTeacher(studentManager.getStudentList(), studentManager.getHandUpStudentList());
 		sendMessage(session,jsonText);
 	}
 
@@ -98,7 +98,7 @@ public class WebsocketForTA {
 		broadcastStateForStudents();
 		broadcastStateForTa();
 
-		return ResponseHelper.getJsonForTeacher(studentManager.getStudentList(), studentManager.getHandUpStudentList());
+		return JsonHelper.getJsonForTeacher(studentManager.getStudentList(), studentManager.getHandUpStudentList());
 	}
 
 	@OnClose
@@ -117,7 +117,7 @@ public class WebsocketForTA {
 		List<Student> studentList=studentManager.getStudentList();
 		List<Student> handupStudentList=studentManager.getHandUpStudentList();
 
-		String taBroadcastJson = ResponseHelper.getJsonForTeacher(studentList, handupStudentList);
+		String taBroadcastJson = JsonHelper.getJsonForTeacher(studentList, handupStudentList);
 		broadcastMessageForTa(taBroadcastJson);
 	}
 
@@ -126,7 +126,7 @@ public class WebsocketForTA {
 		List<Student> studentList=studentManager.getStudentList();
 		List<Student> handupStudentList=studentManager.getHandUpStudentList();
 
-		Map<Student,String> jsonMap=ResponseHelper.getJsonListForStudent(studentSessionMap.keySet(), studentList,handupStudentList);
+		Map<Student,String> jsonMap=JsonHelper.getJsonListForStudent(studentSessionMap.keySet(), studentList,handupStudentList);
 		jsonMap.forEach((student,json) ->sendMessage(studentSessionMap.get(student),json));
 	}
 

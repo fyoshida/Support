@@ -14,7 +14,7 @@ import domain.entities.Student;
 
 public class JsonHelper {
 
-	public static String getJsonForTeacher(List<Student> studentList, List<Student> handupStudentList)
+	public String getJsonForTeacher(List<Student> studentList, List<Student> handupStudentList)
 			throws JsonProcessingException {
 		
 		// 通常の学生用Gsonを生成
@@ -32,7 +32,7 @@ public class JsonHelper {
 	}
 
 
-	public static String getJsonForStudent(Student student, List<Student> handupStudentList)
+	public String getJsonForStudent(Student student, List<Student> handupStudentList)
 			throws JsonProcessingException {
 
 		// 通常の学生用Gsonを生成
@@ -54,7 +54,7 @@ public class JsonHelper {
 		return gson.toJson(jsonObject);
 	}
 	
-	public static Map<Student, String> getJsonListForStudent(Set<Student> connectStudentList, List<Student> studentList,
+	public Map<Student, String> getJsonListForStudent(Set<Student> connectStudentList, List<Student> studentList,
 			List<Student> handupStudentList) throws JsonProcessingException {
 
 		Map<Student, String> jsonMap = new HashMap<Student, String>();

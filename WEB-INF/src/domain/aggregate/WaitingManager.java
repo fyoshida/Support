@@ -1,15 +1,15 @@
 package domain.aggregate;
 
 import java.util.Collections;
-import java.util.LinkedList;
 import java.util.List;
+import java.util.concurrent.CopyOnWriteArrayList;
 
 import domain.entities.Student;
 
 public class WaitingManager {
 	public static final int NOT_REGISTED = 999;
 
-	private LinkedList<Student> waitingList = new LinkedList<Student>();
+	private List<Student> waitingList = new CopyOnWriteArrayList<Student>();
 
 	public boolean isRegisted(Student student) {
 		return waitingList.contains(student);
@@ -17,7 +17,7 @@ public class WaitingManager {
 	
 	public void regist(Student student) {
 		if (!isRegisted(student)) {
-			waitingList.addLast(student);
+			waitingList.add(student);
 		}
 	}
 

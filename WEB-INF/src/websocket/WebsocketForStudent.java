@@ -1,5 +1,6 @@
 package websocket;
 
+import java.util.List;
 import java.util.Optional;
 
 import javax.websocket.EndpointConfig;
@@ -22,28 +23,41 @@ public class WebsocketForStudent {
 
 	private IpAddress clientIpAddress;
 	private Student student;
+	private MessageSender messageSender;
+	private JsonHelper jsonHelper;
 
 	@OnOpen
 	public void onOpen(Session session, EndpointConfig config) throws JsonProcessingException {
 	
+		// クライアントのIPアドレスを取得
 		String strIpAddress = (String) config.getUserProperties().get("IpAddress");
 		clientIpAddress=new IpAddress(strIpAddress);
 		clientIpAddress=new IpAddress("133.44.118.158"); // 一時的に設定
 
+		// IPから該当するStudentを取得
 		Optional<Student> optStudent = WebsocketForAdministrator.studentManager.getStudent(clientIpAddress);
 		if (optStudent.isEmpty()) {
 			return ;
 		}
 		student = optStudent.get();
 		
+		// その学生用のSessionを登録
 		WebsocketForAdministrator.studentSessionMap.put(student, session);
 
-		String jsonText = JsonHelper.getJsonForStudent(student,WebsocketForAdministrator.studentManager.getHandUpStudentList());
-		WebsocketForAdministrator.sendMessage(session,jsonText);
+		// MessageSender、JsonHelperを生成
+		messageSender=new MessageSender();
+		jsonHelper = new JsonHelper();
+
+		// 現在の状態を送信
+		List<Student> handupStudentList = WebsocketForAdministrator.studentManager.getHandUpStudentList();
+		String jsonText = jsonHelper.getJsonForStudent(student,handupStudentList);
+		messageSender.sendMessage(session,jsonText);
 	}
 	
 	@OnMessage
 	public String onMessage(String message, Session session) throws JsonProcessingException {
+		
+		// コマンド実行
 		switch(message) {
 		case "None":
 			WebsocketForAdministrator.studentManager.handDown(clientIpAddress);
@@ -56,15 +70,19 @@ public class WebsocketForStudent {
 			break;
 		}
 
-		WebsocketForAdministrator.broadcastStateForTa();
-		WebsocketForAdministrator.broadcastStateForStudents();
+		// 全教員、全学生に現在の状態を送信
+		List<Student> studentList = WebsocketForAdministrator.studentManager.getStudentList();
+		List<Student> handupStudentList = WebsocketForAdministrator.studentManager.getHandUpStudentList();
+		messageSender.broadcastStateForTa(WebsocketForAdministrator.taSessionSet, studentList, handupStudentList);
+		messageSender.broadcastStateForStudents(WebsocketForAdministrator.studentSessionMap, studentList, handupStudentList);
 		
-		return 	JsonHelper.getJsonForStudent(student,WebsocketForAdministrator.studentManager.getHandUpStudentList());
+		return 	jsonHelper.getJsonForStudent(student,handupStudentList);
 
 	}
 
 	@OnClose
 	public void onClose(Session session) {
+		WebsocketForAdministrator.studentSessionMap.entrySet().removeIf(entry -> session.equals(entry.getValue()));
 		System.out.println("WebSocket connection closed: " + session.getId());
 	}
 
